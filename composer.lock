@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "9f17c7a5007153570454b0790689a7a9",
+    "content-hash": "5670e753a14e0b7e47ab7bb612b727c2",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1632,6 +1632,63 @@
             "time": "2018-07-19T23:38:55+00:00"
         },
         {
+            "name": "ramsey/uuid-doctrine",
+            "version": "1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ramsey/uuid-doctrine.git",
+                "reference": "2a56db8e68bff487508244f5a2008075279d0255"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ramsey/uuid-doctrine/zipball/2a56db8e68bff487508244f5a2008075279d0255",
+                "reference": "2a56db8e68bff487508244f5a2008075279d0255",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/orm": "^2.5",
+                "php": "^5.4 || ^7.0",
+                "ramsey/uuid": "^3.0"
+            },
+            "require-dev": {
+                "jakub-onderka/php-parallel-lint": "^1.0",
+                "mockery/mockery": "^0.9 || ^1.1",
+                "php-coveralls/php-coveralls": "^1.1 || ^2.1",
+                "phpunit/phpunit": "^4.8 || ^5.7 || ^6.5",
+                "squizlabs/php_codesniffer": "^3.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ramsey\\Uuid\\Doctrine\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marijn Huizendveld",
+                    "email": "marijn.huizendveld@gmail.com"
+                },
+                {
+                    "name": "Ben Ramsey",
+                    "email": "ben@benramsey.com",
+                    "homepage": "http://benramsey.com"
+                }
+            ],
+            "description": "Allow the use of a ramsey/uuid UUID as Doctrine field type.",
+            "homepage": "https://github.com/ramsey/uuid-doctrine",
+            "keywords": [
+                "doctrine",
+                "guid",
+                "identifier",
+                "uuid"
+            ],
+            "time": "2018-08-11T21:01:22+00:00"
+        },
+        {
             "name": "symfony/cache",
             "version": "v4.2.3",
             "source": {
@@ -2821,6 +2878,86 @@
                 "uri",
                 "url"
             ],
+            "time": "2019-01-29T09:49:29+00:00"
+        },
+        {
+            "name": "symfony/serializer",
+            "version": "v4.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/serializer.git",
+                "reference": "95e63a14718cc0825ca2f9c2d85a7129d8f12f13"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/serializer/zipball/95e63a14718cc0825ca2f9c2d85a7129d8f12f13",
+                "reference": "95e63a14718cc0825ca2f9c2d85a7129d8f12f13",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1.3",
+                "symfony/polyfill-ctype": "~1.8"
+            },
+            "conflict": {
+                "phpdocumentor/type-resolver": "<0.2.1",
+                "symfony/dependency-injection": "<3.4",
+                "symfony/property-access": "<3.4",
+                "symfony/property-info": "<3.4",
+                "symfony/yaml": "<3.4"
+            },
+            "require-dev": {
+                "doctrine/annotations": "~1.0",
+                "doctrine/cache": "~1.0",
+                "phpdocumentor/reflection-docblock": "^3.0|^4.0",
+                "symfony/cache": "~3.4|~4.0",
+                "symfony/config": "~3.4|~4.0",
+                "symfony/dependency-injection": "~3.4|~4.0",
+                "symfony/http-foundation": "~3.4|~4.0",
+                "symfony/property-access": "~3.4|~4.0",
+                "symfony/property-info": "~3.4|~4.0",
+                "symfony/validator": "~3.4|~4.0",
+                "symfony/yaml": "~3.4|~4.0"
+            },
+            "suggest": {
+                "doctrine/annotations": "For using the annotation mapping. You will also need doctrine/cache.",
+                "doctrine/cache": "For using the default cached annotation reader and metadata cache.",
+                "psr/cache-implementation": "For using the metadata cache.",
+                "symfony/config": "For using the XML mapping loader.",
+                "symfony/http-foundation": "To use the DataUriNormalizer.",
+                "symfony/property-access": "For using the ObjectNormalizer.",
+                "symfony/property-info": "To deserialize relations.",
+                "symfony/yaml": "For using the default YAML mapping loader."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Serializer\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Serializer Component",
+            "homepage": "https://symfony.com",
             "time": "2019-01-29T09:49:29+00:00"
         },
         {
