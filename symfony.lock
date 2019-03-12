@@ -169,6 +169,9 @@
             ".env"
         ]
     },
+    "symfony/form": {
+        "version": "v4.2.4"
+    },
     "symfony/framework-bundle": {
         "version": "4.2",
         "recipe": {
@@ -194,14 +197,32 @@
     "symfony/http-kernel": {
         "version": "v4.2.3"
     },
+    "symfony/inflector": {
+        "version": "v4.2.4"
+    },
+    "symfony/intl": {
+        "version": "v4.2.4"
+    },
+    "symfony/options-resolver": {
+        "version": "v4.2.4"
+    },
     "symfony/orm-pack": {
         "version": "v1.0.6"
+    },
+    "symfony/polyfill-intl-icu": {
+        "version": "v1.10.0"
     },
     "symfony/polyfill-mbstring": {
         "version": "v1.10.0"
     },
+    "symfony/polyfill-php72": {
+        "version": "v1.10.0"
+    },
     "symfony/process": {
         "version": "v4.2.3"
+    },
+    "symfony/property-access": {
+        "version": "v4.2.4"
     },
     "symfony/routing": {
         "version": "4.2",
@@ -222,6 +243,9 @@
         "version": "v4.2.3"
     },
     "symfony/stopwatch": {
+        "version": "v4.2.3"
+    },
+    "symfony/var-dumper": {
         "version": "v4.2.3"
     },
     "symfony/var-exporter": {
