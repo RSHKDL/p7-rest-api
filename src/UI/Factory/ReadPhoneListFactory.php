@@ -37,6 +37,6 @@ class ReadPhoneListFactory
     {
         $phones = $this->repository->findAll();
 
-        return $this->responder->respond($phones, 'phone');
+        return $this->responder->respond($phones, 'phone_list');
     }
 }

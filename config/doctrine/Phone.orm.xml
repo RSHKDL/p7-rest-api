@@ -5,19 +5,19 @@
                    https://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd"
 >
     <entity name="App\Domain\Entity\Phone" table="app_phone" repository-class="App\Domain\Repository\PhoneRepository">
-        <!--<unique-constraints>
+        <unique-constraints>
             <unique-constraint columns="model"/>
-        </unique-constraints>-->
+        </unique-constraints>
         <id name="id" type="uuid" />
         <field name="createdAt" type="integer"/>
         <field name="updatedAt" type="integer"/>
-        <!--<many-to-one field="manufacturer" target-entity="App\Domain\Entity\Manufacturer" inversed-by="phones">
+        <many-to-one field="manufacturer" target-entity="App\Domain\Entity\Manufacturer" inversed-by="phones">
             <cascade>
                 <cascade-persist/>
             </cascade>
             <join-column nullable="false" />
-        </many-to-one>-->
-        <field name="model"/>
+        </many-to-one>
+        <field name="model" length="40"/>
         <field name="description" type="text"/>
         <field name="price" type="integer"/>
         <field name="stock" type="integer"/>

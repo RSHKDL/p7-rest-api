@@ -27,10 +27,10 @@ class ReadPhoneFactory
     }
 
     /**
-     * @param int $id
+     * @param string $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function read(int $id)
+    public function read(string $id)
     {
         $phone = $this->repository->find($id);
 

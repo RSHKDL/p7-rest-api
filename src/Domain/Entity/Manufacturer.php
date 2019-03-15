@@ -6,6 +6,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
+/**
+ * Class Manufacturer
+ *
+ * @author ereshkidal
+ */
 class Manufacturer
 {
     /**
@@ -37,5 +42,40 @@ class Manufacturer
         $this->id = Uuid::uuid4();
         $this->name = $name;
         $this->phones = new ArrayCollection($phones);
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @param Phone $phone
+     */
+    public function addPhone(Phone $phone): void
+    {
+        if (!$this->phones->contains($phone)) {
+            $this->phones->add($phone);
+        }
+    }
+    /**
+     * @param Phone $phone
+     */
+    public function removePhone(Phone $phone): void
+    {
+        if ($this->phones->contains($phone)) {
+            $this->phones->removeElement($phone);
+        }
     }
 }

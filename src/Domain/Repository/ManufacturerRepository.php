@@ -30,4 +30,13 @@ class ManufacturerRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    /**
+     * @param Manufacturer $manufacturer
+     */
+    public function save(Manufacturer $manufacturer)
+    {
+        $this->_em->persist($manufacturer);
+        $this->_em->flush();
+    }
 }

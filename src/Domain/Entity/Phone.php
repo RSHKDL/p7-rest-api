@@ -5,6 +5,11 @@ namespace App\Domain\Entity;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
+/**
+ * Class Phone
+ *
+ * @author ereshkidal
+ */
 class Phone
 {
     /**
@@ -134,5 +139,21 @@ class Phone
     public function setStock(int $stock): void
     {
         $this->stock = $stock;
+    }
+
+    /**
+     * @return null|Manufacturer
+     */
+    public function getManufacturer(): ?Manufacturer
+    {
+        return $this->manufacturer;
+    }
+
+    /**
+     * @param Manufacturer $manufacturer
+     */
+    public function setManufacturer(Manufacturer $manufacturer): void
+    {
+        $this->manufacturer = $manufacturer;
     }
 }

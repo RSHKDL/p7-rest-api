@@ -3,6 +3,7 @@
 namespace App\UI\Factory;
 
 use App\Domain\Entity\Phone;
+use App\Domain\Repository\ManufacturerRepository;
 use App\Domain\Repository\PhoneRepository;
 use App\UI\Form\CreatePhoneType;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -14,7 +15,12 @@ class CreatePhoneFactory
     /**
      * @var PhoneRepository
      */
-    private $repository;
+    private $phoneRepository;
+
+    /**
+     * @var ManufacturerRepository
+     */
+    private $manufacturerRepository;
 
     /**
      * @var FormFactoryInterface
@@ -22,11 +28,13 @@ class CreatePhoneFactory
     private $formFactory;
 
     public function __construct(
-        PhoneRepository $repository,
+        PhoneRepository $phoneRepository,
+        ManufacturerRepository $manufacturerRepository,
         FormFactoryInterface $formFactory
     )
     {
-        $this->repository = $repository;
+        $this->phoneRepository = $phoneRepository;
+        $this->manufacturerRepository = $manufacturerRepository;
         $this->formFactory = $formFactory;
     }
 
@@ -34,12 +42,12 @@ class CreatePhoneFactory
      * @param Request $request
      * @return Phone
      */
-    public function create(Request $request)
+    public function create(Request $request): Phone
     {
         $phone = new Phone();
         $form = $this->formFactory->create(CreatePhoneType::class, $phone);
         $this->processForm($request, $form);
-        $this->repository->save($phone);
+        $this->phoneRepository->save($phone);
 
         return $phone;
     }
@@ -48,7 +56,7 @@ class CreatePhoneFactory
      * @param Request $request
      * @param FormInterface $form
      */
-    private function processForm(Request $request, FormInterface $form)
+    private function processForm(Request $request, FormInterface $form): void
     {
         $data = json_decode($request->getContent(), true);
         $clearMissing = $request->getMethod() != 'PATCH';

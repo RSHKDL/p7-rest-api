@@ -2,12 +2,10 @@ App\Domain\Entity\Phone:
     attributes:
         id:
             groups: ['phone', 'phone_list']
-        createdAt:
-            groups: ['phone_list']
         manufacturer:
-            groups: ['phone_list']
-        model:
             groups: ['phone']
+        model:
+            groups: ['phone', 'phone_list']
         description:
             groups: ['phone']
         price:
