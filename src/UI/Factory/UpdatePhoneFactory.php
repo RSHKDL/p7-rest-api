@@ -10,15 +10,15 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class CreatePhoneFactory
+ * Class UpdatePhoneFactory
  * @author ereshkidal
  */
-class CreatePhoneFactory
+class UpdatePhoneFactory
 {
     /**
      * @var PhoneRepository
      */
-    private $phoneRepository;
+    private $repository;
 
     /**
      * @var FormFactoryInterface
@@ -26,29 +26,30 @@ class CreatePhoneFactory
     private $formFactory;
 
     /**
-     * CreatePhoneFactory constructor.
-     * @param PhoneRepository $phoneRepository
+     * UpdatePhoneFactory constructor.
+     * @param PhoneRepository $repository
      * @param FormFactoryInterface $formFactory
      */
     public function __construct(
-        PhoneRepository $phoneRepository,
+        PhoneRepository $repository,
         FormFactoryInterface $formFactory
-    )
-    {
-        $this->phoneRepository = $phoneRepository;
+    ) {
+        $this->repository = $repository;
         $this->formFactory = $formFactory;
     }
 
     /**
      * @param Request $request
+     * @param string $id
      * @return Phone
      */
-    public function create(Request $request): Phone
+    public function update(Request $request, string $id): Phone
     {
-        $phone = new Phone();
+        /** @var Phone $phone */
+        $phone = $this->repository->find($id);
         $form = $this->formFactory->create(CreatePhoneType::class, $phone);
         $this->processForm($request, $form);
-        $this->phoneRepository->save($phone);
+        $this->repository->save($phone);
 
         return $phone;
     }

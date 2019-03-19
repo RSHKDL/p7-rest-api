@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/api/phones", methods={"POST"}, name="phone_create")
  *
  * Class CreatePhone
- * @package App\UI\Action\Phone
+ * @author ereshkidal
  */
 class CreatePhone
 {

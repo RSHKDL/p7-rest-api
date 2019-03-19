@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/api/phones/{id}", methods={"GET"}, name="phone_read")
  *
  * Class ReadPhone
- * @package App\UI\Action\Phone
+ * @author ereshkidal
  */
 class ReadPhone
 {

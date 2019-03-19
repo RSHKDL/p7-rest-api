@@ -7,10 +7,10 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * Class CreateResponder
+ * Class UpdateResponder
  * @author ereshkidal
  */
-class CreateResponder
+class UpdateResponder
 {
     /**
      * @var SerializerInterface
@@ -23,7 +23,7 @@ class CreateResponder
     private $urlGenerator;
 
     /**
-     * CreateResponder constructor.
+     * UpdateResponder constructor.
      * @param SerializerInterface $serializer
      * @param UrlGeneratorInterface $urlGenerator
      */
@@ -45,7 +45,7 @@ class CreateResponder
     {
         $json = $this->serializer->serialize($entity, 'json', ['groups' => [$serializationGroup] ]);
 
-        return new Response($json, Response::HTTP_CREATED, [
+        return new Response($json, Response::HTTP_OK, [
             'location' => $this->urlGenerator->generate($routeName, ['id' => $entity->getId()])
         ]);
     }

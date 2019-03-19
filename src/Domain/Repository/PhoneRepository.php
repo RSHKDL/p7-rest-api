@@ -26,4 +26,20 @@ class PhoneRepository extends ServiceEntityRepository
         $this->_em->persist($phone);
         $this->_em->flush();
     }
+
+    /**
+     * @param string $id
+     * @return bool
+     */
+    public function remove(string $id)
+    {
+        $phone = $this->find($id);
+        if (null === $phone) {
+            return false;
+        }
+        $this->_em->remove($phone);
+        $this->_em->flush();
+
+        return true;
+    }
 }
