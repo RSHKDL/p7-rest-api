@@ -99,7 +99,7 @@ class User implements UserInterface
      */
     public function setPassword(string $password): void
     {
-        $this->email = $password;
+        $this->password = $password;
     }
 
     /**

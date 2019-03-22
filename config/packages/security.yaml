@@ -2,7 +2,7 @@ security:
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     encoders:
         App\Domain\Entity\User:
-            algorithm: bcryt
+            algorithm: bcrypt
             cost: 12
     providers:
         api_user_provider:
