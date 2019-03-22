@@ -2,3 +2,6 @@ Actions:
     resource: '../src/UI/Action'
     type: annotation
     defaults: { _format: 'json' }
+
+api_login_check:
+    path: /api/login_check
