@@ -8,12 +8,13 @@ use App\UI\Form\CreatePhoneType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * Class CreatePhoneFactory
  * @author ereshkidal
  */
-class CreatePhoneFactory
+class CreatePhoneFactory extends AbstractFactory
 {
     /**
      * @var PhoneRepository
@@ -51,16 +52,5 @@ class CreatePhoneFactory
         $this->phoneRepository->save($phone);
 
         return $phone;
-    }
-
-    /**
-     * @param Request $request
-     * @param FormInterface $form
-     */
-    private function processForm(Request $request, FormInterface $form): void
-    {
-        $data = json_decode($request->getContent(), true);
-        $clearMissing = $request->getMethod() != 'PATCH';
-        $form->submit($data, $clearMissing);
     }
 }
