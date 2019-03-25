@@ -4,8 +4,8 @@ namespace App\Application\EventListener;
 
 use App\UI\Errors\ApiProblem;
 use App\UI\Errors\ApiProblemException;
+use App\UI\Errors\ApiProblemResponder;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -22,12 +22,18 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
     private $debug;
 
     /**
+     * @var ApiProblemResponder
+     */
+    private $responder;
+
+    /**
      * ApiExceptionSubscriber constructor.
      * @param bool $debug
      */
-    public function __construct(bool $debug)
+    public function __construct(bool $debug, ApiProblemResponder $responder)
     {
         $this->debug = $debug;
+        $this->responder = $responder;
     }
 
     /**
@@ -67,18 +73,6 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
             $apiProblem->setExtraData('detail', $e->getMessage());
         }
 
-        $data = $apiProblem->toArray();
-        // making type a URL, to a temporarily fake page
-        if ($data['type'] != 'about:blank') {
-            $data['type'] = 'http://localhost:8000/docs/errors#'.$data['type'];
-        }
-
-        $response = new JsonResponse(
-            $data,
-            $apiProblem->getStatusCode()
-        );
-        $response->headers->set('Content-Type', 'application/problem+json');
-
-        $event->setResponse($response);
+        $event->setResponse($this->responder->createResponse($apiProblem));
     }
 }

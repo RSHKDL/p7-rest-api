@@ -24,3 +24,6 @@ services:
     App\Application\EventListener\ApiExceptionSubscriber:
         arguments:
             $debug: '%kernel.debug%'
+
+    App\Application\Security\TokenAuthenticator:
+        autowire: true
