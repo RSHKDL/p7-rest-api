@@ -8,7 +8,6 @@ use Ramsey\Uuid\UuidInterface;
 
 /**
  * Class Manufacturer
- *
  * @author ereshkidal
  */
 class Manufacturer

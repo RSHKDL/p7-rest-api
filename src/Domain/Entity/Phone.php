@@ -7,7 +7,6 @@ use Ramsey\Uuid\UuidInterface;
 
 /**
  * Class Phone
- *
  * @author ereshkidal
  */
 class Phone
@@ -54,12 +53,6 @@ class Phone
 
     /**
      * Phone constructor.
-     *
-     * @param Manufacturer $manufacturer
-     * @param string $model
-     * @param string $description
-     * @param int $price
-     * @param int $stock
      * @throws \Exception
      */
     public function __construct()
