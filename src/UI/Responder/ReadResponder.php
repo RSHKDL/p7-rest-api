@@ -13,6 +13,10 @@ class ReadResponder
      */
     private $serializer;
 
+    /**
+     * ReadResponder constructor.
+     * @param SerializerInterface $serializer
+     */
     public function __construct(SerializerInterface $serializer)
     {
         $this->serializer = $serializer;
@@ -21,6 +25,7 @@ class ReadResponder
     public function respond($object, string $serializationGroup): Response
     {
         $json = $this->serializer->serialize($object, 'json', ['groups' => [$serializationGroup]]);
+
         return new Response($json, Response::HTTP_OK, ['Content-Type' => 'application/hal+json']);
     }
 }
