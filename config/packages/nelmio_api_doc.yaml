@@ -1,0 +1,79 @@
+nelmio_api_doc:
+    areas:
+        path_patterns:
+            - ^/api(?!/doc$) # Accepts routes under /api except /api/doc
+    documentation:
+        info:
+            title: BileMo
+            description: This documentation is a complete work in progress...
+            version: 1.0.0
+        securityDefinitions:
+            Bearer:
+                type: apiKey
+                description: 'Value: Bearer {jwt}'
+                name: Authorization
+                in: header
+        definitions:
+            BileMo_Phone:
+                type: object
+                properties:
+                    createdAt:
+                        type: string
+                    manufacturer:
+                        $ref: "#/definitions/BileMo_Manufacturer"
+                    model:
+                        type: string
+                    description:
+                        type: string
+                    price:
+                        type: integer
+                    stock:
+                        type: integer
+            BileMo_Manufacturer:
+                type: object
+                properties:
+                    name:
+                        type: string
+        paths:
+            '/api/phones':
+                get:
+                    tags:
+                        - Phone (path from yaml)
+                    summary: Gets Phones list with pagination and filter on Manufacturer's name and/or Phone model
+                    description: '## Authorization: Access for Client and Retailer'
+                    produces:
+                        - application/json
+                    parameters:
+                        - in: header
+                          name: authorization
+                          description: Bearer {YourAccessToken}
+                          required: true
+                          type: string
+                          default: Bearer TOKEN
+                    responses:
+                        '200':
+                            description: OK
+                            schema:
+                                type: object
+                                properties:
+                                    items:
+                                        type: array
+                                        items:
+                                            $ref: "#/definitions/BileMo_Phone"
+                                    itemsTotal:
+                                        type: integer
+                                    itemsPerPage:
+                                        type: integer
+                                    _links:
+                                        type: object
+                                        properties:
+                                            first:
+                                                type: string
+                                            self:
+                                                type: string
+                                            next:
+                                                type: string
+                                            last:
+                                                type: string
+                        '401':
+                            description: UNAUTHORIZED - JWT Token not found | Expired JWT Token | Invalid JWT Token

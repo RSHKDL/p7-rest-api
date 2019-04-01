@@ -3,6 +3,8 @@
 namespace App\UI\Action\Phone;
 
 use App\UI\Factory\ReadPhoneFactory;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -29,8 +31,31 @@ class ReadPhone
     }
 
     /**
+     * Return a phone
+     *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @SWG\Parameter(
+     *     name="id",
+     *     in="path",
+     *     type="string",
+     *     description="Must be a valid version 4 Uuid"
+     * )
+     * @SWG\Response(
+     *      response=200,
+     *      description="Phone successfully returned",
+     *      @Model(type=App\Domain\Entity\Phone::class, groups={"phone"})
+     * )
+     * @SWG\Response(
+     *      response=400,
+     *      description="Invalid Uuid provided"
+     * )
+     * @SWG\Response(
+     *      response=404,
+     *      description="Phone not found"
+     * )
+     * @SWG\Tag(name="Phones")
      */
     public function __invoke(Request $request)
     {
