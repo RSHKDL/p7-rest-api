@@ -5,6 +5,10 @@ namespace App\UI\Responder;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
 
+/**
+ * Class ReadResponder
+ * @author ereshkidal
+ */
 class ReadResponder
 {
 
@@ -22,7 +26,12 @@ class ReadResponder
         $this->serializer = $serializer;
     }
 
-    public function respond($object, string $serializationGroup): Response
+    /**
+     * @param $object
+     * @param string $serializationGroup
+     * @return Response
+     */
+    public function respond($object, string $serializationGroup = 'default'): Response
     {
         $json = $this->serializer->serialize($object, 'json', ['groups' => [$serializationGroup]]);
 

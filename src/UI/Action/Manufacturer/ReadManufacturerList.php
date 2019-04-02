@@ -1,30 +1,30 @@
 <?php
 
-namespace App\UI\Action\Phone;
+namespace App\UI\Action\Manufacturer;
 
-use App\UI\Factory\ReadPhoneListFactory;
+use App\UI\Factory\ReadManufacturerFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/api/phones", methods={"GET"}, name="phone_read_collection")
+ * @Route("/api/manufacturers", methods={"GET"}, name="manufacturer_read_collection")
  *
- * Class ReadPhoneList
+ * Class ReadManufacturerList
  * @author ereshkidal
  */
-class ReadPhoneList
+class ReadManufacturerList
 {
     /**
-     * @var ReadPhoneListFactory
+     * @var ReadManufacturerFactory
      */
     private $factory;
 
     /**
-     * ReadPhoneList constructor.
-     * @param ReadPhoneListFactory $factory
+     * ReadManufacturerList constructor.
+     * @param ReadManufacturerFactory $factory
      */
-    public function __construct(ReadPhoneListFactory $factory)
+    public function __construct(ReadManufacturerFactory $factory)
     {
         $this->factory = $factory;
     }

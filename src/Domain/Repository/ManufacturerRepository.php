@@ -5,6 +5,7 @@ namespace App\Domain\Repository;
 use App\Domain\Entity\Manufacturer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
 
 class ManufacturerRepository extends ServiceEntityRepository
 {
@@ -15,6 +16,14 @@ class ManufacturerRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Manufacturer::class);
+    }
+
+    /**
+     * @return QueryBuilder
+     */
+    public function findAllQueryBuilder(): QueryBuilder
+    {
+        return $this->createQueryBuilder('m');
     }
 
     /**
