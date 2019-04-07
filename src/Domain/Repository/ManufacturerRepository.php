@@ -3,11 +3,12 @@
 namespace App\Domain\Repository;
 
 use App\Domain\Entity\Manufacturer;
+use App\Domain\Repository\Interfaces\EntityRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 
-class ManufacturerRepository extends ServiceEntityRepository
+class ManufacturerRepository extends ServiceEntityRepository implements EntityRepositoryInterface
 {
     /**
      * ManufacturerRepository constructor.
@@ -19,7 +20,7 @@ class ManufacturerRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return QueryBuilder
+     * {@inheritdoc}
      */
     public function findAllQueryBuilder(): QueryBuilder
     {
@@ -42,8 +43,10 @@ class ManufacturerRepository extends ServiceEntityRepository
 
     /**
      * @param Manufacturer $manufacturer
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function save(Manufacturer $manufacturer)
+    public function save(Manufacturer $manufacturer): void
     {
         $this->_em->persist($manufacturer);
         $this->_em->flush();

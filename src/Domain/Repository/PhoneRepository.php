@@ -3,13 +3,13 @@
 namespace App\Domain\Repository;
 
 use App\Domain\Entity\Phone;
+use App\Domain\Repository\Interfaces\EntityRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 
-class PhoneRepository extends ServiceEntityRepository
+class PhoneRepository extends ServiceEntityRepository implements EntityRepositoryInterface
 {
-
     /**
      * PhoneRepository constructor.
      * @param ManagerRegistry $registry
@@ -20,7 +20,7 @@ class PhoneRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return QueryBuilder
+     * {@inheritdoc}
      */
     public function findAllQueryBuilder(): QueryBuilder
     {
@@ -29,8 +29,10 @@ class PhoneRepository extends ServiceEntityRepository
 
     /**
      * @param Phone $phone
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function save(Phone $phone)
+    public function save(Phone $phone): void
     {
         $this->_em->persist($phone);
         $this->_em->flush();
@@ -39,8 +41,10 @@ class PhoneRepository extends ServiceEntityRepository
     /**
      * @param string $id
      * @return bool
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function remove(string $id)
+    public function remove(string $id): bool
     {
         $phone = $this->find($id);
         if (null === $phone) {
