@@ -2,7 +2,9 @@
 
 namespace App\UI\Action\Phone;
 
-use App\UI\Factory\ReadPhoneListFactory;
+use App\Domain\Entity\Phone;
+use App\UI\Factory\ReadEntityCollectionFactory;
+use App\UI\Responder\ReadResponder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,18 +17,29 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ReadPhoneList
 {
+    private const ROUTE = 'phone_read_collection';
+
     /**
-     * @var ReadPhoneListFactory
+     * @var ReadEntityCollectionFactory
      */
     private $factory;
 
     /**
-     * ReadPhoneList constructor.
-     * @param ReadPhoneListFactory $factory
+     * @var ReadResponder
      */
-    public function __construct(ReadPhoneListFactory $factory)
-    {
+    private $responder;
+
+    /**
+     * ReadPhoneList constructor.
+     * @param ReadEntityCollectionFactory $factory
+     * @param ReadResponder $responder
+     */
+    public function __construct(
+        ReadEntityCollectionFactory $factory,
+        ReadResponder $responder
+    ) {
         $this->factory = $factory;
+        $this->responder = $responder;
     }
 
     /**
@@ -35,6 +48,6 @@ class ReadPhoneList
      */
     public function __invoke(Request $request): Response
     {
-        return $this->factory->read($request);
+        return $this->responder->respond($this->factory->read($request, Phone::class, self::ROUTE));
     }
 }

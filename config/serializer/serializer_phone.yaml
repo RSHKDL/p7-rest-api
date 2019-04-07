@@ -1,11 +1,11 @@
 App\Domain\Entity\Phone:
     attributes:
         id:
-            groups: ['phone', 'phone_list']
+            groups: ['default', 'phone', 'phone_list']
         manufacturer:
             groups: ['phone']
         model:
-            groups: ['phone', 'phone_list']
+            groups: ['default', 'phone_list']
         description:
             groups: ['phone']
         price:

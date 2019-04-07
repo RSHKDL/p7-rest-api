@@ -3,15 +3,16 @@
 namespace App\UI\Factory;
 
 use App\Application\Pagination\PaginationFactory;
+use App\Domain\Model\ManufacturerPaginatedModel;
 use App\Domain\Repository\ManufacturerRepository;
 use App\UI\Responder\ReadResponder;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class ReadManufacturerFactory
+ * Class ReadManufacturerListFactory
  * @author ereshkidal
  */
-class ReadManufacturerFactory
+class ReadManufacturerListFactory
 {
     /**
      * @var ManufacturerRepository
@@ -57,6 +58,6 @@ class ReadManufacturerFactory
             'manufacturer_read_collection'
         );
 
-        return $this->responder->respond($paginatedCollection);
+        return $this->responder->respond(ManufacturerPaginatedModel::createFromPaginatedCollection($paginatedCollection));
     }
 }

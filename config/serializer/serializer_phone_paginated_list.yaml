@@ -1,0 +1,10 @@
+App\Domain\Model\PhonePaginatedModel:
+    attributes:
+        phones:
+            groups: ['default']
+        phonesTotal:
+            groups: ['default']
+        phonesPerPage:
+            groups: ['default']
+        _links:
+            groups: ['default']

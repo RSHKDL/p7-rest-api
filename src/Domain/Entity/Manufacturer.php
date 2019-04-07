@@ -77,4 +77,12 @@ class Manufacturer
             $this->phones->removeElement($phone);
         }
     }
+
+    /**
+     * @return UuidInterface
+     */
+    public function getId(): UuidInterface
+    {
+        return $this->id;
+    }
 }
