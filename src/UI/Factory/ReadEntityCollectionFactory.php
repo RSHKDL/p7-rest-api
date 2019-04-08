@@ -5,6 +5,7 @@ namespace App\UI\Factory;
 use App\Application\Pagination\PaginationFactory;
 use App\Domain\Entity\Manufacturer;
 use App\Domain\Entity\Phone;
+use App\Domain\Model\Interfaces\PaginatedModelInterface;
 use App\Domain\Model\ManufacturerPaginatedModel;
 use App\Domain\Model\PhonePaginatedModel;
 use App\UI\Responder\ReadResponder;
@@ -42,9 +43,9 @@ class ReadEntityCollectionFactory
         $this->responder = $responder;
     }
 
-    public function read(Request $request, string $entityName, string $route)
+    public function read(Request $request, PaginatedModelInterface $paginatedModel, string $route)
     {
-        $repository = $this->entityManager->getRepository($entityName);
+        $repository = $this->entityManager->getRepository($paginatedModel->getEntityName());
 
         $queryBuilder = $repository->findAllQueryBuilder();
         $paginatedCollection = $this->paginationFactory->createCollection(
@@ -53,15 +54,6 @@ class ReadEntityCollectionFactory
             $route
         );
 
-        switch ($entityName) {
-            case $entityName === Phone::class:
-                return PhonePaginatedModel::createFromPaginatedCollection($paginatedCollection);
-                break;
-            case $entityName === Manufacturer::class:
-                return ManufacturerPaginatedModel::createFromPaginatedCollection($paginatedCollection);
-                break;
-            default:
-                return null;
-        }
+        return $paginatedModel::createFromPaginatedCollection($paginatedCollection);
     }
 }

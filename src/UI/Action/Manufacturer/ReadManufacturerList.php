@@ -2,7 +2,7 @@
 
 namespace App\UI\Action\Manufacturer;
 
-use App\Domain\Entity\Manufacturer;
+use App\Domain\Model\ManufacturerPaginatedModel;
 use App\UI\Factory\ReadEntityCollectionFactory;
 use App\UI\Responder\ReadResponder;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,13 +10,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/api/manufacturers", methods={"GET"}, name="manufacturer_read_collection")
+ * @Route("/api/manufacturers", methods={"GET"}, name=ReadManufacturerList::ROUTE_NAME)
  *
  * Class ReadManufacturerList
  * @author ereshkidal
  */
 class ReadManufacturerList
 {
+    public const ROUTE_NAME = 'manufacturer_read_collection';
+
     /**
      * @var ReadEntityCollectionFactory
      */
@@ -41,10 +43,11 @@ class ReadManufacturerList
 
     /**
      * @param Request $request
+     * @param ManufacturerPaginatedModel $manufacturerPaginatedModel
      * @return Response
      */
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request, ManufacturerPaginatedModel $manufacturerPaginatedModel): Response
     {
-        return $this->responder->respond($this->factory->read($request, Manufacturer::class, 'manufacturer_read_collection'));
+        return $this->responder->respond($this->factory->read($request, $manufacturerPaginatedModel, self::ROUTE_NAME));
     }
 }

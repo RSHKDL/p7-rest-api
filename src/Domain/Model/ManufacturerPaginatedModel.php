@@ -3,13 +3,17 @@
 namespace App\Domain\Model;
 
 use App\Application\Pagination\PaginatedCollection;
+use App\Domain\Entity\Manufacturer;
+use App\Domain\Model\Interfaces\PaginatedModelInterface;
 
 /**
  * Class ManufacturerPaginatedModel
  * @author ereshkidal
  */
-class ManufacturerPaginatedModel
+class ManufacturerPaginatedModel implements PaginatedModelInterface
 {
+    private const ENTITY = Manufacturer::class;
+
     /**
      * @var array
      */
@@ -32,9 +36,9 @@ class ManufacturerPaginatedModel
 
     /**
      * @param PaginatedCollection $paginatedCollection
-     * @return ManufacturerPaginatedModel
+     * @return PaginatedModelInterface
      */
-    public static function createFromPaginatedCollection(PaginatedCollection $paginatedCollection): ManufacturerPaginatedModel
+    public static function createFromPaginatedCollection(PaginatedCollection $paginatedCollection): PaginatedModelInterface
     {
         $model = new self();
         $model->manufacturers = $paginatedCollection->getItems();
@@ -43,5 +47,13 @@ class ManufacturerPaginatedModel
         $model->_links = $paginatedCollection->getLinks();
 
         return $model;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEntityName(): string
+    {
+        return self::ENTITY;
     }
 }
