@@ -45,9 +45,10 @@ class ReadManufacturerList
      * @param Request $request
      * @param ManufacturerPaginatedModel $manufacturerPaginatedModel
      * @return Response
+     * @throws \Exception
      */
     public function __invoke(Request $request, ManufacturerPaginatedModel $manufacturerPaginatedModel): Response
     {
-        return $this->responder->respond($this->factory->read($request, $manufacturerPaginatedModel, self::ROUTE_NAME));
+        return $this->responder->respond($this->factory->build($request, $manufacturerPaginatedModel, self::ROUTE_NAME));
     }
 }

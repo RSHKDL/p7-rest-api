@@ -8,6 +8,10 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 
+/**
+ * Class ManufacturerRepository
+ * @author ereshkidal
+ */
 class ManufacturerRepository extends ServiceEntityRepository implements EntityRepositoryInterface
 {
     /**
@@ -24,7 +28,7 @@ class ManufacturerRepository extends ServiceEntityRepository implements EntityRe
      */
     public function findAllQueryBuilder(): QueryBuilder
     {
-        return $this->createQueryBuilder('m');
+        return $this->createQueryBuilder('manufacturer');
     }
 
     /**

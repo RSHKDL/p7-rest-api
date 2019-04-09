@@ -3,11 +3,8 @@
 namespace App\UI\Factory;
 
 use App\Application\Pagination\PaginationFactory;
-use App\Domain\Entity\Manufacturer;
-use App\Domain\Entity\Phone;
 use App\Domain\Model\Interfaces\PaginatedModelInterface;
-use App\Domain\Model\ManufacturerPaginatedModel;
-use App\Domain\Model\PhonePaginatedModel;
+use App\Domain\Repository\Interfaces\EntityRepositoryInterface;
 use App\UI\Responder\ReadResponder;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,6 +30,12 @@ class ReadEntityCollectionFactory
      */
     private $responder;
 
+    /**
+     * ReadEntityCollectionFactory constructor.
+     * @param EntityManagerInterface $entityManager
+     * @param PaginationFactory $paginationFactory
+     * @param ReadResponder $responder
+     */
     public function __construct(
         EntityManagerInterface $entityManager,
         PaginationFactory $paginationFactory,
@@ -43,9 +46,20 @@ class ReadEntityCollectionFactory
         $this->responder = $responder;
     }
 
-    public function read(Request $request, PaginatedModelInterface $paginatedModel, string $route)
+    /**
+     * @todo handle the exception with apiProblem ?
+     * @param Request $request
+     * @param PaginatedModelInterface $paginatedModel
+     * @param string $route
+     * @return PaginatedModelInterface
+     * @throws \Exception
+     */
+    public function build(Request $request, PaginatedModelInterface $paginatedModel, string $route): PaginatedModelInterface
     {
         $repository = $this->entityManager->getRepository($paginatedModel->getEntityName());
+        if (!$repository instanceof EntityRepositoryInterface) {
+            throw new \Exception('Invalid repository');
+        }
 
         $queryBuilder = $repository->findAllQueryBuilder();
         $paginatedCollection = $this->paginationFactory->createCollection(

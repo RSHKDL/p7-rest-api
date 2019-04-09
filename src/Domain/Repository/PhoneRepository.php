@@ -8,6 +8,10 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 
+/**
+ * Class PhoneRepository
+ * @author ereshkidal
+ */
 class PhoneRepository extends ServiceEntityRepository implements EntityRepositoryInterface
 {
     /**
