@@ -1,0 +1,6 @@
+App\Domain\Entity\Phone:
+    attributes:
+        model:
+            groups: ['manufacturer']
+        stock:
+            groups: ['manufacturer']

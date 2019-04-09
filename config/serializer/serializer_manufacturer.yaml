@@ -1,6 +1,0 @@
-App\Domain\Entity\Manufacturer:
-    attributes:
-        id:
-            groups: ['default']
-        name:
-            groups: ['default', 'phone']

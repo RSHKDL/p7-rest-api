@@ -49,6 +49,9 @@ class ReadManufacturerList
      */
     public function __invoke(Request $request, ManufacturerPaginatedModel $manufacturerPaginatedModel): Response
     {
-        return $this->responder->respond($this->factory->build($request, $manufacturerPaginatedModel, self::ROUTE_NAME));
+        return $this->responder->respond(
+            $this->factory->build($request, $manufacturerPaginatedModel, self::ROUTE_NAME),
+            'manufacturer_collection'
+        );
     }
 }

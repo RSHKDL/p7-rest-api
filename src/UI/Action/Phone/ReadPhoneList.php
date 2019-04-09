@@ -50,6 +50,9 @@ class ReadPhoneList
      */
     public function __invoke(Request $request, PhonePaginatedModel $phonePaginatedModel): Response
     {
-        return $this->responder->respond($this->factory->build($request, $phonePaginatedModel, self::ROUTE_NAME));
+        return $this->responder->respond(
+            $this->factory->build($request, $phonePaginatedModel, self::ROUTE_NAME),
+            'phone_collection'
+        );
     }
 }

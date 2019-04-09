@@ -10,10 +10,17 @@ interface PaginatedModelInterface
      * @param PaginatedCollection $paginatedCollection
      * @return PaginatedModelInterface
      */
-    public static function createFromPaginatedCollection(PaginatedCollection $paginatedCollection): PaginatedModelInterface;
+    static function createFromPaginatedCollection(PaginatedCollection $paginatedCollection): PaginatedModelInterface;
 
     /**
      * @return string
      */
-    public function getEntityName(): string;
+    function getEntityName(): string;
+
+    /**
+     * @param array $entities
+     * @return array
+     * @throws \Exception
+     */
+    function createModelsFromEntities(array $entities): array;
 }

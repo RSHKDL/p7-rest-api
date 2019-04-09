@@ -12,10 +12,10 @@ use App\Domain\Model\Interfaces\PaginatedModelInterface;
  */
 class ManufacturerPaginatedModel implements PaginatedModelInterface
 {
-    private const ENTITY = Manufacturer::class;
+    private const ENTITY_NAME = Manufacturer::class;
 
     /**
-     * @var array
+     * @var ManufacturerModel[]
      */
     public $manufacturers;
 
@@ -37,11 +37,12 @@ class ManufacturerPaginatedModel implements PaginatedModelInterface
     /**
      * @param PaginatedCollection $paginatedCollection
      * @return PaginatedModelInterface
+     * @throws \Exception
      */
     public static function createFromPaginatedCollection(PaginatedCollection $paginatedCollection): PaginatedModelInterface
     {
         $model = new self();
-        $model->manufacturers = $paginatedCollection->getItems();
+        $model->manufacturers = $model->createModelsFromEntities($paginatedCollection->getItems());
         $model->manufacturersTotal = $paginatedCollection->getItemsTotal();
         $model->manufacturersPerPage = $paginatedCollection->getItemsPerPage();
         $model->_links = $paginatedCollection->getLinks();
@@ -54,6 +55,20 @@ class ManufacturerPaginatedModel implements PaginatedModelInterface
      */
     public function getEntityName(): string
     {
-        return self::ENTITY;
+        return self::ENTITY_NAME;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createModelsFromEntities(array $entities): array
+    {
+        $models = [];
+
+        foreach ($entities as $manufacturer) {
+            $models[] = ManufacturerModel::createFromEntity($manufacturer);
+        }
+
+        return $models;
     }
 }

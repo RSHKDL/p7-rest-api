@@ -26,6 +26,7 @@ class ReadEntityCollectionFactory
     private $paginationFactory;
 
     /**
+     * @todo remove responder
      * @var ReadResponder
      */
     private $responder;

@@ -2,6 +2,7 @@
 
 namespace App\Domain\Entity;
 
+use App\Domain\Entity\Interfaces\EntityInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -10,7 +11,7 @@ use Ramsey\Uuid\UuidInterface;
  * Class Manufacturer
  * @author ereshkidal
  */
-class Manufacturer
+class Manufacturer implements EntityInterface
 {
     /**
      * @var UuidInterface
@@ -23,7 +24,7 @@ class Manufacturer
     private $name;
 
     /**
-     * @var ArrayCollection
+     * @var \ArrayAccess|Phone[]
      */
     private $phones;
 
@@ -44,6 +45,14 @@ class Manufacturer
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getId(): UuidInterface
+    {
+        return $this->id;
+    }
+
+    /**
      * @return string
      */
     public function getName(): string
@@ -60,6 +69,14 @@ class Manufacturer
     }
 
     /**
+     * @return \ArrayAccess|Phone[]
+     */
+    public function getPhones(): \ArrayAccess
+    {
+        return $this->phones;
+    }
+
+    /**
      * @param Phone $phone
      */
     public function addPhone(Phone $phone): void
@@ -68,6 +85,7 @@ class Manufacturer
             $this->phones->add($phone);
         }
     }
+
     /**
      * @param Phone $phone
      */
@@ -76,13 +94,5 @@ class Manufacturer
         if ($this->phones->contains($phone)) {
             $this->phones->removeElement($phone);
         }
-    }
-
-    /**
-     * @return UuidInterface
-     */
-    public function getId(): UuidInterface
-    {
-        return $this->id;
     }
 }

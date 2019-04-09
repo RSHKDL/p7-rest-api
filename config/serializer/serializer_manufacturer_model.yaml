@@ -1,0 +1,10 @@
+App\Domain\Model\ManufacturerModel:
+    attributes:
+        id:
+            groups: ['manufacturer']
+        name:
+            groups: ['manufacturer', 'phone', 'manufacturer_collection']
+        phones:
+            groups: ['manufacturer']
+        numberOfPhones:
+            groups: ['manufacturer_collection']
