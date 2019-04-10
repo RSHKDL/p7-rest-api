@@ -80,4 +80,12 @@ class PhoneModel implements ModelInterface
     {
         return self::ENTITY_SHORT_NAME;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getId(): string
+    {
+        return $this->id;
+    }
 }

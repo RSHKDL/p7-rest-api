@@ -26,4 +26,9 @@ interface ModelInterface
      * @return string
      */
     public function getEntityShortName(): string;
+
+    /**
+     * @return string
+     */
+    public function getId(): string;
 }
