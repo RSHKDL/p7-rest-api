@@ -13,6 +13,7 @@ interface ModelInterface
     /**
      * @param EntityInterface $entity
      * @return ModelInterface
+     * @throws \Exception
      */
     public static function createFromEntity(EntityInterface $entity): ModelInterface;
 

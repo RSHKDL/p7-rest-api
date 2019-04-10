@@ -37,9 +37,7 @@ class ManufacturerModel implements ModelInterface
     public $numberOfPhones;
 
     /**
-     * @param EntityInterface $entity
-     * @return ModelInterface
-     * @throws \Exception
+     * {@inheritdoc}
      */
     public static function createFromEntity(EntityInterface $entity): ModelInterface
     {
@@ -56,7 +54,7 @@ class ManufacturerModel implements ModelInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getEntityName(): string
     {
@@ -64,7 +62,7 @@ class ManufacturerModel implements ModelInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getEntityShortName(): string
     {

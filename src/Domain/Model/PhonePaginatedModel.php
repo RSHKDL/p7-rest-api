@@ -15,7 +15,7 @@ class PhonePaginatedModel implements PaginatedModelInterface
     private const ENTITY_NAME = Phone::class;
 
     /**
-     * @var Phone[]
+     * @var PhoneModel[]
      */
     public $phones;
 
@@ -35,9 +35,7 @@ class PhonePaginatedModel implements PaginatedModelInterface
     public $_links;
 
     /**
-     * @param PaginatedCollection $paginatedCollection
      * {@inheritdoc}
-     * @throws \Exception
      */
     public static function createFromPaginatedCollection(PaginatedCollection $paginatedCollection): PaginatedModelInterface
     {
@@ -64,7 +62,6 @@ class PhonePaginatedModel implements PaginatedModelInterface
     public function createModelsFromEntities(array $entities): array
     {
         $models = [];
-
         foreach ($entities as $phone) {
             $models[] = PhoneModel::createFromEntity($phone);
         }

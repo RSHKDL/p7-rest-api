@@ -47,8 +47,7 @@ class PhoneModel implements ModelInterface
     public $stock;
 
     /**
-     * @param EntityInterface $entity
-     * @return ModelInterface
+     * {@inheritdoc}
      */
     public static function createFromEntity(EntityInterface $entity): ModelInterface
     {
@@ -67,7 +66,7 @@ class PhoneModel implements ModelInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getEntityName(): string
     {
@@ -75,7 +74,7 @@ class PhoneModel implements ModelInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getEntityShortName(): string
     {

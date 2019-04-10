@@ -35,9 +35,7 @@ class ManufacturerPaginatedModel implements PaginatedModelInterface
     public $_links;
 
     /**
-     * @param PaginatedCollection $paginatedCollection
-     * @return PaginatedModelInterface
-     * @throws \Exception
+     * {@inheritdoc}
      */
     public static function createFromPaginatedCollection(PaginatedCollection $paginatedCollection): PaginatedModelInterface
     {
@@ -51,7 +49,7 @@ class ManufacturerPaginatedModel implements PaginatedModelInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getEntityName(): string
     {
@@ -64,7 +62,6 @@ class ManufacturerPaginatedModel implements PaginatedModelInterface
     public function createModelsFromEntities(array $entities): array
     {
         $models = [];
-
         foreach ($entities as $manufacturer) {
             $models[] = ManufacturerModel::createFromEntity($manufacturer);
         }
