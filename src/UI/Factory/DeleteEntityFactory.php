@@ -4,7 +4,8 @@ namespace App\UI\Factory;
 
 use App\Domain\Model\Interfaces\ModelInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Ramsey\Uuid\Uuid;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * Class DeleteEntityFactory
@@ -29,15 +30,14 @@ class DeleteEntityFactory
 
     /**
      * @param string $id
+     * @param ModelInterface $model
      */
     public function remove(string $id, ModelInterface $model): void
     {
-        if (!$this->entityManager->getRepository($model->getEntityName())->remove($id)) {
-            throw new NotFoundHttpException(sprintf(
-                '%s not found with id %s',
-                $model->getEntityShortName(),
-                $id
-            ));
+        if (!Uuid::isValid($id)) {
+            throw new BadRequestHttpException('The Uuid you provided is invalid');
         }
+
+        $this->entityManager->getRepository($model->getEntityName())->remove($id);
     }
 }

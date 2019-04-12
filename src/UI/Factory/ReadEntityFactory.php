@@ -34,6 +34,7 @@ class ReadEntityFactory
      * @param string $id
      * @param ModelInterface $model
      * @return ModelInterface
+     * @throws \Exception
      */
     public function build(string $id, ModelInterface $model): ModelInterface
     {

@@ -28,6 +28,11 @@ class ReadManufacturer
      */
     private $responder;
 
+    /**
+     * ReadManufacturer constructor.
+     * @param ReadEntityFactory $factory
+     * @param ReadResponder $responder
+     */
     public function __construct(
         ReadEntityFactory $factory,
         ReadResponder $responder
@@ -36,6 +41,12 @@ class ReadManufacturer
         $this->responder = $responder;
     }
 
+    /**
+     * @param Request $request
+     * @param ManufacturerModel $manufacturerModel
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
+     */
     public function __invoke(Request $request, ManufacturerModel $manufacturerModel)
     {
         return $this->responder->respond(

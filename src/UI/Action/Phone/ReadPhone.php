@@ -42,6 +42,7 @@ class ReadPhone
      * @param Request $request
      * @param PhoneModel $model
      * @return Response
+     * @throws \Exception
      */
     public function __invoke(Request $request, PhoneModel $model): Response
     {

@@ -55,4 +55,15 @@ class ManufacturerRepository extends ServiceEntityRepository implements EntityRe
         $this->_em->persist($manufacturer);
         $this->_em->flush();
     }
+
+    /**
+     * @param string $id
+     * @return bool
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function remove(string $id): bool
+    {
+        // TODO: Implement remove() method.
+    }
 }
