@@ -6,6 +6,7 @@ use App\Domain\Entity\Interfaces\EntityInterface;
 use App\Domain\Entity\Manufacturer;
 use App\Domain\Entity\Phone;
 use App\Domain\Model\Interfaces\ModelInterface;
+use App\UI\Form\CreatePhoneType;
 
 /**
  * Class PhoneModel
@@ -15,6 +16,7 @@ class PhoneModel implements ModelInterface
 {
     public const ENTITY_NAME = Phone::class;
     public const ENTITY_SHORT_NAME = 'phone';
+    public const ENTITY_TYPE = CreatePhoneType::class;
 
     /**
      * @var string
@@ -79,6 +81,14 @@ class PhoneModel implements ModelInterface
     public function getEntityShortName(): string
     {
         return self::ENTITY_SHORT_NAME;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEntityType(): ?string
+    {
+        return self::ENTITY_TYPE;
     }
 
     /**

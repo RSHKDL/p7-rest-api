@@ -72,6 +72,14 @@ class ManufacturerModel implements ModelInterface
     /**
      * {@inheritdoc}
      */
+    public function getEntityType(): ?string
+    {
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getId(): string
     {
         return $this->id;

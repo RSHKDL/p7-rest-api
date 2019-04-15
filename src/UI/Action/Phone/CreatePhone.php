@@ -3,7 +3,7 @@
 namespace App\UI\Action\Phone;
 
 use App\Domain\Model\PhoneModel;
-use App\UI\Factory\CreatePhoneFactory;
+use App\UI\Factory\CreateEntityFactory;
 use App\UI\Responder\CreateResponder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,15 +18,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class CreatePhone
 {
     /**
-     * @var CreatePhoneFactory
+     * @var CreateEntityFactory
      */
     private $factory;
 
     /**
      * CreatePhone constructor.
-     * @param CreatePhoneFactory $factory
+     * @param CreateEntityFactory $factory
      */
-    public function __construct(CreatePhoneFactory $factory)
+    public function __construct(CreateEntityFactory $factory)
     {
         $this->factory = $factory;
     }

@@ -2,24 +2,22 @@
 
 namespace App\UI\Factory;
 
-use App\Domain\Entity\Phone;
 use App\Domain\Model\Interfaces\ModelInterface;
-use App\Domain\Model\PhoneModel;
 use App\Domain\Repository\PhoneRepository;
-use App\UI\Form\CreatePhoneType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class CreatePhoneFactory
+ * Class CreateEntityFactory
  * @author ereshkidal
  */
-class CreatePhoneFactory extends AbstractFactory
+class CreateEntityFactory extends AbstractFactory
 {
     /**
-     * @var PhoneRepository
+     * @var EntityManagerInterface
      */
-    private $phoneRepository;
+    private $entityManager;
 
     /**
      * @var FormFactoryInterface
@@ -27,34 +25,35 @@ class CreatePhoneFactory extends AbstractFactory
     private $formFactory;
 
     /**
-     * CreatePhoneFactory constructor.
-     * @param PhoneRepository $phoneRepository
+     * CreateEntityFactory constructor.
+     * @param PhoneRepository $entityManager
      * @param FormFactoryInterface $formFactory
      */
     public function __construct(
-        PhoneRepository $phoneRepository,
+        EntityManagerInterface $entityManager,
         FormFactoryInterface $formFactory
     )
     {
-        $this->phoneRepository = $phoneRepository;
+        $this->entityManager = $entityManager;
         $this->formFactory = $formFactory;
     }
 
     /**
      * @param Request $request
-     * @param PhoneModel $phoneModel
+     * @param ModelInterface $model
      * @return ModelInterface
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \Exception
      */
-    public function create(Request $request, PhoneModel $phoneModel): ModelInterface
+    public function create(Request $request, ModelInterface $model): ModelInterface
     {
-        $phone = new Phone();
-        $form = $this->formFactory->create(CreatePhoneType::class, $phone);
+        $entityName = $model->getEntityName();
+        $entity = new $entityName();
+        $form = $this->formFactory->create($model->getEntityType(), $entity);
         $this->processForm($request, $form);
-        $this->phoneRepository->save($phone);
+        $this->entityManager->getRepository($model->getEntityName())->save($entity);
 
-        return $phoneModel::createFromEntity($phone);
+        return $model::createFromEntity($entity);
     }
 }
