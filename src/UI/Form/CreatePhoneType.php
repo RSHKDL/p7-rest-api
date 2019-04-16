@@ -28,6 +28,7 @@ class CreatePhoneType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        // todo: explicitly specify the type
         $builder
             ->add('model')
             ->add('description', TextareaType::class)

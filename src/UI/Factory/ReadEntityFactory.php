@@ -44,15 +44,15 @@ class ReadEntityFactory
 
         $entity = $this->entityManager->getRepository($model->getEntityName())->find($id);
 
-        if (!$entity instanceof EntityInterface) {
-            throw new UnprocessableEntityHttpException(
-                "$entity does not implement EntityInterface"
-            );
-        }
-
         if (!$entity) {
             throw new NotFoundHttpException(
                 sprintf('No %s found with id: %s', $model->getEntityShortName(), $id)
+            );
+        }
+
+        if (!$entity instanceof EntityInterface) {
+            throw new UnprocessableEntityHttpException(
+                'This entity does not implement EntityInterface'
             );
         }
 
