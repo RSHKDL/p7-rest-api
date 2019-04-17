@@ -32,6 +32,17 @@ class TabletRepository extends ServiceEntityRepository implements EntityReposito
     }
 
     /**
+     * @param Tablet $tablet
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function save(Tablet $tablet): void
+    {
+        $this->_em->persist($tablet);
+        $this->_em->flush();
+    }
+
+    /**
      * @param string $id
      * @return bool
      * @throws \Doctrine\ORM\ORMException
