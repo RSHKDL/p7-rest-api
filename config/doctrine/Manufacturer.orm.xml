@@ -8,6 +8,6 @@
         <id name="id" type="uuid" />
         <field name="name" length="40" unique="true" />
         <one-to-many field="phones" target-entity="App\Domain\Entity\Phone" mapped-by="manufacturer" />
-
+        <one-to-many field="tablets" target-entity="App\Domain\Entity\Tablet" mapped-by="manufacturer" />
     </entity>
 </doctrine-mapping>

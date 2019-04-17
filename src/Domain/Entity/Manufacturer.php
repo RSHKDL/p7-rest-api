@@ -29,6 +29,11 @@ class Manufacturer implements EntityInterface
     private $phones;
 
     /**
+     * @var ArrayCollection
+     */
+    private $tablets;
+
+    /**
      * Manufacturer constructor.
      *
      * @param string $name
@@ -37,11 +42,13 @@ class Manufacturer implements EntityInterface
      */
     public function __construct(
         string $name,
-        array $phones = []
+        array $phones = [],
+        array $tablets = []
     ) {
         $this->id = Uuid::uuid4();
         $this->name = $name;
         $this->phones = new ArrayCollection($phones);
+        $this->tablets = new ArrayCollection($tablets);
     }
 
     /**
@@ -93,6 +100,34 @@ class Manufacturer implements EntityInterface
     {
         if ($this->phones->contains($phone)) {
             $this->phones->removeElement($phone);
+        }
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getTablets(): ArrayCollection
+    {
+        return $this->tablets;
+    }
+
+    /**
+     * @param Tablet $tablet
+     */
+    public function addTablet(Phone $tablet): void
+    {
+        if (!$this->tablets->contains($tablet)) {
+            $this->tablets->add($tablet);
+        }
+    }
+
+    /**
+     * @param Tablet $tablet
+     */
+    public function removeTablet(Tablet $tablet): void
+    {
+        if ($this->tablets->contains($tablet)) {
+            $this->tablets->removeElement($tablet);
         }
     }
 }
