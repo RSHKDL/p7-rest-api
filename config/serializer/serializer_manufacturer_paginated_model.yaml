@@ -1,0 +1,10 @@
+App\Domain\Model\ManufacturerPaginatedModel:
+    attributes:
+        manufacturers:
+            groups: ['manufacturer_collection']
+        manufacturersTotal:
+            groups: ['manufacturer_collection']
+        manufacturersPerPage:
+            groups: ['manufacturer_collection']
+        _links:
+            groups: ['manufacturer_collection']

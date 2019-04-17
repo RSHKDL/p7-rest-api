@@ -2,6 +2,7 @@
 
 namespace App\Domain\Entity;
 
+use App\Domain\Entity\Interfaces\EntityInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
@@ -9,7 +10,7 @@ use Ramsey\Uuid\UuidInterface;
  * Class Phone
  * @author ereshkidal
  */
-class Phone
+class Phone implements EntityInterface
 {
     /**
      * @var UuidInterface
@@ -63,7 +64,7 @@ class Phone
     }
 
     /**
-     * @return UuidInterface
+     * {@inheritdoc}
      */
     public function getId(): UuidInterface
     {

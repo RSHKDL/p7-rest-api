@@ -3,11 +3,16 @@
 namespace App\Domain\Repository;
 
 use App\Domain\Entity\Manufacturer;
+use App\Domain\Repository\Interfaces\EntityRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 
-class ManufacturerRepository extends ServiceEntityRepository
+/**
+ * Class ManufacturerRepository
+ * @author ereshkidal
+ */
+class ManufacturerRepository extends ServiceEntityRepository implements EntityRepositoryInterface
 {
     /**
      * ManufacturerRepository constructor.
@@ -19,11 +24,11 @@ class ManufacturerRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return QueryBuilder
+     * {@inheritdoc}
      */
     public function findAllQueryBuilder(): QueryBuilder
     {
-        return $this->createQueryBuilder('m');
+        return $this->createQueryBuilder('manufacturer');
     }
 
     /**
@@ -42,10 +47,23 @@ class ManufacturerRepository extends ServiceEntityRepository
 
     /**
      * @param Manufacturer $manufacturer
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function save(Manufacturer $manufacturer)
+    public function save(Manufacturer $manufacturer): void
     {
         $this->_em->persist($manufacturer);
         $this->_em->flush();
+    }
+
+    /**
+     * @param string $id
+     * @return bool
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function remove(string $id): bool
+    {
+        // TODO: Implement remove() method.
     }
 }

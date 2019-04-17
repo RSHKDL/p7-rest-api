@@ -24,7 +24,7 @@ abstract class AbstractFactory
             $apiProblem = new ApiProblem(422, ApiProblem::TYPE_INVALID_REQUEST_BODY_FORMAT);
             throw new ApiProblemException($apiProblem);
         }
-        $clearMissing = $request->getMethod() != 'PATCH';
+        $clearMissing = $request->getMethod() !== 'PATCH';
         $form->submit($data, $clearMissing);
     }
 
@@ -32,7 +32,7 @@ abstract class AbstractFactory
      * @param FormInterface $form
      * @return array
      */
-    private function getErrorsFromForm(FormInterface $form)
+    private function getErrorsFromForm(FormInterface $form): array
     {
         $errors = array();
         foreach ($form->getErrors() as $error) {
@@ -52,7 +52,7 @@ abstract class AbstractFactory
     /**
      * @param FormInterface $form
      */
-    protected function throwValidationErrorException(FormInterface $form)
+    protected function throwValidationErrorException(FormInterface $form): void
     {
         $errors = $this->getErrorsFromForm($form);
         $apiProblem = new ApiProblem(

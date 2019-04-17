@@ -2,7 +2,8 @@
 
 namespace App\UI\Action\Phone;
 
-use App\UI\Factory\UpdatePhoneFactory;
+use App\Domain\Model\PhoneModel;
+use App\UI\Factory\UpdateEntityFactory;
 use App\UI\Responder\UpdateResponder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,15 +17,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class UpdatePhone
 {
     /**
-     * @var UpdatePhoneFactory
+     * @var UpdateEntityFactory
      */
     private $factory;
 
     /**
      * UpdatePhone constructor.
-     * @param UpdatePhoneFactory $factory
+     * @param UpdateEntityFactory $factory
      */
-    public function __construct(UpdatePhoneFactory $factory)
+    public function __construct(UpdateEntityFactory $factory)
     {
         $this->factory = $factory;
     }
@@ -33,10 +34,11 @@ class UpdatePhone
      * @param Request $request
      * @param UpdateResponder $responder
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
-    public function __invoke(Request $request, UpdateResponder $responder)
+    public function __invoke(Request $request, UpdateResponder $responder, PhoneModel $model)
     {
-        $phone = $this->factory->update($request, $request->attributes->get('id'));
+        $phone = $this->factory->update($request, $request->attributes->get('id'), $model);
 
         return $responder($phone, 'phone', 'phone_read');
     }
