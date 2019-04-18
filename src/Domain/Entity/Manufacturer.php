@@ -25,7 +25,7 @@ class Manufacturer implements EntityInterface
     private $name;
 
     /**
-     * @var \ArrayAccess|Phone[]
+     * @var Collection
      */
     private $phones;
 
@@ -77,9 +77,9 @@ class Manufacturer implements EntityInterface
     }
 
     /**
-     * @return \ArrayAccess|Phone[]
+     * @return Collection
      */
-    public function getPhones(): \ArrayAccess
+    public function getPhones(): Collection
     {
         return $this->phones;
     }

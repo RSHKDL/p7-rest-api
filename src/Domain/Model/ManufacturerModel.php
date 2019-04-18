@@ -8,6 +8,7 @@ use App\Domain\Entity\Phone;
 use App\Domain\Entity\Tablet;
 use App\Domain\Model\Interfaces\ModelInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Class ManufacturerModel
@@ -29,12 +30,12 @@ class ManufacturerModel implements ModelInterface
     public $name;
 
     /**
-     * @var \ArrayAccess|Phone[]
+     * @var Collection
      */
     public $phones;
 
     /**
-     * @var
+     * @var Collection
      */
     public $tablets;
 
@@ -60,10 +61,10 @@ class ManufacturerModel implements ModelInterface
         $model = new self();
         $model->id = $entity->getId();
         $model->name = $entity->getName();
-        $model->phones = $entity->getPhones();
-        $model->tablets = $entity->getTablets();
-        $model->numberOfPhones = count($model->phones);
-        $model->numberOfTablets = count($model->tablets);
+        $model->phones = $model->createModelsFromEntities($entity->getPhones());
+        $model->tablets = $model->createModelsFromEntities($entity->getTablets());
+        $model->numberOfPhones = $model->phones->count();
+        $model->numberOfTablets = $model->tablets->count();
 
         return $model;
     }
@@ -98,5 +99,25 @@ class ManufacturerModel implements ModelInterface
     public function getId(): string
     {
         return $this->id;
+    }
+
+    /**
+     * @param Collection $entities
+     * @return ArrayCollection
+     * @throws \Exception
+     */
+    private function createModelsFromEntities(Collection $entities): ArrayCollection
+    {
+        $models = new ArrayCollection();
+        foreach ($entities as $entity) {
+            if ($entity instanceof Phone) {
+                $models->add(PhoneModel::createFromEntity($entity));
+            }
+            if ($entity instanceof Tablet) {
+                $models->add(TabletModel::createFromEntity($entity));
+            }
+        }
+
+        return $models;
     }
 }
