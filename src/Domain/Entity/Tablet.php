@@ -3,30 +3,17 @@
 namespace App\Domain\Entity;
 
 use App\Domain\Entity\Interfaces\EntityInterface;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use App\Domain\Entity\Traits\Timestampable;
+use App\Domain\Entity\Traits\Uuid;
 
 /**
- * @todo make Phone extends Product and use Traits
- * Class Phone
+ * Class Tablet
  * @author ereshkidal
  */
-class Phone implements EntityInterface
+class Tablet implements EntityInterface
 {
-    /**
-     * @var UuidInterface
-     */
-    private $id;
-
-    /**
-     * @var int
-     */
-    private $createdAt;
-
-    /**
-     * @var int
-     */
-    private $updatedAt;
+    use Uuid;
+    use Timestampable;
 
     /**
      * @var Manufacturer
@@ -54,22 +41,29 @@ class Phone implements EntityInterface
     private $stock;
 
     /**
-     * Phone constructor.
+     * Tablet constructor.
      * @throws \Exception
      */
     public function __construct()
     {
-        $this->id = Uuid::uuid4();
-        $this->createdAt = time();
-        $this->updatedAt = time();
+        $this->initUuid();
+        $this->initTimestampable();
     }
 
     /**
-     * {@inheritdoc}
+     * @return null|Manufacturer
      */
-    public function getId(): UuidInterface
+    public function getManufacturer(): ?Manufacturer
     {
-        return $this->id;
+        return $this->manufacturer;
+    }
+
+    /**
+     * @param Manufacturer $manufacturer
+     */
+    public function setManufacturer(Manufacturer $manufacturer): void
+    {
+        $this->manufacturer = $manufacturer;
     }
 
     /**
@@ -134,21 +128,5 @@ class Phone implements EntityInterface
     public function setStock(int $stock): void
     {
         $this->stock = $stock;
-    }
-
-    /**
-     * @return null|Manufacturer
-     */
-    public function getManufacturer(): ?Manufacturer
-    {
-        return $this->manufacturer;
-    }
-
-    /**
-     * @param Manufacturer $manufacturer
-     */
-    public function setManufacturer(Manufacturer $manufacturer): void
-    {
-        $this->manufacturer = $manufacturer;
     }
 }

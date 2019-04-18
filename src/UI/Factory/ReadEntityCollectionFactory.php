@@ -5,7 +5,6 @@ namespace App\UI\Factory;
 use App\Application\Pagination\PaginationFactory;
 use App\Domain\Model\Interfaces\PaginatedModelInterface;
 use App\Domain\Repository\Interfaces\EntityRepositoryInterface;
-use App\UI\Responder\ReadResponder;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -26,25 +25,16 @@ class ReadEntityCollectionFactory
     private $paginationFactory;
 
     /**
-     * @todo remove responder
-     * @var ReadResponder
-     */
-    private $responder;
-
-    /**
      * ReadEntityCollectionFactory constructor.
      * @param EntityManagerInterface $entityManager
      * @param PaginationFactory $paginationFactory
-     * @param ReadResponder $responder
      */
     public function __construct(
         EntityManagerInterface $entityManager,
-        PaginationFactory $paginationFactory,
-        ReadResponder $responder
+        PaginationFactory $paginationFactory
     ) {
         $this->entityManager = $entityManager;
         $this->paginationFactory = $paginationFactory;
-        $this->responder = $responder;
     }
 
     /**
