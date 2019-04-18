@@ -1,20 +1,20 @@
 <?php
 
-namespace App\UI\Action\Phone;
+namespace App\UI\Action\Tablet;
 
-use App\Domain\Model\PhoneModel;
+use App\Domain\Model\TabletModel;
 use App\UI\Factory\UpdateEntityFactory;
 use App\UI\Responder\UpdateResponder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/api/phones/{id}", methods={"PUT", "PATCH"}, name="phone_update")
+ * @Route("/api/products/tablets/{id}", methods={"PUT", "PATCH"}, name="tablet_update")
  *
- * Class UpdatePhone
+ * Class UpdateTablet
  * @author ereshkidal
  */
-class UpdatePhone
+class UpdateTablet
 {
     /**
      * @var UpdateEntityFactory
@@ -33,14 +33,14 @@ class UpdatePhone
     /**
      * @param Request $request
      * @param UpdateResponder $responder
-     * @param PhoneModel $model
+     * @param TabletModel $model
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function __invoke(Request $request, UpdateResponder $responder, PhoneModel $model)
+    public function __invoke(Request $request, UpdateResponder $responder, TabletModel $model)
     {
-        $phone = $this->factory->update($request, $request->attributes->get('id'), $model);
+        $model = $this->factory->update($request, $request->attributes->get('id'), $model);
 
-        return $responder($phone, 'phone', 'phone_read');
+        return $responder($model, 'tablet', 'tablet_read');
     }
 }
