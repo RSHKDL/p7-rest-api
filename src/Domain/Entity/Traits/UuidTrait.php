@@ -2,14 +2,14 @@
 
 namespace App\Domain\Entity\Traits;
 
-use Ramsey\Uuid\Uuid as RamseyUuid;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * Trait Uuid
+ * Trait UuidTrait
  * @author ereshkidal
  */
-trait Uuid
+trait UuidTrait
 {
     /**
      * @var UuidInterface
@@ -22,7 +22,7 @@ trait Uuid
      */
     public function initUuid()
     {
-        $this->id = RamseyUuid::uuid4();
+        $this->id = Uuid::uuid4();
     }
 
     /**
