@@ -5,7 +5,9 @@ namespace App\Domain\Model;
 use App\Domain\Entity\Interfaces\EntityInterface;
 use App\Domain\Entity\Manufacturer;
 use App\Domain\Entity\Phone;
+use App\Domain\Entity\Tablet;
 use App\Domain\Model\Interfaces\ModelInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Class ManufacturerModel
@@ -32,9 +34,19 @@ class ManufacturerModel implements ModelInterface
     public $phones;
 
     /**
+     * @var
+     */
+    public $tablets;
+
+    /**
      * @var int
      */
     public $numberOfPhones;
+
+    /**
+     * @var int
+     */
+    public $numberOfTablets;
 
     /**
      * {@inheritdoc}
@@ -44,11 +56,14 @@ class ManufacturerModel implements ModelInterface
         if (!$entity instanceof Manufacturer) {
             throw new \InvalidArgumentException();
         }
+
         $model = new self();
         $model->id = $entity->getId();
         $model->name = $entity->getName();
         $model->phones = $entity->getPhones();
+        $model->tablets = $entity->getTablets();
         $model->numberOfPhones = count($model->phones);
+        $model->numberOfTablets = count($model->tablets);
 
         return $model;
     }

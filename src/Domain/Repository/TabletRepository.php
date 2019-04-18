@@ -28,7 +28,7 @@ class TabletRepository extends ServiceEntityRepository implements EntityReposito
      */
     public function findAllQueryBuilder(): QueryBuilder
     {
-        // TODO: Implement findAllQueryBuilder() method.
+        return $this->createQueryBuilder('tablet');
     }
 
     /**

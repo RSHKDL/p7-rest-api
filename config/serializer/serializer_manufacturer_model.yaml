@@ -6,5 +6,9 @@ App\Domain\Model\ManufacturerModel:
             groups: ['manufacturer', 'phone', 'manufacturer_collection']
         phones:
             groups: ['manufacturer']
+        tablets:
+            groups: ['manufacturer']
         numberOfPhones:
+            groups: ['manufacturer_collection']
+        numberOfTablets:
             groups: ['manufacturer_collection']

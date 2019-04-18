@@ -1,14 +1,14 @@
 App\Domain\Model\PhoneModel:
     attributes:
         id:
-            groups: ['phone']
+            groups: ['phone', 'product_collection']
         manufacturer:
-            groups: ['phone', 'phone_collection']
+            groups: ['phone', 'product_collection']
         model:
-            groups: ['phone', 'manufacturer', 'phone_collection']
+            groups: ['phone', 'manufacturer', 'product_collection']
         description:
             groups: ['phone']
         price:
-            groups: ['phone', 'phone_collection']
+            groups: ['phone', 'product_collection']
         stock:
-            groups: ['phone', 'manufacturer','phone_collection']
+            groups: ['phone', 'manufacturer','product_collection']

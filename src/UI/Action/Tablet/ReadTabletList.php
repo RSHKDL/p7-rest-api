@@ -1,9 +1,8 @@
 <?php
 
-namespace App\UI\Action\Phone;
+namespace App\UI\Action\Tablet;
 
-use App\Domain\Entity\Phone;
-use App\Domain\Model\PhonePaginatedModel;
+use App\Domain\Model\TabletPaginatedModel;
 use App\UI\Factory\ReadEntityCollectionFactory;
 use App\UI\Responder\ReadResponder;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,14 +10,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/api/phones", methods={"GET"}, name=ReadPhoneList::ROUTE_NAME)
+ * @Route("/api/products/tablets", methods={"GET"}, name=ReadTabletList::ROUTE_NAME)
  *
- * Class ReadPhoneList
+ * Class ReadTabletList
  * @author ereshkidal
  */
-class ReadPhoneList
+class ReadTabletList
 {
-    public const ROUTE_NAME = 'phone_read_collection';
+    public const ROUTE_NAME = 'tablet_read_collection';
 
     /**
      * @var ReadEntityCollectionFactory
@@ -45,13 +44,14 @@ class ReadPhoneList
 
     /**
      * @param Request $request
+     * @param TabletPaginatedModel $paginatedModel
      * @return Response
      * @throws \Exception
      */
-    public function __invoke(Request $request, PhonePaginatedModel $phonePaginatedModel): Response
+    public function __invoke(Request $request, TabletPaginatedModel $paginatedModel): Response
     {
         return $this->responder->respond(
-            $this->factory->build($request, $phonePaginatedModel, self::ROUTE_NAME),
+            $this->factory->build($request, $paginatedModel, self::ROUTE_NAME),
             'product_collection'
         );
     }

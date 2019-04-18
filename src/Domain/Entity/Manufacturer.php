@@ -4,6 +4,7 @@ namespace App\Domain\Entity;
 
 use App\Domain\Entity\Interfaces\EntityInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
@@ -29,7 +30,7 @@ class Manufacturer implements EntityInterface
     private $phones;
 
     /**
-     * @var ArrayCollection
+     * @var Collection
      */
     private $tablets;
 
@@ -104,9 +105,9 @@ class Manufacturer implements EntityInterface
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
-    public function getTablets(): ArrayCollection
+    public function getTablets(): Collection
     {
         return $this->tablets;
     }
@@ -114,7 +115,7 @@ class Manufacturer implements EntityInterface
     /**
      * @param Tablet $tablet
      */
-    public function addTablet(Phone $tablet): void
+    public function addTablet(Tablet $tablet): void
     {
         if (!$this->tablets->contains($tablet)) {
             $this->tablets->add($tablet);

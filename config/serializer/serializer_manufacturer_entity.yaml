@@ -1,4 +1,4 @@
 App\Domain\Entity\Manufacturer:
     attributes:
         name:
-            groups: ['phone', 'tablet', 'phone_collection']
+            groups: ['phone', 'tablet', 'product_collection']
