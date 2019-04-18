@@ -50,6 +50,13 @@ class TabletRepository extends ServiceEntityRepository implements EntityReposito
      */
     public function remove(string $id): bool
     {
-        // TODO: Implement remove() method.
+        $tablet = $this->find($id);
+        if (null === $tablet) {
+            return false;
+        }
+        $this->_em->remove($tablet);
+        $this->_em->flush();
+
+        return true;
     }
 }
