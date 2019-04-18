@@ -3,17 +3,17 @@
 namespace App\Domain\Entity;
 
 use App\Domain\Entity\Interfaces\EntityInterface;
-use App\Domain\Entity\Traits\Timestampable;
-use App\Domain\Entity\Traits\Uuid;
+use App\Domain\Entity\Traits\TimestampableTrait;
+use App\Domain\Entity\Traits\UuidTrait;
 
 /**
  * Class Tablet
  * @author ereshkidal
  */
-class Tablet implements EntityInterface
+final class Tablet extends AbstractProduct implements EntityInterface
 {
-    use Uuid;
-    use Timestampable;
+    use UuidTrait;
+    use TimestampableTrait;
 
     /**
      * @var Manufacturer
@@ -24,21 +24,6 @@ class Tablet implements EntityInterface
      * @var string
      */
     private $model;
-
-    /**
-     * @var string
-     */
-    private $description;
-
-    /**
-     * @var int
-     */
-    private $price;
-
-    /**
-     * @var int
-     */
-    private $stock;
 
     /**
      * Tablet constructor.
@@ -80,53 +65,5 @@ class Tablet implements EntityInterface
     public function setModel(string $model): void
     {
         $this->model = $model;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param string $description
-     */
-    public function setDescription(string $description): void
-    {
-        $this->description = $description;
-    }
-
-    /**
-     * @return null|int
-     */
-    public function getPrice(): ?int
-    {
-        return $this->price;
-    }
-
-    /**
-     * @param int $price
-     */
-    public function setPrice(int $price): void
-    {
-        $this->price = $price;
-    }
-
-    /**
-     * @return null|int
-     */
-    public function getStock(): ?int
-    {
-        return $this->stock;
-    }
-
-    /**
-     * @param int $stock
-     */
-    public function setStock(int $stock): void
-    {
-        $this->stock = $stock;
     }
 }

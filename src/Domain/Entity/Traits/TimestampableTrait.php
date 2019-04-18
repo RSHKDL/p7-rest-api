@@ -3,10 +3,10 @@
 namespace App\Domain\Entity\Traits;
 
 /**
- * Trait Timestampable
+ * Trait TimestampableTrait
  * @author ereshkidal
  */
-trait Timestampable
+trait TimestampableTrait
 {
     /**
      * @var int
