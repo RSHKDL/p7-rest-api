@@ -7,6 +7,7 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
+ * @todo make Phone extends Product and use Traits
  * Class Phone
  * @author ereshkidal
  */
