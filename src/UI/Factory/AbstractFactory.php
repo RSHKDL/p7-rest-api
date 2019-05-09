@@ -29,6 +29,7 @@ abstract class AbstractFactory
     }
 
     /**
+     * @todo externalize logic in service
      * @param FormInterface $form
      * @return array
      */

@@ -22,7 +22,8 @@ if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? $_ENV['TRUSTED_HOSTS'] ?? false
 }
 
 $kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
-if ($_SERVER['APP_ENV'] === 'prod') {
+//@todo replace dev by prod once testing is over
+if ($_SERVER['APP_ENV'] === 'dev') {
     $kernel = new CacheKernel($kernel);
 }
 $request = Request::createFromGlobals();

@@ -58,4 +58,27 @@ class ReadEntityFactory
 
         return $model::createFromEntity($entity);
     }
+
+    /**
+     * @todo way to much code duplication here
+     * @param string $id
+     * @param ModelInterface $model
+     * @return int
+     */
+    public function getLastModified(string $id, ModelInterface $model): int
+    {
+        if (!Uuid::isValid($id)) {
+            throw new BadRequestHttpException('The Uuid you provided is invalid');
+        }
+
+        $timestamp = $this->entityManager->getRepository($model->getEntityName())->getLastModified($id);
+
+        if (!$timestamp) {
+            throw new NotFoundHttpException(
+                sprintf('No %s found with id: %s', $model->getEntityShortName(), $id)
+            );
+        }
+
+        return $timestamp;
+    }
 }

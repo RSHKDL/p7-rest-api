@@ -2,6 +2,7 @@
 
 namespace App\UI\Responder;
 
+use App\Domain\Model\Interfaces\ModelInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -18,6 +19,11 @@ class ReadCacheResponder
     private $serializer;
 
     /**
+     * @var Response
+     */
+    private $response;
+
+    /**
      * ReadResponder constructor.
      * @param SerializerInterface $serializer
      */
@@ -27,20 +33,50 @@ class ReadCacheResponder
     }
 
     /**
-     * @param $object
+     * @param int $timestamp
+     * @throws \Exception
+     */
+    public function buildCache(int $timestamp): void
+    {
+        $date = new \DateTime();
+        $date->setTimestamp($timestamp);
+
+        $response = new Response();
+        $response->setLastModified($date);
+        $response->setPublic();
+
+        $this->response = $response;
+    }
+
+    /**
+     * @param Request $request
+     * @return bool
+     */
+    public function isCacheValid(Request $request): bool
+    {
+        return $this->response->isNotModified($request);
+    }
+
+    /**
+     * @param ModelInterface $model
      * @param Request $request
      * @param string $serializationGroup
      * @return Response
      */
-    public function respond($object, Request $request, string $serializationGroup = 'default'): Response
+    public function createResponse(ModelInterface $model, Request $request, string $serializationGroup = 'default'): Response
     {
-        $json = $this->serializer->serialize($object, 'json', ['groups' => [$serializationGroup]]);
+        $json = $this->serializer->serialize($model, 'json', ['groups' => [$serializationGroup]]);
+        $this->response->setStatusCode(Response::HTTP_OK);
+        $this->response->headers->set('Content-Type', 'application/hal+json');
 
-        $response = new Response($json, Response::HTTP_OK, ['Content-Type' => 'application/hal+json']);
-        $response->setEtag(md5($response->getContent()));
-        $response->setPublic();
-        $response->isNotModified($request);
+        return $this->response->setContent($json);
+    }
 
-        return $response;
+    /**
+     * @return Response
+     */
+    public function getResponse(): Response
+    {
+        return $this->response;
     }
 }

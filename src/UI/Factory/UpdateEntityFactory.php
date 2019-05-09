@@ -58,7 +58,7 @@ class UpdateEntityFactory extends AbstractFactory
 
         $form = $this->formFactory->create($model->getEntityType(), $entity);
         $this->processForm($request, $form);
-        $repository->save($entity);
+        $repository->update($entity);
 
         return $model::createFromEntity($entity);
     }

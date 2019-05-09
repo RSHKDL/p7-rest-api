@@ -6,6 +6,8 @@ App\Domain\Model\PhoneModel:
             groups: ['phone', 'product_collection']
         model:
             groups: ['phone', 'manufacturer', 'product_collection']
+        lastModified:
+            groups: ['phone']
         description:
             groups: ['phone']
         price:
