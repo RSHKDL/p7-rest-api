@@ -4,7 +4,8 @@ namespace App\UI\Factory;
 
 use App\Application\Pagination\PaginationFactory;
 use App\Domain\Model\Interfaces\PaginatedModelInterface;
-use App\Domain\Repository\Interfaces\EntityRepositoryInterface;
+use App\Domain\Repository\Interfaces\Cacheable;
+use App\Domain\Repository\Interfaces\Queryable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -41,15 +42,23 @@ class ReadEntityCollectionFactory
      * @todo handle the exception with apiProblem ?
      * @param Request $request
      * @param PaginatedModelInterface $paginatedModel
-     * @param string $route
-     * @return PaginatedModelInterface
+     * @param null|string $route
+     * @return int|PaginatedModelInterface
      * @throws \Exception
      */
-    public function build(Request $request, PaginatedModelInterface $paginatedModel, string $route): PaginatedModelInterface
-    {
+    public function build(
+        Request $request,
+        PaginatedModelInterface $paginatedModel,
+        ?string $route,
+        bool $checkCache = false
+    ) {
         $repository = $this->entityManager->getRepository($paginatedModel->getEntityName());
-        if (!$repository instanceof EntityRepositoryInterface) {
-            throw new \Exception('Invalid repository');
+        if (!$repository instanceof Queryable) {
+            throw new \DomainException('Invalid repository');
+        }
+
+        if ($checkCache && $repository instanceof Cacheable) {
+            return $repository->getLatestModifiedTimestampAmongAll();
         }
 
         $queryBuilder = $repository->findAllQueryBuilder();

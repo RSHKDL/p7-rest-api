@@ -3,7 +3,7 @@
 namespace App\Domain\Repository;
 
 use App\Domain\Entity\Tablet;
-use App\Domain\Repository\Interfaces\EntityRepositoryInterface;
+use App\Domain\Repository\Interfaces\Queryable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
@@ -12,7 +12,7 @@ use Doctrine\ORM\QueryBuilder;
  * Class TabletRepository
  * @author ereshkidal
  */
-class TabletRepository extends ServiceEntityRepository implements EntityRepositoryInterface
+class TabletRepository extends ServiceEntityRepository implements Queryable
 {
     /**
      * TabletRepository constructor.

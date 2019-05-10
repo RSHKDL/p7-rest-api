@@ -3,7 +3,9 @@
 namespace App\Domain\Repository;
 
 use App\Domain\Entity\Phone;
-use App\Domain\Repository\Interfaces\EntityRepositoryInterface;
+use App\Domain\Repository\Interfaces\Cacheable;
+use App\Domain\Repository\Interfaces\Manageable;
+use App\Domain\Repository\Interfaces\Queryable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
@@ -13,7 +15,7 @@ use Doctrine\ORM\QueryBuilder;
  * Class PhoneRepository
  * @author ereshkidal
  */
-class PhoneRepository extends ServiceEntityRepository implements EntityRepositoryInterface
+class PhoneRepository extends ServiceEntityRepository implements Queryable, Cacheable, Manageable
 {
     /**
      * PhoneRepository constructor.
@@ -29,43 +31,53 @@ class PhoneRepository extends ServiceEntityRepository implements EntityRepositor
      */
     public function findAllQueryBuilder(): QueryBuilder
     {
-        return $this->createQueryBuilder('phone');
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.updatedAt', 'DESC');
     }
 
     /**
-     * @param string $id
-     * @return mixed
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * {@inheritdoc}
      */
-    public function getLastModified(string $id)
+    public function getLatestModifiedTimestamp(string $id): ?int
     {
-        return $this->createQueryBuilder('phone')
-            ->select('phone.updatedAt')
-            ->where('phone.id LIKE :id')
+        return $this->createQueryBuilder('p')
+            ->select('p.updatedAt')
+            ->where('p.id LIKE :id')
             ->setParameter('id', $id)->getQuery()
             ->getOneOrNullResult(Query::HYDRATE_SINGLE_SCALAR);
     }
 
     /**
-     * @param Phone $phone
+     * {@inheritdoc}
+     */
+    public function getLatestModifiedTimestampAmongAll(): int
+    {
+        return $this->createQueryBuilder('p')
+            ->select('MAX(p.updatedAt) as lastUpdate')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * @param Phone $entity
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function save(Phone $phone): void
+    public function save($entity): void
     {
-        $this->_em->persist($phone);
+        $this->_em->persist($entity);
         $this->_em->flush();
     }
 
     /**
-     * @param Phone $phone
+     * @param Phone $entity
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function update(Phone $phone): void
+    public function update($entity): void
     {
-        $phone->setUpdatedAt(time());
-        $this->_em->persist($phone);
+        $entity->setUpdatedAt(time());
+        $this->_em->persist($entity);
         $this->_em->flush();
     }
 

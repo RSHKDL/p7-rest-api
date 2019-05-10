@@ -2,10 +2,9 @@
 
 namespace App\UI\Action\Phone;
 
-use App\Domain\Entity\Phone;
 use App\Domain\Model\PhonePaginatedModel;
 use App\UI\Factory\ReadEntityCollectionFactory;
-use App\UI\Responder\ReadResponder;
+use App\UI\Responder\ReadCacheResponder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,18 +25,18 @@ class ReadPhoneList
     private $factory;
 
     /**
-     * @var ReadResponder
+     * @var ReadCacheResponder
      */
     private $responder;
 
     /**
      * ReadPhoneList constructor.
      * @param ReadEntityCollectionFactory $factory
-     * @param ReadResponder $responder
+     * @param ReadCacheResponder $responder
      */
     public function __construct(
         ReadEntityCollectionFactory $factory,
-        ReadResponder $responder
+        ReadCacheResponder $responder
     ) {
         $this->factory = $factory;
         $this->responder = $responder;
@@ -50,7 +49,14 @@ class ReadPhoneList
      */
     public function __invoke(Request $request, PhonePaginatedModel $phonePaginatedModel): Response
     {
-        return $this->responder->respond(
+        $timestamp = $this->factory->build($request, $phonePaginatedModel, null, true);
+        $this->responder->buildCache($timestamp);
+
+        if ($this->responder->isCacheValid($request) && !$this->responder->getResponse()->getContent()) {
+            return $this->responder->getResponse();
+        }
+
+        return $this->responder->createResponse(
             $this->factory->build($request, $phonePaginatedModel, self::ROUTE_NAME),
             'product_collection'
         );

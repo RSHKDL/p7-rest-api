@@ -3,6 +3,7 @@
 namespace App\UI\Responder;
 
 use App\Domain\Model\Interfaces\ModelInterface;
+use App\Domain\Model\Interfaces\PaginatedModelInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -58,12 +59,11 @@ class ReadCacheResponder
     }
 
     /**
-     * @param ModelInterface $model
-     * @param Request $request
+     * @param ModelInterface|PaginatedModelInterface $model
      * @param string $serializationGroup
      * @return Response
      */
-    public function createResponse(ModelInterface $model, Request $request, string $serializationGroup = 'default'): Response
+    public function createResponse($model, string $serializationGroup = 'default'): Response
     {
         $json = $this->serializer->serialize($model, 'json', ['groups' => [$serializationGroup]]);
         $this->response->setStatusCode(Response::HTTP_OK);

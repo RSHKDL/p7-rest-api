@@ -46,8 +46,8 @@ class ReadPhone
      */
     public function __invoke(Request $request, PhoneModel $model): Response
     {
-        $lastModified = $this->factory->getLastModified($request->attributes->get('id'), $model);
-        $this->responder->buildCache($lastModified);
+        $latestModifiedTimestamp = $this->factory->build($request->attributes->get('id'), $model, true);
+        $this->responder->buildCache($latestModifiedTimestamp);
 
         if ($this->responder->isCacheValid($request) && !$this->responder->getResponse()->getContent()) {
             return $this->responder->getResponse();
@@ -55,7 +55,6 @@ class ReadPhone
 
         return $this->responder->createResponse(
             $this->factory->build($request->attributes->get('id'), $model),
-            $request,
             'phone'
         );
     }
