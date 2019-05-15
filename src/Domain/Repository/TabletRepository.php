@@ -3,16 +3,19 @@
 namespace App\Domain\Repository;
 
 use App\Domain\Entity\Tablet;
+use App\Domain\Repository\Interfaces\Cacheable;
+use App\Domain\Repository\Interfaces\Manageable;
 use App\Domain\Repository\Interfaces\Queryable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 
 /**
  * Class TabletRepository
  * @author ereshkidal
  */
-class TabletRepository extends ServiceEntityRepository implements Queryable
+class TabletRepository extends ServiceEntityRepository implements Queryable, Cacheable, Manageable
 {
     /**
      * TabletRepository constructor.
@@ -32,21 +35,28 @@ class TabletRepository extends ServiceEntityRepository implements Queryable
     }
 
     /**
-     * @param Tablet $tablet
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * {@inheritdoc}
+     * @param Tablet $entity
      */
-    public function save(Tablet $tablet): void
+    public function save($entity): void
     {
-        $this->_em->persist($tablet);
+        $this->_em->persist($entity);
         $this->_em->flush();
     }
 
     /**
-     * @param string $id
-     * @return bool
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * {@inheritdoc}
+     * @param Tablet $entity
+     */
+    public function update($entity): void
+    {
+        $entity->setUpdatedAt(time());
+        $this->_em->persist($entity);
+        $this->_em->flush();
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function remove(string $id): bool
     {
@@ -58,5 +68,29 @@ class TabletRepository extends ServiceEntityRepository implements Queryable
         $this->_em->flush();
 
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLatestModifiedTimestamp(string $id): ?int
+    {
+        return $this->createQueryBuilder('t')
+            ->select('t.updatedAt')
+            ->where('t.id LIKE :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult(Query::HYDRATE_SINGLE_SCALAR);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLatestModifiedTimestampAmongAll(): ?int
+    {
+        return $this->createQueryBuilder('t')
+            ->select('MAX(t.updatedAt) as lastUpdate')
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 }

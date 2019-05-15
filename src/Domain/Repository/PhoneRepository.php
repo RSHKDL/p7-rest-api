@@ -37,13 +37,50 @@ class PhoneRepository extends ServiceEntityRepository implements Queryable, Cach
 
     /**
      * {@inheritdoc}
+     * @param Phone $entity
+     */
+    public function save($entity): void
+    {
+        $this->_em->persist($entity);
+        $this->_em->flush();
+    }
+
+    /**
+     * {@inheritdoc}
+     * @param Phone $entity
+     */
+    public function update($entity): void
+    {
+        $entity->setUpdatedAt(time());
+        $this->_em->persist($entity);
+        $this->_em->flush();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function remove(string $id): bool
+    {
+        $phone = $this->find($id);
+        if (null === $phone) {
+            return false;
+        }
+        $this->_em->remove($phone);
+        $this->_em->flush();
+
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getLatestModifiedTimestamp(string $id): ?int
     {
         return $this->createQueryBuilder('p')
             ->select('p.updatedAt')
             ->where('p.id LIKE :id')
-            ->setParameter('id', $id)->getQuery()
+            ->setParameter('id', $id)
+            ->getQuery()
             ->getOneOrNullResult(Query::HYDRATE_SINGLE_SCALAR);
     }
 
@@ -56,46 +93,5 @@ class PhoneRepository extends ServiceEntityRepository implements Queryable, Cach
             ->select('MAX(p.updatedAt) as lastUpdate')
             ->getQuery()
             ->getSingleScalarResult();
-    }
-
-    /**
-     * @param Phone $entity
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function save($entity): void
-    {
-        $this->_em->persist($entity);
-        $this->_em->flush();
-    }
-
-    /**
-     * @param Phone $entity
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function update($entity): void
-    {
-        $entity->setUpdatedAt(time());
-        $this->_em->persist($entity);
-        $this->_em->flush();
-    }
-
-    /**
-     * @param string $id
-     * @return bool
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function remove(string $id): bool
-    {
-        $phone = $this->find($id);
-        if (null === $phone) {
-            return false;
-        }
-        $this->_em->remove($phone);
-        $this->_em->flush();
-
-        return true;
     }
 }

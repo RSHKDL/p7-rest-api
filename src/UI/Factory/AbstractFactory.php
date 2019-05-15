@@ -2,31 +2,23 @@
 
 namespace App\UI\Factory;
 
+use App\Domain\Entity\Interfaces\EntityInterface;
+use App\Domain\Repository\Interfaces\Manageable;
 use App\UI\Errors\ApiProblem;
 use App\UI\Errors\ApiProblemException;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
+ * @todo externalize getErrorsFromForm() and throwValidationErrorException(). Remove AbstractFactory.
  * Class AbstractFactory
  * @author ereshkidal
  */
 abstract class AbstractFactory
 {
-    /**
-     * @param Request $request
-     * @param FormInterface $form
-     */
-    protected function processForm(Request $request, FormInterface $form): void
-    {
-        $data = json_decode($request->getContent(), true);
-        if ($data === null) {
-            $apiProblem = new ApiProblem(422, ApiProblem::TYPE_INVALID_REQUEST_BODY_FORMAT);
-            throw new ApiProblemException($apiProblem);
-        }
-        $clearMissing = $request->getMethod() !== 'PATCH';
-        $form->submit($data, $clearMissing);
-    }
+    protected const CREATE_ACTION = 'create';
+    protected const UPDATE_ACTION = 'update';
+    protected const DELETE_ACTION = 'delete';
 
     /**
      * @todo externalize logic in service
@@ -63,5 +55,39 @@ abstract class AbstractFactory
         $apiProblem->setExtraData('errors', $errors);
 
         throw new ApiProblemException($apiProblem);
+    }
+
+    /**
+     * @todo seems like a bit much over-engineered ?
+     * @param string $action
+     * @param ObjectRepository $repository
+     * @param EntityInterface|null $entity
+     * @param string|null $id
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    protected function checkThenUseRepository(
+        string $action,
+        ObjectRepository $repository,
+        ?EntityInterface $entity = null,
+        ?string $id = null
+    ): void {
+        if (!$repository instanceof Manageable) {
+            throw new \InvalidArgumentException(
+                'The repository given by the Model does not implement Manageable'
+            );
+        }
+
+        switch ($action) {
+            case $action === self::CREATE_ACTION:
+                $repository->save($entity);
+                break;
+            case $action === self::UPDATE_ACTION:
+                $repository->update($entity);
+                break;
+            case $action === self::DELETE_ACTION:
+                $repository->remove($id);
+                break;
+        }
     }
 }
