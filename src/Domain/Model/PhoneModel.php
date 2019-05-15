@@ -49,6 +49,11 @@ class PhoneModel implements ModelInterface
     public $stock;
 
     /**
+     * @var string
+     */
+    public $lastModified;
+
+    /**
      * {@inheritdoc}
      */
     public static function createFromEntity(EntityInterface $entity): ModelInterface
@@ -63,6 +68,7 @@ class PhoneModel implements ModelInterface
         $model->manufacturer = $entity->getManufacturer();
         $model->price = $entity->getPrice();
         $model->stock = $entity->getStock();
+        $model->lastModified = self::formatDateFromTimestamp($entity->getUpdatedAt());
 
         return $model;
     }
@@ -97,5 +103,17 @@ class PhoneModel implements ModelInterface
     public function getId(): string
     {
         return $this->id;
+    }
+
+    /**
+     * @param int $timestamp
+     * @return string
+     * @throws \Exception
+     */
+    private static function formatDateFromTimestamp(int $timestamp): string
+    {
+        $date = new \DateTime();
+
+        return $date->setTimestamp($timestamp)->format('m/d/Y h:i');
     }
 }

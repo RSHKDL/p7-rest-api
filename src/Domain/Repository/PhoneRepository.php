@@ -3,16 +3,19 @@
 namespace App\Domain\Repository;
 
 use App\Domain\Entity\Phone;
-use App\Domain\Repository\Interfaces\EntityRepositoryInterface;
+use App\Domain\Repository\Interfaces\Cacheable;
+use App\Domain\Repository\Interfaces\Manageable;
+use App\Domain\Repository\Interfaces\Queryable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 
 /**
  * Class PhoneRepository
  * @author ereshkidal
  */
-class PhoneRepository extends ServiceEntityRepository implements EntityRepositoryInterface
+class PhoneRepository extends ServiceEntityRepository implements Queryable, Cacheable, Manageable
 {
     /**
      * PhoneRepository constructor.
@@ -28,25 +31,33 @@ class PhoneRepository extends ServiceEntityRepository implements EntityRepositor
      */
     public function findAllQueryBuilder(): QueryBuilder
     {
-        return $this->createQueryBuilder('phone');
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.updatedAt', 'DESC');
     }
 
     /**
-     * @param Phone $phone
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * {@inheritdoc}
+     * @param Phone $entity
      */
-    public function save(Phone $phone): void
+    public function save($entity): void
     {
-        $this->_em->persist($phone);
+        $this->_em->persist($entity);
         $this->_em->flush();
     }
 
     /**
-     * @param string $id
-     * @return bool
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * {@inheritdoc}
+     * @param Phone $entity
+     */
+    public function update($entity): void
+    {
+        $entity->setUpdatedAt(time());
+        $this->_em->persist($entity);
+        $this->_em->flush();
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function remove(string $id): bool
     {
@@ -58,5 +69,29 @@ class PhoneRepository extends ServiceEntityRepository implements EntityRepositor
         $this->_em->flush();
 
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLatestModifiedTimestamp(string $id): ?int
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p.updatedAt')
+            ->where('p.id LIKE :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult(Query::HYDRATE_SINGLE_SCALAR);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLatestModifiedTimestampAmongAll(): int
+    {
+        return $this->createQueryBuilder('p')
+            ->select('MAX(p.updatedAt) as lastUpdate')
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 }

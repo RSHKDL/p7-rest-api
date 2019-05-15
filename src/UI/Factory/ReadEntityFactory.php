@@ -4,6 +4,7 @@ namespace App\UI\Factory;
 
 use App\Domain\Entity\Interfaces\EntityInterface;
 use App\Domain\Model\Interfaces\ModelInterface;
+use App\Domain\Repository\Interfaces\Cacheable;
 use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -33,23 +34,33 @@ class ReadEntityFactory
     /**
      * @param string $id
      * @param ModelInterface $model
-     * @return ModelInterface
+     * @param bool $checkCache
+     * @return int|ModelInterface
      * @throws \Exception
      */
-    public function build(string $id, ModelInterface $model): ModelInterface
+    public function build(string $id, ModelInterface $model, bool $checkCache = false)
     {
         if (!Uuid::isValid($id)) {
             throw new BadRequestHttpException('The Uuid you provided is invalid');
         }
 
-        $entity = $this->entityManager->getRepository($model->getEntityName())->find($id);
+        $repository = $this->entityManager->getRepository($model->getEntityName());
 
-        if (!$entity) {
-            throw new NotFoundHttpException(
-                sprintf('No %s found with id: %s', $model->getEntityShortName(), $id)
-            );
+        if ($checkCache && $repository instanceof Cacheable) {
+            $timestamp = $repository->getLatestModifiedTimestamp($id);
+
+            if (!$timestamp) {
+                throw new NotFoundHttpException(
+                    sprintf('No %s found with id: %s', $model->getEntityShortName(), $id)
+                );
+            }
+
+            return $timestamp;
         }
 
+        $entity = $repository->find($id);
+
+        //@todo is this check really necessary ?
         if (!$entity instanceof EntityInterface) {
             throw new UnprocessableEntityHttpException(
                 'This entity does not implement EntityInterface'

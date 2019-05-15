@@ -3,7 +3,8 @@
 namespace App\UI\Factory;
 
 use App\Domain\Model\Interfaces\ModelInterface;
-use App\Domain\Repository\PhoneRepository;
+use App\Domain\Repository\Interfaces\Manageable;
+use App\UI\Factory\Traits\ProcessFormTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +15,8 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class CreateEntityFactory extends AbstractFactory
 {
+    use ProcessFormTrait;
+
     /**
      * @var EntityManagerInterface
      */
@@ -26,14 +29,13 @@ class CreateEntityFactory extends AbstractFactory
 
     /**
      * CreateEntityFactory constructor.
-     * @param PhoneRepository $entityManager
+     * @param EntityManagerInterface $entityManager
      * @param FormFactoryInterface $formFactory
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         FormFactoryInterface $formFactory
-    )
-    {
+    ) {
         $this->entityManager = $entityManager;
         $this->formFactory = $formFactory;
     }
@@ -52,7 +54,9 @@ class CreateEntityFactory extends AbstractFactory
         $entity = new $entityName();
         $form = $this->formFactory->create($model->getEntityType(), $entity);
         $this->processForm($request, $form);
-        $this->entityManager->getRepository($model->getEntityName())->save($entity);
+        /** @var Manageable $repository */
+        $repository = $this->entityManager->getRepository($model->getEntityName());
+        $repository->save($entity);
 
         return $model::createFromEntity($entity);
     }

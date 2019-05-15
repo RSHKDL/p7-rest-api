@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/api/phones/{id}", methods={"PUT", "PATCH"}, name="phone_update")
+ * @Route("/api/products/phones/{id}", methods={"PUT", "PATCH"}, name="phone_update")
  *
  * Class UpdatePhone
  * @author ereshkidal
