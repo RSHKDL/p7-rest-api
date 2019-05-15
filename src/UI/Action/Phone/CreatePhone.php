@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/api/phones", methods={"POST"}, name="phone_create")
+ * @Route("/api/products/phones", methods={"POST"}, name="phone_create")
  *
  * Class CreatePhone
  * @author ereshkidal

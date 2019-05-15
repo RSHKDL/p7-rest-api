@@ -4,6 +4,7 @@ namespace App\UI\Action\Tablet;
 
 use App\Domain\Model\TabletPaginatedModel;
 use App\UI\Factory\ReadEntityCollectionFactory;
+use App\UI\Responder\ReadCacheResponder;
 use App\UI\Responder\ReadResponder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,18 +26,18 @@ class ReadTabletList
     private $factory;
 
     /**
-     * @var ReadResponder
+     * @var ReadCacheResponder
      */
     private $responder;
 
     /**
      * ReadPhoneList constructor.
      * @param ReadEntityCollectionFactory $factory
-     * @param ReadResponder $responder
+     * @param ReadCacheResponder $responder
      */
     public function __construct(
         ReadEntityCollectionFactory $factory,
-        ReadResponder $responder
+        ReadCacheResponder $responder
     ) {
         $this->factory = $factory;
         $this->responder = $responder;
@@ -50,7 +51,14 @@ class ReadTabletList
      */
     public function __invoke(Request $request, TabletPaginatedModel $paginatedModel): Response
     {
-        return $this->responder->respond(
+        $timestamp = $this->factory->build($request, $paginatedModel, null, true);
+        $this->responder->buildCache($timestamp);
+
+        if ($this->responder->isCacheValid($request) && !$this->responder->getResponse()->getContent()) {
+            return $this->responder->getResponse();
+        }
+
+        return $this->responder->createResponse(
             $this->factory->build($request, $paginatedModel, self::ROUTE_NAME),
             'product_collection'
         );

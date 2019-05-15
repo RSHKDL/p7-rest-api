@@ -27,7 +27,7 @@ class TabletRepository extends ServiceEntityRepository implements Queryable, Cac
     }
 
     /**
-     * @return QueryBuilder
+     * {@inheritdoc}
      */
     public function findAllQueryBuilder(): QueryBuilder
     {

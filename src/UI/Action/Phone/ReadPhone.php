@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/api/phones/{id}", methods={"GET"}, name="phone_read")
+ * @Route("/api/products/phones/{id}", methods={"GET"}, name="phone_read")
  *
  * Class ReadPhone
  * @author ereshkidal

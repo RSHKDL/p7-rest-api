@@ -43,7 +43,9 @@ class ReadEntityCollectionFactory
      * @param Request $request
      * @param PaginatedModelInterface $paginatedModel
      * @param null|string $route
+     * @param bool $checkCache
      * @return int|PaginatedModelInterface
+     * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Exception
      */
     public function build(

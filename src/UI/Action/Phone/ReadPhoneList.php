@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/api/phones", methods={"GET"}, name=ReadPhoneList::ROUTE_NAME)
+ * @Route("/api/products/phones", methods={"GET"}, name=ReadPhoneList::ROUTE_NAME)
  *
  * Class ReadPhoneList
  * @author ereshkidal
@@ -44,12 +44,13 @@ class ReadPhoneList
 
     /**
      * @param Request $request
+     * @param PhonePaginatedModel $paginatedModel
      * @return Response
      * @throws \Exception
      */
-    public function __invoke(Request $request, PhonePaginatedModel $phonePaginatedModel): Response
+    public function __invoke(Request $request, PhonePaginatedModel $paginatedModel): Response
     {
-        $timestamp = $this->factory->build($request, $phonePaginatedModel, null, true);
+        $timestamp = $this->factory->build($request, $paginatedModel, null, true);
         $this->responder->buildCache($timestamp);
 
         if ($this->responder->isCacheValid($request) && !$this->responder->getResponse()->getContent()) {
@@ -57,7 +58,7 @@ class ReadPhoneList
         }
 
         return $this->responder->createResponse(
-            $this->factory->build($request, $phonePaginatedModel, self::ROUTE_NAME),
+            $this->factory->build($request, $paginatedModel, self::ROUTE_NAME),
             'product_collection'
         );
     }

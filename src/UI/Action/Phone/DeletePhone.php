@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/api/phones/{id}", methods={"DELETE"}, name="phone_delete")
+ * @Route("/api/products/phones/{id}", methods={"DELETE"}, name="phone_delete")
  *
  * Class DeletePhone
  * @author ereshkidal
