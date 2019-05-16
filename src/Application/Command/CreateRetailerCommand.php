@@ -2,8 +2,8 @@
 
 namespace App\Application\Command;
 
-use App\Domain\Entity\User;
-use App\Domain\Repository\UserRepository;
+use App\Domain\Entity\Retailer;
+use App\Domain\Repository\RetailerRepository;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -11,15 +11,15 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
- * Class CreateUserCommand
+ * Class CreateRetailerCommand
  * @author ereshkidal
  */
-class CreateUserCommand extends Command
+class CreateRetailerCommand extends Command
 {
     /**
      * @var string
      */
-    protected static $defaultName = 'app:user:create';
+    protected static $defaultName = 'app:retailer:create';
 
     /**
      * @var UserPasswordEncoderInterface
@@ -27,19 +27,19 @@ class CreateUserCommand extends Command
     private $passwordEncoder;
 
     /**
-     * @var UserRepository
+     * @var RetailerRepository
      */
     private $repository;
 
     /**
-     * CreateUserCommand constructor.
+     * CreateRetailerCommand constructor.
      * @param UserPasswordEncoderInterface $passwordEncoder
-     * @param UserRepository $repository
+     * @param RetailerRepository $repository
      * @param null|string $name
      */
     public function __construct(
         UserPasswordEncoderInterface $passwordEncoder,
-        UserRepository $repository,
+        RetailerRepository $repository,
         ?string $name = null
     ) {
         $this->passwordEncoder = $passwordEncoder;
@@ -50,28 +50,30 @@ class CreateUserCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->setDescription('Creates a new user.')
-            ->setHelp('This command allows you to create a user.')
+            ->setDescription('Creates a new retailer.')
+            ->setHelp('This command allows you to create a retailer (user).')
         ;
     }
 
     /**
+     * @todo improve validation on email and password
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int|null|void
-     * TODO: improve validation on username, email and password
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
-        $io->title('Bilemo user creator');
-        $io->text('You are about to create a new user.');
+        $io->title('Bilemo retailer creator');
+        $io->text('You are about to create a new retailer.');
 
-        $username = $io->ask('Enter the username');
-        $email = $io->ask('Enter the email', null, function ($email) {
+        $email = $io->ask('Enter the email', null, static function ($email) {
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 throw new \RuntimeException('✘ Invalid email');
             }
@@ -85,32 +87,37 @@ class CreateUserCommand extends Command
             return;
         }
 
+        $retailerName = $io->ask('Enter your company name');
+        $businessIdentifierCode = $io->ask('Enter your business identifier code');
+
         $role = $io->choice(
             'Select the role',
             ['ROLE_USER', 'ROLE_ADMIN'],
             'ROLE_USER'
         );
 
-        $user = new User();
-        $user->setUsername($username);
-        $user->setEmail($email);
-        $user->setPassword($this->passwordEncoder->encodePassword($user, $plainPassword));
-        $user->setRoles([$role]);
+        $retailer = new Retailer();
+        $retailer->setEmail($email);
+        $retailer->setRetailerName($retailerName);
+        $retailer->setBusinessIdentifierCode($businessIdentifierCode);
+        $retailer->setPassword($this->passwordEncoder->encodePassword($retailer, $plainPassword));
+        $retailer->setRoles([$role]);
 
         $io->text('The user credentials will be:');
         $io->listing([
-            'username:' => $username,
             'email:' => $email,
             'password:' => '****',
-            'role:' => $role
+            'role:' => $role,
+            'company name' => $retailerName,
+            'bic' => $businessIdentifierCode
         ]);
 
         if (!$io->confirm('Confirm?', false)) {
-            $io->warning('✘ User creation aborted');
+            $io->warning('✘ Retailer creation aborted');
             return;
         }
 
-        $this->repository->save($user);
-        $io->success('✔ User successfully created');
+        $this->repository->save($retailer);
+        $io->success('✔ Retailer successfully created');
     }
 }

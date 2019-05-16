@@ -2,40 +2,31 @@
 
 namespace App\Domain\Entity;
 
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use App\Domain\Entity\Traits\UuidTrait;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class User
  * @author ereshkidal
  */
-class User implements UserInterface
+abstract class AbstractUser implements UserInterface
 {
-    /**
-     * @var UuidInterface
-     */
-    private $id;
+    use UuidTrait;
 
     /**
      * @var string
      */
-    private $username;
+    protected $email;
 
     /**
      * @var string
      */
-    private $email;
-
-    /**
-     * @var string
-     */
-    private $password;
+    protected $password;
 
     /**
      * @var array
      */
-    private $roles;
+    protected $roles;
 
     /**
      * User constructor.
@@ -43,31 +34,15 @@ class User implements UserInterface
      */
     public function __construct()
     {
-        $this->id = Uuid::uuid4();
+        $this->initUuid();
     }
 
     /**
-     * @return UuidInterface
-     */
-    public function getId(): UuidInterface
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return string The username
+     * @return string
      */
     public function getUsername(): string
     {
-        return $this->username;
-    }
-
-    /**
-     * @param string $username
-     */
-    public function setUsername(string $username): void
-    {
-        $this->username = $username;
+        return $this->email;
     }
 
     /**
@@ -103,9 +78,9 @@ class User implements UserInterface
     }
 
     /**
-     * @return (Role|string)[] The user roles
+     * @return array The user roles
      */
-    public function getRoles()
+    public function getRoles(): array
     {
         return $this->roles;
     }
@@ -124,15 +99,15 @@ class User implements UserInterface
      *
      * @return string|null The salt
      */
-    public function getSalt()
+    public function getSalt(): ?string
     {
-        return;
+        return null;
     }
 
     /**
      * Removes sensitive data from the user.
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 }
