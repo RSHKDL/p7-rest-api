@@ -3,6 +3,7 @@
 namespace App\Domain\Model;
 
 use App\Domain\Entity\Interfaces\EntityInterface;
+use App\Domain\Entity\Retailer;
 use App\Domain\Model\Interfaces\ModelInterface;
 
 /**
@@ -11,6 +12,34 @@ use App\Domain\Model\Interfaces\ModelInterface;
  */
 class RetailerModel implements ModelInterface
 {
+    public const ENTITY_NAME = Retailer::class;
+    public const ENTITY_SHORT_NAME = 'retailer';
+
+    /**
+     * @var string
+     */
+    private $id;
+
+    /**
+     * @var string
+     */
+    public $name;
+
+    /**
+     * @var string
+     */
+    public $email;
+
+    /**
+     * @var string
+     */
+    public $bic;
+
+    /**
+     * @var int
+     */
+    public $numberOfClients;
+
     /**
      * @param EntityInterface $entity
      * @return ModelInterface
@@ -18,7 +47,18 @@ class RetailerModel implements ModelInterface
      */
     public static function createFromEntity(EntityInterface $entity): ModelInterface
     {
-        // TODO: Implement createFromEntity() method.
+        if (!$entity instanceof Retailer) {
+            throw new \InvalidArgumentException(
+                sprintf('Wrong entity: Must be %s', self::ENTITY_SHORT_NAME));
+        }
+        $model = new self();
+        $model->id = $entity->getId();
+        $model->name = $entity->getRetailerName();
+        $model->email = $entity->getEmail();
+        $model->bic = $entity->getBusinessIdentifierCode();
+        $model->numberOfClients = 0;
+
+        return $model;
     }
 
     /**
@@ -26,7 +66,7 @@ class RetailerModel implements ModelInterface
      */
     public function getEntityName(): string
     {
-        // TODO: Implement getEntityName() method.
+        return self::ENTITY_NAME;
     }
 
     /**
@@ -34,7 +74,7 @@ class RetailerModel implements ModelInterface
      */
     public function getEntityShortName(): string
     {
-        // TODO: Implement getEntityShortName() method.
+        return self::ENTITY_SHORT_NAME;
     }
 
     /**
@@ -42,7 +82,7 @@ class RetailerModel implements ModelInterface
      */
     public function getEntityType(): ?string
     {
-        // TODO: Implement getEntityType() method.
+        return null;
     }
 
     /**
@@ -50,6 +90,6 @@ class RetailerModel implements ModelInterface
      */
     public function getId(): string
     {
-        // TODO: Implement getId() method.
+        return $this->id;
     }
 }

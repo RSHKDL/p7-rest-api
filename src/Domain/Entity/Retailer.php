@@ -2,11 +2,13 @@
 
 namespace App\Domain\Entity;
 
+use App\Domain\Entity\Interfaces\EntityInterface;
+
 /**
  * Class Retailer
  * @author ereshkidal
  */
-final class Retailer extends AbstractUser
+final class Retailer extends AbstractUser implements EntityInterface
 {
     /**
      * @var string
