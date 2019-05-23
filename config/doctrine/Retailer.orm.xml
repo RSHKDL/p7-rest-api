@@ -15,5 +15,6 @@
         <field name="retailerName" length="40"/>
         <field name="businessIdentifierCode" length="40"/>
         <field name="roles" type="array"/>
+        <one-to-many field="clients" target-entity="App\Domain\Entity\Client" mapped-by="retailer" orphan-removal="true" />
     </entity>
 </doctrine-mapping>

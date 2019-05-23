@@ -3,6 +3,8 @@
 namespace App\Domain\Entity;
 
 use App\Domain\Entity\Interfaces\EntityInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Class Retailer
@@ -19,6 +21,21 @@ final class Retailer extends AbstractUser implements EntityInterface
      * @var string
      */
     private $businessIdentifierCode;
+
+    /**
+     * @var Collection
+     */
+    private $clients;
+
+    /**
+     * Retailer constructor.
+     * @throws \Exception
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->clients = new ArrayCollection();
+    }
 
     /**
      * @return string
@@ -50,5 +67,16 @@ final class Retailer extends AbstractUser implements EntityInterface
     public function setBusinessIdentifierCode(string $businessIdentifierCode): void
     {
         $this->businessIdentifierCode = $businessIdentifierCode;
+    }
+
+    /**
+     * @param Collection $clients
+     * @return Retailer
+     */
+    public function setClients(Collection $clients): Retailer
+    {
+        $this->clients = $clients;
+
+        return $this;
     }
 }
