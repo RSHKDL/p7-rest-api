@@ -2,6 +2,7 @@
 
 namespace App\UI\Factory;
 
+use App\Domain\Entity\Client;
 use App\Domain\Model\Interfaces\ModelInterface;
 use App\Domain\Repository\Interfaces\Manageable;
 use App\UI\Factory\Traits\ProcessFormTrait;
@@ -43,12 +44,13 @@ class CreateEntityFactory extends AbstractFactory
     /**
      * @param Request $request
      * @param ModelInterface $model
+     * @param array|null $options
      * @return ModelInterface
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \Exception
      */
-    public function create(Request $request, ModelInterface $model): ModelInterface
+    public function create(Request $request, ModelInterface $model, ?array $options): ModelInterface
     {
         $entityName = $model->getEntityName();
         $entity = new $entityName();
@@ -56,6 +58,9 @@ class CreateEntityFactory extends AbstractFactory
         $this->processForm($request, $form);
         /** @var Manageable $repository */
         $repository = $this->entityManager->getRepository($model->getEntityName());
+        if (method_exists($entity, 'setRetailer')) {
+            $entity->setRetailer($options['retailer']);
+        }
         $repository->save($entity);
 
         return $model::createFromEntity($entity);

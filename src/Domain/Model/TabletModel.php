@@ -54,7 +54,7 @@ class TabletModel implements ModelInterface
     public static function createFromEntity(EntityInterface $entity): ModelInterface
     {
         if (!$entity instanceof Tablet) {
-            throw new \InvalidArgumentException();
+            throw new \InvalidArgumentException('Invalid entity provided');
         }
         $model = new self();
         $model->id = $entity->getId();

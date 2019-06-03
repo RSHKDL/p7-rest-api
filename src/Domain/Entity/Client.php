@@ -2,13 +2,14 @@
 
 namespace App\Domain\Entity;
 
+use App\Domain\Entity\Interfaces\EntityInterface;
 use App\Domain\Entity\Traits\TimestampableTrait;
 
 /**
  * Class Client
  * @author ereshkidal
  */
-final class Client extends AbstractUser
+final class Client extends AbstractUser implements EntityInterface
 {
     use TimestampableTrait;
 
@@ -43,19 +44,18 @@ final class Client extends AbstractUser
 
     /**
      * Client constructor.
-     * @param Retailer $retailer
      * @throws \Exception
      */
-    public function __construct(Retailer $retailer)
+    public function __construct()
     {
         parent::__construct();
-        $this->retailer = $retailer;
+        $this->initTimestampable();
     }
 
     /**
-     * @return int
+     * @return null|int
      */
-    public function getGender(): int
+    public function getGender(): ?int
     {
         return $this->gender;
     }
@@ -69,9 +69,9 @@ final class Client extends AbstractUser
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getFirstName(): string
+    public function getFirstName(): ?string
     {
         return $this->firstName;
     }
@@ -85,9 +85,9 @@ final class Client extends AbstractUser
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getLastName(): string
+    public function getLastName(): ?string
     {
         return $this->lastName;
     }
@@ -101,9 +101,9 @@ final class Client extends AbstractUser
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getPhone(): string
+    public function getPhone(): ?string
     {
         return $this->phone;
     }
@@ -122,5 +122,13 @@ final class Client extends AbstractUser
     public function getRetailer(): Retailer
     {
         return $this->retailer;
+    }
+
+    /**
+     * @param Retailer $retailer
+     */
+    public function setRetailer(Retailer $retailer): void
+    {
+        $this->retailer = $retailer;
     }
 }

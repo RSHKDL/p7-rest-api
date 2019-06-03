@@ -46,9 +46,9 @@ abstract class AbstractUser implements UserInterface
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }

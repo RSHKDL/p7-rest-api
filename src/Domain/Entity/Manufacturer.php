@@ -12,7 +12,7 @@ use Ramsey\Uuid\UuidInterface;
  * Class Manufacturer
  * @author ereshkidal
  */
-class Manufacturer implements EntityInterface
+final class Manufacturer implements EntityInterface
 {
     /**
      * @var UuidInterface
@@ -39,6 +39,7 @@ class Manufacturer implements EntityInterface
      *
      * @param string $name
      * @param array $phones
+     * @param array $tablets
      * @throws \Exception
      */
     public function __construct(

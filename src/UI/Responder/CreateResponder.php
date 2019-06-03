@@ -2,6 +2,7 @@
 
 namespace App\UI\Responder;
 
+use App\Domain\Model\ClientModel;
 use App\Domain\Model\Interfaces\ModelInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -46,8 +47,29 @@ class CreateResponder
     {
         $json = $this->serializer->serialize($model, 'json', ['groups' => [$serializationGroup] ]);
 
+        //@todo I don't like having this logic here
+        $params = $this->generateParamsFromModel($model);
+
         return new Response($json, Response::HTTP_CREATED, [
-            'location' => $this->urlGenerator->generate($routeName, ['id' => $model->getId()])
+            'location' => $this->urlGenerator->generate($routeName, $params)
         ]);
+    }
+
+    /**
+     * @param ModelInterface $model
+     * @return array
+     */
+    private function generateParamsFromModel(ModelInterface $model): array
+    {
+        if ($model instanceof ClientModel) {
+            return [
+                'retailerUuid' => $model->getParentId(),
+                'clientUuid' => $model->getId(),
+            ];
+        }
+
+        return [
+            'id' => $model->getId()
+        ];
     }
 }
