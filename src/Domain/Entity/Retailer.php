@@ -79,4 +79,12 @@ final class Retailer extends AbstractUser implements EntityInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection
+     */
+    public function getClients(): Collection
+    {
+        return $this->clients;
+    }
 }

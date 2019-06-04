@@ -10,7 +10,7 @@ use App\Domain\Model\Interfaces\ModelInterface;
  * Class RetailerModel
  * @author ereshkidal
  */
-class RetailerModel implements ModelInterface
+final class RetailerModel implements ModelInterface
 {
     public const ENTITY_NAME = Retailer::class;
     public const ENTITY_SHORT_NAME = 'retailer';
@@ -56,7 +56,7 @@ class RetailerModel implements ModelInterface
         $model->name = $entity->getRetailerName();
         $model->email = $entity->getEmail();
         $model->bic = $entity->getBusinessIdentifierCode();
-        $model->numberOfClients = 0;
+        $model->numberOfClients = $entity->getClients()->count();
 
         return $model;
     }
