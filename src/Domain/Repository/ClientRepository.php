@@ -4,14 +4,16 @@ namespace App\Domain\Repository;
 
 use App\Domain\Entity\Client;
 use App\Domain\Repository\Interfaces\Manageable;
+use App\Domain\Repository\Interfaces\Queryable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * Class ClientRepository
  * @author ereshkidal
  */
-final class ClientRepository extends ServiceEntityRepository implements Manageable
+final class ClientRepository extends ServiceEntityRepository implements Manageable, Queryable
 {
     /**
      * RetailerRepository constructor.
@@ -20,6 +22,15 @@ final class ClientRepository extends ServiceEntityRepository implements Manageab
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Client::class);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAllQueryBuilder(): QueryBuilder
+    {
+        return $this->createQueryBuilder('c')
+            ->orderBy('c.updatedAt', 'DESC');
     }
 
     /**

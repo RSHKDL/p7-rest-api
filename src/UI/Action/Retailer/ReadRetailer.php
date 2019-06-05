@@ -16,7 +16,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  * Class ReadRetailer
  * @author ereshkidal
  */
-class ReadRetailer
+final class ReadRetailer
 {
     /**
      * @var ReadEntityFactory

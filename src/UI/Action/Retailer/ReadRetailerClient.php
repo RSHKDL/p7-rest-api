@@ -6,6 +6,7 @@ use App\Domain\Model\ClientModel;
 use App\UI\Factory\ReadEntityFactory;
 use App\UI\Responder\ReadResponder;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -42,10 +43,10 @@ final class ReadRetailerClient
     /**
      * @param Request $request
      * @param ClientModel $model
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @throws \Exception
      */
-    public function __invoke(Request $request, ClientModel $model)
+    public function __invoke(Request $request, ClientModel $model): Response
     {
         return $this->responder->respond(
             $this->factory->build($request->attributes->get('clientUuid'), $model),

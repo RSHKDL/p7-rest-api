@@ -3,6 +3,9 @@
 namespace App\UI\Factory;
 
 use App\Application\Pagination\PaginationFactory;
+use App\Domain\Model\ClientModel;
+use App\Domain\Model\ClientPaginatedModel;
+use App\Domain\Model\Interfaces\ModelInterface;
 use App\Domain\Model\Interfaces\PaginatedModelInterface;
 use App\Domain\Repository\Interfaces\Cacheable;
 use App\Domain\Repository\Interfaces\Queryable;
@@ -42,7 +45,8 @@ class ReadEntityCollectionFactory
      * @todo handle the exception with apiProblem ?
      * @param Request $request
      * @param PaginatedModelInterface $paginatedModel
-     * @param null|string $route
+     * @param mixed|null $param
+     * @param string|null $route
      * @param bool $checkCache
      * @return int|PaginatedModelInterface
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -51,12 +55,13 @@ class ReadEntityCollectionFactory
     public function build(
         Request $request,
         PaginatedModelInterface $paginatedModel,
+        $param,
         ?string $route,
         bool $checkCache = false
     ) {
         $repository = $this->entityManager->getRepository($paginatedModel->getEntityName());
         if (!$repository instanceof Queryable) {
-            throw new \DomainException('Invalid repository');
+            throw new \DomainException('Invalid repository : The repository must implement Queryable.');
         }
 
         if ($checkCache && $repository instanceof Cacheable) {
@@ -67,9 +72,27 @@ class ReadEntityCollectionFactory
         $paginatedCollection = $this->paginationFactory->createCollection(
             $queryBuilder,
             $request,
-            $route
+            $route,
+            $this->generateRouteParams($param)
         );
 
         return $paginatedModel::createFromPaginatedCollection($paginatedCollection);
+    }
+
+    /**
+     * @param mixed $params
+     * @return array
+     */
+    private function generateRouteParams($params): array
+    {
+        $routeParams = [];
+
+        if ($params) {
+            $routeParams = [
+                'retailerUuid' => $params
+            ];
+        }
+
+        return $routeParams;
     }
 }
