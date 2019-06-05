@@ -9,6 +9,7 @@ namespace App\Domain\Repository\Interfaces;
 interface Manageable
 {
     /**
+     * @todo merge save and update (with bool as 2nd param)
      * $entity MUST be a valid Entity
      *
      * @param mixed $entity

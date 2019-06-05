@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\Collection;
  * Class Retailer
  * @author ereshkidal
  */
-final class Retailer extends AbstractUser implements EntityInterface
+class Retailer extends AbstractUser implements EntityInterface
 {
     /**
      * @var string

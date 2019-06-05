@@ -12,7 +12,7 @@ use Ramsey\Uuid\UuidInterface;
  * Class Manufacturer
  * @author ereshkidal
  */
-final class Manufacturer implements EntityInterface
+class Manufacturer implements EntityInterface
 {
     /**
      * @var UuidInterface

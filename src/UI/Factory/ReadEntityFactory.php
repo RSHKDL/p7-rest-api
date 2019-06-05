@@ -9,7 +9,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 /**
  * Class ReadEntityFactory
@@ -58,14 +57,8 @@ class ReadEntityFactory
             return $timestamp;
         }
 
+        /** @var EntityInterface $entity */
         $entity = $repository->find($id);
-
-        //@todo is this check really necessary ?
-        if (!$entity instanceof EntityInterface) {
-            throw new UnprocessableEntityHttpException(
-                'This entity does not implement EntityInterface'
-            );
-        }
 
         return $model::createFromEntity($entity);
     }

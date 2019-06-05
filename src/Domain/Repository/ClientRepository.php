@@ -36,6 +36,14 @@ final class ClientRepository extends ServiceEntityRepository implements Manageab
     /**
      * {@inheritdoc}
      */
+    public function findAllByRetailerQueryBuilder(): ?QueryBuilder
+    {
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function save($entity): void
     {
         $this->_em->persist($entity);

@@ -10,7 +10,7 @@ use App\Domain\Entity\Traits\UuidTrait;
  * Class Tablet
  * @author ereshkidal
  */
-final class Tablet extends AbstractProduct implements EntityInterface
+class Tablet extends AbstractProduct implements EntityInterface
 {
     use UuidTrait;
     use TimestampableTrait;

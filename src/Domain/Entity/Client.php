@@ -9,7 +9,7 @@ use App\Domain\Entity\Traits\TimestampableTrait;
  * Class Client
  * @author ereshkidal
  */
-final class Client extends AbstractUser implements EntityInterface
+class Client extends AbstractUser implements EntityInterface
 {
     use TimestampableTrait;
 
