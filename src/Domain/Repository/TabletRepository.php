@@ -15,7 +15,7 @@ use Doctrine\ORM\QueryBuilder;
  * Class TabletRepository
  * @author ereshkidal
  */
-class TabletRepository extends ServiceEntityRepository implements Queryable, Cacheable, Manageable
+final class TabletRepository extends ServiceEntityRepository implements Queryable, Cacheable, Manageable
 {
     /**
      * TabletRepository constructor.
@@ -32,6 +32,14 @@ class TabletRepository extends ServiceEntityRepository implements Queryable, Cac
     public function findAllQueryBuilder(): QueryBuilder
     {
         return $this->createQueryBuilder('tablet');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAllByRetailerQueryBuilder(string $retailerUuid): ?QueryBuilder
+    {
+        return null;
     }
 
     /**

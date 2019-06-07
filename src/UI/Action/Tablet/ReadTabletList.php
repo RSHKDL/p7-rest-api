@@ -2,10 +2,10 @@
 
 namespace App\UI\Action\Tablet;
 
+use App\Application\Router\RouteParams;
 use App\Domain\Model\TabletPaginatedModel;
 use App\UI\Factory\ReadEntityCollectionFactory;
 use App\UI\Responder\ReadCacheResponder;
-use App\UI\Responder\ReadResponder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * Class ReadTabletList
  * @author ereshkidal
  */
-class ReadTabletList
+final class ReadTabletList
 {
     public const ROUTE_NAME = 'tablet_read_collection';
 
@@ -58,8 +58,13 @@ class ReadTabletList
             return $this->responder->getResponse();
         }
 
+        $routeParams = new RouteParams(
+            self::ROUTE_NAME,
+            $request->attributes->get('_route_params')
+        );
+
         return $this->responder->createResponse(
-            $this->factory->build($request, $paginatedModel, self::ROUTE_NAME),
+            $this->factory->build($request, $paginatedModel, $routeParams),
             'product_collection'
         );
     }

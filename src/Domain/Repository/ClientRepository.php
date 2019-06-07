@@ -36,9 +36,12 @@ final class ClientRepository extends ServiceEntityRepository implements Manageab
     /**
      * {@inheritdoc}
      */
-    public function findAllByRetailerQueryBuilder(): ?QueryBuilder
+    public function findAllByRetailerQueryBuilder(string $retailerUuid): ?QueryBuilder
     {
-        return null;
+        return $this->createQueryBuilder('c')
+            ->where('c.retailer = :retailerUuid')
+            ->orderBy('c.updatedAt', 'DESC')
+            ->setParameter('retailerUuid', $retailerUuid);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\UI\Action\Phone;
 
+use App\Application\Router\RouteParams;
 use App\Domain\Model\PhonePaginatedModel;
 use App\UI\Factory\ReadEntityCollectionFactory;
 use App\UI\Responder\ReadCacheResponder;
@@ -15,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * Class ReadPhoneList
  * @author ereshkidal
  */
-class ReadPhoneList
+final class ReadPhoneList
 {
     public const ROUTE_NAME = 'phone_read_collection';
 
@@ -57,8 +58,13 @@ class ReadPhoneList
             return $this->responder->getResponse();
         }
 
+        $routeParams = new RouteParams(
+            self::ROUTE_NAME,
+            $request->attributes->get('_route_params')
+        );
+
         return $this->responder->createResponse(
-            $this->factory->build($request, $paginatedModel, self::ROUTE_NAME),
+            $this->factory->build($request, $paginatedModel, $routeParams),
             'product_collection'
         );
     }

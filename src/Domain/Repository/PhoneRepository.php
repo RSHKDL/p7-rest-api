@@ -15,7 +15,7 @@ use Doctrine\ORM\QueryBuilder;
  * Class PhoneRepository
  * @author ereshkidal
  */
-class PhoneRepository extends ServiceEntityRepository implements Queryable, Cacheable, Manageable
+final class PhoneRepository extends ServiceEntityRepository implements Queryable, Cacheable, Manageable
 {
     /**
      * PhoneRepository constructor.
@@ -33,6 +33,14 @@ class PhoneRepository extends ServiceEntityRepository implements Queryable, Cach
     {
         return $this->createQueryBuilder('p')
             ->orderBy('p.updatedAt', 'DESC');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAllByRetailerQueryBuilder(string $retailerUuid): ?QueryBuilder
+    {
+        return null;
     }
 
     /**

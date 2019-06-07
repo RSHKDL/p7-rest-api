@@ -3,13 +3,13 @@
 namespace App\UI\Factory;
 
 use App\Application\Pagination\PaginationFactory;
-use App\Domain\Model\ClientModel;
-use App\Domain\Model\ClientPaginatedModel;
-use App\Domain\Model\Interfaces\ModelInterface;
+use App\Application\Router\RouteParams;
 use App\Domain\Model\Interfaces\PaginatedModelInterface;
 use App\Domain\Repository\Interfaces\Cacheable;
 use App\Domain\Repository\Interfaces\Queryable;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
+use http\Exception\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -45,8 +45,7 @@ class ReadEntityCollectionFactory
      * @todo handle the exception with apiProblem ?
      * @param Request $request
      * @param PaginatedModelInterface $paginatedModel
-     * @param mixed|null $param
-     * @param string|null $route
+     * @param RouteParams|null $routeParams
      * @param bool $checkCache
      * @return int|PaginatedModelInterface
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -55,11 +54,11 @@ class ReadEntityCollectionFactory
     public function build(
         Request $request,
         PaginatedModelInterface $paginatedModel,
-        $param,
-        ?string $route,
+        ?RouteParams $routeParams,
         bool $checkCache = false
     ) {
         $repository = $this->entityManager->getRepository($paginatedModel->getEntityName());
+
         if (!$repository instanceof Queryable) {
             throw new \DomainException('Invalid repository : The repository must implement Queryable.');
         }
@@ -68,31 +67,32 @@ class ReadEntityCollectionFactory
             return $repository->getLatestModifiedTimestampAmongAll();
         }
 
-        $queryBuilder = $repository->findAllQueryBuilder();
+        if (null === $routeParams) {
+            throw new \InvalidArgumentException('Route parameters must be provided.');
+        }
+
         $paginatedCollection = $this->paginationFactory->createCollection(
-            $queryBuilder,
+            $this->getQueryBuilder($repository, $routeParams),
             $request,
-            $route,
-            $this->generateRouteParams($param)
+            $routeParams->getName(),
+            $routeParams->getParameters()->toArray()
         );
 
         return $paginatedModel::createFromPaginatedCollection($paginatedCollection);
     }
 
     /**
-     * @param mixed $params
-     * @return array
+     * @param Queryable $repository
+     * @param RouteParams $routeParams
+     * @return QueryBuilder
      */
-    private function generateRouteParams($params): array
+    private function getQueryBuilder(Queryable $repository, RouteParams $routeParams): QueryBuilder
     {
-        $routeParams = [];
-
-        if ($params) {
-            $routeParams = [
-                'retailerUuid' => $params
-            ];
+        $retailerUuid = $routeParams->getParameters()->get('retailerUuid');
+        if ($retailerUuid) {
+            return $repository->findAllByRetailerQueryBuilder($retailerUuid);
         }
 
-        return $routeParams;
+        return $repository->findAllQueryBuilder();
     }
 }

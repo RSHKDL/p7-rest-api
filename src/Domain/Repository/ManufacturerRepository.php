@@ -12,7 +12,7 @@ use Doctrine\ORM\QueryBuilder;
  * Class ManufacturerRepository
  * @author ereshkidal
  */
-class ManufacturerRepository extends ServiceEntityRepository implements Queryable
+final class ManufacturerRepository extends ServiceEntityRepository implements Queryable
 {
     /**
      * ManufacturerRepository constructor.
@@ -29,6 +29,14 @@ class ManufacturerRepository extends ServiceEntityRepository implements Queryabl
     public function findAllQueryBuilder(): QueryBuilder
     {
         return $this->createQueryBuilder('manufacturer');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAllByRetailerQueryBuilder(string $retailerUuid): ?QueryBuilder
+    {
+        return null;
     }
 
     /**

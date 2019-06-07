@@ -2,6 +2,7 @@
 
 namespace App\UI\Action\Retailer;
 
+use App\Application\Router\RouteParams;
 use App\Domain\Model\ClientPaginatedModel;
 use App\UI\Factory\ReadEntityCollectionFactory;
 use App\UI\Responder\ReadResponder;
@@ -43,7 +44,6 @@ final class ReadRetailerClientList
     }
 
     /**
-     * @todo improve params distribution (route name and params should be grouped)
      * @param Request $request
      * @param ClientPaginatedModel $paginatedModel
      * @return Response
@@ -51,10 +51,13 @@ final class ReadRetailerClientList
      */
     public function __invoke(Request $request, ClientPaginatedModel $paginatedModel): Response
     {
-        $param = $request->attributes->get('retailerUuid');
+        $routeParams = new RouteParams(
+            self::ROUTE_NAME,
+            $request->attributes->get('_route_params')
+        );
 
         return $this->responder->respond(
-            $this->factory->build($request, $paginatedModel, $param, self::ROUTE_NAME),
+            $this->factory->build($request, $paginatedModel, $routeParams),
             'client_collection'
         );
     }
