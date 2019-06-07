@@ -44,7 +44,7 @@ class UpdateEntityFactory
     }
 
     /**
-     * @todo: l53 seems ugly af
+     * @todo add security check here to prevent retailer from updating non owned client
      * @param Request $request
      * @param string $id
      * @param ModelInterface $model

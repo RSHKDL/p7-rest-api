@@ -47,15 +47,13 @@ class CreateResponder
     {
         $json = $this->serializer->serialize($model, 'json', ['groups' => [$serializationGroup] ]);
 
-        //@todo I don't like having this logic here
-        $params = $this->generateParamsFromModel($model);
-
         return new Response($json, Response::HTTP_CREATED, [
-            'location' => $this->urlGenerator->generate($routeName, $params)
+            'location' => $this->urlGenerator->generate($routeName, $this->generateParamsFromModel($model))
         ]);
     }
 
     /**
+     * @todo I don't like having this logic here + duplicate in UpdateResponder
      * @param ModelInterface $model
      * @return array
      */
