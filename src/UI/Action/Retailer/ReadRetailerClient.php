@@ -7,7 +7,10 @@ use App\UI\Factory\ReadEntityFactory;
 use App\UI\Responder\ReadResponder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * @Route("/api/retailers/{retailerUuid}/clients/{clientUuid}", methods={"GET"}, name="client_read")
@@ -28,16 +31,24 @@ final class ReadRetailerClient
     private $responder;
 
     /**
+     * @var AuthorizationCheckerInterface
+     */
+    private $authorizationChecker;
+
+    /**
      * ReadRetailerClient constructor.
      * @param ReadEntityFactory $factory
      * @param ReadResponder $responder
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
         ReadEntityFactory $factory,
-        ReadResponder $responder
+        ReadResponder $responder,
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
         $this->factory = $factory;
         $this->responder = $responder;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -48,8 +59,20 @@ final class ReadRetailerClient
      */
     public function __invoke(Request $request, ClientModel $model): Response
     {
+        if (!$this->authorizationChecker->isGranted('view', $request->attributes->get('retailerUuid'))) {
+            throw new AccessDeniedHttpException('Access denied');
+        }
+
+        $clientUuid = $request->attributes->get('clientUuid');
+        /** @var ClientModel $clientModel */
+        $clientModel = $this->factory->build($clientUuid, $model);
+
+        if (!$this->authorizationChecker->isGranted('view', $clientModel->getParentId())) {
+            throw new NotFoundHttpException(sprintf('No client found with uuid: %s', $clientUuid));
+        }
+
         return $this->responder->respond(
-            $this->factory->build($request->attributes->get('clientUuid'), $model),
+            $clientModel,
             'client'
         );
     }

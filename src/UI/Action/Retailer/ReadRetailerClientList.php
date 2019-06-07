@@ -8,7 +8,9 @@ use App\UI\Factory\ReadEntityCollectionFactory;
 use App\UI\Responder\ReadResponder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * @Route("/api/retailers/{retailerUuid}/clients", methods={"GET"}, name=ReadRetailerClientList::ROUTE_NAME)
@@ -31,16 +33,24 @@ final class ReadRetailerClientList
     private $responder;
 
     /**
+     * @var AuthorizationCheckerInterface
+     */
+    private $authorizationChecker;
+
+    /**
      * ReadRetailerClientList constructor.
      * @param ReadEntityCollectionFactory $factory
      * @param ReadResponder $responder
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
         ReadEntityCollectionFactory $factory,
-        ReadResponder $responder
+        ReadResponder $responder,
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
         $this->factory = $factory;
         $this->responder = $responder;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -51,6 +61,10 @@ final class ReadRetailerClientList
      */
     public function __invoke(Request $request, ClientPaginatedModel $paginatedModel): Response
     {
+        if (!$this->authorizationChecker->isGranted('view', $request->attributes->get('retailerUuid'))) {
+            throw new AccessDeniedHttpException('Access denied');
+        }
+
         $routeParams = new RouteParams(
             self::ROUTE_NAME,
             $request->attributes->get('_route_params')

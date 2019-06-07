@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
- * @Route("/api/retailers/{id}", methods={"GET"}, name="retailer_read")
+ * @Route("/api/retailers/{retailerUuid}", methods={"GET"}, name="retailer_read")
  *
  * Class ReadRetailer
  * @author ereshkidal
@@ -57,13 +57,12 @@ final class ReadRetailer
      */
     public function __invoke(Request $request, RetailerModel $model)
     {
-        $hydratedModel = $this->factory->build($request->attributes->get('id'), $model);
-        if (!$this->authorizationChecker->isGranted('view', $hydratedModel)) {
-            throw new NotFoundHttpException('This retailer does not exist');
+        if (!$this->authorizationChecker->isGranted('view', $request->attributes->get('retailerUuid'))) {
+            throw new NotFoundHttpException('This retailer does not exist.');
         }
 
         return $this->responder->respond(
-            $hydratedModel,
+            $this->factory->build($request->attributes->get('retailerUuid'), $model),
             'retailer'
         );
     }
