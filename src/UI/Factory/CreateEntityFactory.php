@@ -2,7 +2,6 @@
 
 namespace App\UI\Factory;
 
-use App\Domain\Entity\Client;
 use App\Domain\Model\Interfaces\ModelInterface;
 use App\Domain\Repository\Interfaces\Manageable;
 use App\UI\Factory\Traits\ProcessFormTrait;

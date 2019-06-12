@@ -63,12 +63,11 @@ final class ReadRetailerClient
             throw new AccessDeniedHttpException('Access denied');
         }
 
-        $clientUuid = $request->attributes->get('clientUuid');
         /** @var ClientModel $clientModel */
-        $clientModel = $this->factory->build($clientUuid, $model);
+        $clientModel = $this->factory->build($request, $model);
 
         if (!$this->authorizationChecker->isGranted('view', $clientModel->getParentId())) {
-            throw new NotFoundHttpException(sprintf('No client found with uuid: %s', $clientUuid));
+            throw new NotFoundHttpException(sprintf('No client found with uuid: %s', $clientModel->getId()));
         }
 
         return $this->responder->respond(

@@ -5,8 +5,10 @@ namespace App\UI\Factory;
 use App\Domain\Entity\Interfaces\EntityInterface;
 use App\Domain\Model\Interfaces\ModelInterface;
 use App\Domain\Repository\Interfaces\Cacheable;
+use App\UI\Factory\Traits\EntityGetterTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -16,6 +18,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class ReadEntityFactory
 {
+    use EntityGetterTrait;
+
     /**
      * @var EntityManagerInterface
      */
@@ -31,21 +35,19 @@ class ReadEntityFactory
     }
 
     /**
-     * @param string $id
+     * @param Request $request
      * @param ModelInterface $model
      * @param bool $checkCache
      * @return int|ModelInterface
+     * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Exception
      */
-    public function build(string $id, ModelInterface $model, bool $checkCache = false)
+    public function build(Request $request, ModelInterface $model, bool $checkCache = false)
     {
-        if (!Uuid::isValid($id)) {
-            throw new BadRequestHttpException('The Uuid you provided is invalid');
-        }
-
         $repository = $this->entityManager->getRepository($model->getEntityName());
 
         if ($checkCache && $repository instanceof Cacheable) {
+            $id = $request->attributes->get('id');
             $timestamp = $repository->getLatestModifiedTimestamp($id);
 
             if (!$timestamp) {
@@ -58,7 +60,7 @@ class ReadEntityFactory
         }
 
         /** @var EntityInterface $entity */
-        $entity = $repository->find($id);
+        $entity = $this->getEntity($request, $repository);
 
         return $model::createFromEntity($entity);
     }

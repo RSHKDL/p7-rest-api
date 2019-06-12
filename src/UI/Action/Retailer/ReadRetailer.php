@@ -62,7 +62,7 @@ final class ReadRetailer
         }
 
         return $this->responder->respond(
-            $this->factory->build($request->attributes->get('retailerUuid'), $model),
+            $this->factory->build($request, $model),
             'retailer'
         );
     }
