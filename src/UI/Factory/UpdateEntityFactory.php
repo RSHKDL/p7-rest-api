@@ -60,7 +60,7 @@ class UpdateEntityFactory
         $entity = $this->getEntity($request, $repository);
 
         if (!$entity) {
-            throw new NotFoundHttpException(sprintf('%s not found', [$model->getEntityShortName()]));
+            throw new NotFoundHttpException(sprintf('%s not found', $model->getEntityShortName()));
         }
 
         $form = $this->formFactory->create($model->getEntityType(), $entity);

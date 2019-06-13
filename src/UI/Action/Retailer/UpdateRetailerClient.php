@@ -52,11 +52,11 @@ final class UpdateRetailerClient
     public function __invoke(Request $request, UpdateResponder $responder, ClientModel $model): Response
     {
         $retailerUuid = $request->attributes->get('retailerUuid');
-        if (!$this->authorizationChecker->isGranted('view', $retailerUuid)) {
+        if (!$this->authorizationChecker->isGranted('edit', $retailerUuid)) {
             throw new AccessDeniedHttpException('Access denied');
         }
-        $clientModel = $this->factory->update($request, $request->attributes->get('clientUuid'), $model);
+        $updatedModel = $this->factory->update($request, $model);
 
-        return $responder($clientModel, 'client', 'client_read');
+        return $responder($updatedModel, 'client', 'client_read');
     }
 }
