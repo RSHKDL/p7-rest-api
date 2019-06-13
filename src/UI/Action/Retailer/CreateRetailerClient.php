@@ -24,6 +24,7 @@ final class CreateRetailerClient
      * @var CreateEntityFactory
      */
     private $factory;
+
     /**
      * @var RetailerRepository
      */
@@ -61,7 +62,7 @@ final class CreateRetailerClient
     public function __invoke(Request $request, CreateResponder $responder, ClientModel $model): Response
     {
         $retailerUuid = $request->attributes->get('retailerUuid');
-        if (!$this->authorizationChecker->isGranted('view', $retailerUuid)) {
+        if (!$this->authorizationChecker->isGranted('edit', $retailerUuid)) {
             throw new AccessDeniedHttpException('Access denied');
         }
         $retailer = $this->retailerRepository->find($retailerUuid);

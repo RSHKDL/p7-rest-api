@@ -16,10 +16,6 @@
         <field name="updatedAt" type="integer"/>
         <field name="roles" type="array" nullable="true"/>
         <many-to-one field="retailer" target-entity="App\Domain\Entity\Retailer" inversed-by="clients">
-            <cascade>
-                <cascade-persist/>
-                <cascade-remove/>
-            </cascade>
             <join-column nullable="false" />
         </many-to-one>
     </entity>

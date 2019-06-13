@@ -14,6 +14,8 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 class RetailerVoter extends Voter
 {
     private const VIEW = 'view';
+    private const EDIT = 'edit';
+    private const DELETE = 'delete';
 
     /**
      * @var RetailerRepository
@@ -39,7 +41,11 @@ class RetailerVoter extends Voter
      */
     protected function supports($attribute, $subject): ?bool
     {
-        return !($attribute !== self::VIEW);
+        if (!in_array($attribute, [self::VIEW, self::EDIT, self::DELETE], true)) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -54,11 +60,56 @@ class RetailerVoter extends Voter
      */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
-        /** @var Retailer $currentUser */
-        $currentUser = $token->getUser();
-        /** @var Retailer $retailer */
         $retailer = $this->retailerRepository->find($subject);
+        $currentUser = $token->getUser();
 
+        if (!$currentUser instanceof Retailer || !$retailer instanceof Retailer) {
+            return false;
+        }
+
+        switch ($attribute) {
+            case self::VIEW:
+                return $this->canView($retailer, $currentUser);
+            case self::EDIT:
+                return $this->canEdit($retailer, $currentUser);
+            case self::DELETE:
+                return $this->canDelete($retailer, $currentUser);
+        }
+
+        throw new \LogicException('This code should not be reached!');
+    }
+
+    /**
+     * @param Retailer $retailer
+     * @param Retailer $currentUser
+     * @return bool
+     */
+    private function canView(Retailer $retailer, Retailer $currentUser): bool
+    {
+        if ($this->canEdit($retailer, $currentUser)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param Retailer $retailer
+     * @param Retailer $currentUser
+     * @return bool
+     */
+    private function canEdit(Retailer $retailer, Retailer $currentUser): bool
+    {
+        return ($currentUser->getEmail() === $retailer->getEmail());
+    }
+
+    /**
+     * @param Retailer $retailer
+     * @param Retailer $currentUser
+     * @return bool
+     */
+    private function canDelete(Retailer $retailer, Retailer $currentUser): bool
+    {
         return ($currentUser->getEmail() === $retailer->getEmail());
     }
 }
