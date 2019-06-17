@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * Class UpdateTablet
  * @author ereshkidal
  */
-class UpdateTablet
+final class UpdateTablet
 {
     /**
      * @var UpdateEntityFactory
@@ -39,8 +39,8 @@ class UpdateTablet
      */
     public function __invoke(Request $request, UpdateResponder $responder, TabletModel $model)
     {
-        $model = $this->factory->update($request, $request->attributes->get('id'), $model);
+        $updatedModel = $this->factory->update($request, $model);
 
-        return $responder($model, 'tablet', 'tablet_read');
+        return $responder($updatedModel, 'tablet', 'tablet_read');
     }
 }

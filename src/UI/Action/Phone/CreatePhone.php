@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * Class CreatePhone
  * @author ereshkidal
  */
-class CreatePhone
+final class CreatePhone
 {
     /**
      * @var CreateEntityFactory

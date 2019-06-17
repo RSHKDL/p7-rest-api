@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
  * Class CreateEntityFactory
  * @author ereshkidal
  */
-class CreateEntityFactory extends AbstractFactory
+final class CreateEntityFactory extends AbstractFactory
 {
     use ProcessFormTrait;
 
@@ -49,7 +49,7 @@ class CreateEntityFactory extends AbstractFactory
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \Exception
      */
-    public function create(Request $request, ModelInterface $model, ?array $options): ModelInterface
+    public function create(Request $request, ModelInterface $model, ?array $options = []): ModelInterface
     {
         $entityName = $model->getEntityName();
         $entity = new $entityName();

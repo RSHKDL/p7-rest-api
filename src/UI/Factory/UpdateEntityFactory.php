@@ -17,7 +17,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * Class UpdateEntityFactory
  * @author ereshkidal
  */
-class UpdateEntityFactory
+final class UpdateEntityFactory
 {
     use ProcessFormTrait;
     use EntityGetterTrait;
