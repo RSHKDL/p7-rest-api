@@ -9,14 +9,13 @@ use App\Domain\Repository\Interfaces\Cacheable;
 use App\Domain\Repository\Interfaces\Queryable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
-use http\Exception\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class ReadEntityCollectionFactory
  * @author ereshkidal
  */
-class ReadEntityCollectionFactory
+final class ReadEntityCollectionFactory
 {
     /**
      * @var EntityManagerInterface

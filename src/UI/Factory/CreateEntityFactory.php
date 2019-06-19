@@ -57,11 +57,11 @@ final class CreateEntityFactory extends AbstractFactory
         $this->processForm($request, $form);
         /** @var Manageable $repository */
         $repository = $this->entityManager->getRepository($model->getEntityName());
-        //@todo i don't like this behavior...
+        //@todo i don't like this behavior... not really scalable
         if (method_exists($entity, 'setRetailer')) {
             $entity->setRetailer($options['retailer']);
         }
-        $repository->save($entity);
+        $repository->saveOrUpdate($entity);
 
         return $model::createFromEntity($entity);
     }

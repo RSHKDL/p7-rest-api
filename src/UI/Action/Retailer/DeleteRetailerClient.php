@@ -55,7 +55,7 @@ final class DeleteRetailerClient
         if (!$this->authorizationChecker->isGranted('edit', $request->attributes->get('retailerUuid'))) {
             throw new AccessDeniedHttpException('Access denied');
         }
-        $this->factory->remove($request->attributes->get('clientUuid'), $model);
+        $this->factory->remove($request, $model);
 
         return $responder();
     }

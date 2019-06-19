@@ -11,7 +11,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * Class RetailerRepository
  * @author ereshkidal
  */
-class RetailerRepository extends ServiceEntityRepository implements Manageable
+final class RetailerRepository extends ServiceEntityRepository implements Manageable
 {
     /**
      * RetailerRepository constructor.
@@ -23,46 +23,22 @@ class RetailerRepository extends ServiceEntityRepository implements Manageable
     }
 
     /**
-     * $entity MUST be a valid Entity
-     *
-     * @param mixed $entity
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * {@inheritdoc}
+     * @param Retailer $entity
      */
-    public function save($entity): void
+    public function saveOrUpdate($entity, bool $updated = false): void
     {
         $this->_em->persist($entity);
         $this->_em->flush();
     }
 
     /**
-     * $entity MUST be a valid Entity
-     *
-     * @param mixed $entity
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * {@inheritdoc}
+     * @param Retailer $entity
      */
-    public function update($entity): void
+    public function remove($entity): void
     {
-        $this->_em->persist($entity);
+        $this->_em->remove($entity);
         $this->_em->flush();
-    }
-
-    /**
-     * @param string $id
-     * @return bool
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function remove(string $id): bool
-    {
-        $retailer = $this->find($id);
-        if (null === $retailer) {
-            return false;
-        }
-        $this->_em->remove($retailer);
-        $this->_em->flush();
-
-        return true;
     }
 }

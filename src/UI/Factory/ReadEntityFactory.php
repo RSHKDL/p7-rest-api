@@ -7,16 +7,14 @@ use App\Domain\Model\Interfaces\ModelInterface;
 use App\Domain\Repository\Interfaces\Cacheable;
 use App\UI\Factory\Traits\EntityGetterTrait;
 use Doctrine\ORM\EntityManagerInterface;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class ReadEntityFactory
  * @author ereshkidal
  */
-class ReadEntityFactory
+final class ReadEntityFactory
 {
     use EntityGetterTrait;
 
@@ -60,7 +58,7 @@ class ReadEntityFactory
         }
 
         /** @var EntityInterface $entity */
-        $entity = $this->getEntity($request, $repository);
+        $entity = $this->getEntity($request, $repository, $model->getEntityShortName());
 
         return $model::createFromEntity($entity);
     }

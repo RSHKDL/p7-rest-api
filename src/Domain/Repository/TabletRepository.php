@@ -46,8 +46,11 @@ final class TabletRepository extends ServiceEntityRepository implements Queryabl
      * {@inheritdoc}
      * @param Tablet $entity
      */
-    public function save($entity): void
+    public function saveOrUpdate($entity, bool $updated = false): void
     {
+        if ($updated) {
+            $entity->setUpdatedAt(time());
+        }
         $this->_em->persist($entity);
         $this->_em->flush();
     }
@@ -56,26 +59,10 @@ final class TabletRepository extends ServiceEntityRepository implements Queryabl
      * {@inheritdoc}
      * @param Tablet $entity
      */
-    public function update($entity): void
+    public function remove($entity): void
     {
-        $entity->setUpdatedAt(time());
-        $this->_em->persist($entity);
+        $this->_em->remove($entity);
         $this->_em->flush();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function remove(string $id): bool
-    {
-        $tablet = $this->find($id);
-        if (null === $tablet) {
-            return false;
-        }
-        $this->_em->remove($tablet);
-        $this->_em->flush();
-
-        return true;
     }
 
     /**

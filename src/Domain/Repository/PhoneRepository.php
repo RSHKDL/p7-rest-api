@@ -47,8 +47,11 @@ final class PhoneRepository extends ServiceEntityRepository implements Queryable
      * {@inheritdoc}
      * @param Phone $entity
      */
-    public function save($entity): void
+    public function saveOrUpdate($entity, bool $updated = false): void
     {
+        if ($updated) {
+            $entity->setUpdatedAt(time());
+        }
         $this->_em->persist($entity);
         $this->_em->flush();
     }
@@ -57,26 +60,10 @@ final class PhoneRepository extends ServiceEntityRepository implements Queryable
      * {@inheritdoc}
      * @param Phone $entity
      */
-    public function update($entity): void
+    public function remove($entity): void
     {
-        $entity->setUpdatedAt(time());
-        $this->_em->persist($entity);
+        $this->_em->remove($entity);
         $this->_em->flush();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function remove(string $id): bool
-    {
-        $phone = $this->find($id);
-        if (null === $phone) {
-            return false;
-        }
-        $this->_em->remove($phone);
-        $this->_em->flush();
-
-        return true;
     }
 
     /**

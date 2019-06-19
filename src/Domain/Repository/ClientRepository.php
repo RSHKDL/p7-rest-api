@@ -46,34 +46,24 @@ final class ClientRepository extends ServiceEntityRepository implements Manageab
 
     /**
      * {@inheritdoc}
+     * @param Client $entity
      */
-    public function save($entity): void
+    public function saveOrUpdate($entity, bool $updated = false): void
     {
-        $this->_em->persist($entity);
-        $this->_em->flush();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function update($entity): void
-    {
-        $this->_em->persist($entity);
-        $this->_em->flush();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function remove(string $id): bool
-    {
-        $entity = $this->find($id);
-        if (null === $entity) {
-            return false;
+        if ($updated) {
+            $entity->setUpdatedAt(time());
         }
+        $this->_em->persist($entity);
+        $this->_em->flush();
+    }
+
+    /**
+     * {@inheritdoc}
+     * @param Client $entity
+     */
+    public function remove($entity): void
+    {
         $this->_em->remove($entity);
         $this->_em->flush();
-
-        return true;
     }
 }

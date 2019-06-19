@@ -46,7 +46,6 @@ final class UpdateEntityFactory
     }
 
     /**
-     * @todo add security check here to prevent retailer from updating non owned client
      * @param Request $request
      * @param ModelInterface $model
      * @return ModelInterface
@@ -57,15 +56,11 @@ final class UpdateEntityFactory
         /** @var Manageable|ObjectRepository $repository */
         $repository = $this->entityManager->getRepository($model->getEntityName());
         /** @var EntityInterface $entity */
-        $entity = $this->getEntity($request, $repository);
-
-        if (!$entity) {
-            throw new NotFoundHttpException(sprintf('%s not found', $model->getEntityShortName()));
-        }
+        $entity = $this->getEntity($request, $repository, $model->getEntityShortName());
 
         $form = $this->formFactory->create($model->getEntityType(), $entity);
         $this->processForm($request, $form);
-        $repository->update($entity);
+        $repository->saveOrUpdate($entity, true);
 
         return $model::createFromEntity($entity);
     }

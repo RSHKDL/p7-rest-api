@@ -40,6 +40,7 @@ class ManufacturerTransformer implements DataTransformerInterface
      * @param mixed $manufacturerName
      * @return Manufacturer|mixed
      * @throws NonUniqueResultException
+     * @throws \Exception
      */
     public function reverseTransform($manufacturerName)
     {
