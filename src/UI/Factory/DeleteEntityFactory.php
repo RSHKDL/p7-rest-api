@@ -4,16 +4,19 @@ namespace App\UI\Factory;
 
 use App\Domain\Model\Interfaces\ModelInterface;
 use App\Domain\Repository\Interfaces\Manageable;
+use App\UI\Factory\Traits\EntityGetterTrait;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Ramsey\Uuid\Uuid;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class DeleteEntityFactory
  * @author ereshkidal
  */
-class DeleteEntityFactory
+final class DeleteEntityFactory
 {
+    use EntityGetterTrait;
+
     /**
      * @var EntityManagerInterface
      */
@@ -23,25 +26,24 @@ class DeleteEntityFactory
      * DeleteEntityFactory constructor.
      * @param EntityManagerInterface $entityManager
      */
-    public function __construct(
-        EntityManagerInterface $entityManager
-    ) {
+    public function __construct(EntityManagerInterface $entityManager)
+    {
         $this->entityManager = $entityManager;
     }
 
     /**
-     * @param string $id
+     * @param Request $request
      * @param ModelInterface $model
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function remove(string $id, ModelInterface $model): void
+    public function remove(Request $request, ModelInterface $model): void
     {
-        if (!Uuid::isValid($id)) {
-            throw new BadRequestHttpException('The Uuid you provided is invalid');
-        }
-        /** @var Manageable $repository */
+        /** @var ObjectRepository|Manageable $repository */
         $repository = $this->entityManager->getRepository($model->getEntityName());
-        $repository->remove($id);
+        $entity = $this->getEntity($request, $repository, $model->getEntityShortName());
+        if ($entity) {
+            $repository->remove($entity);
+        }
     }
 }

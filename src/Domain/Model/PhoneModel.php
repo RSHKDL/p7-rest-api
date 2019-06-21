@@ -59,7 +59,7 @@ class PhoneModel implements ModelInterface
     public static function createFromEntity(EntityInterface $entity): ModelInterface
     {
         if (!$entity instanceof Phone) {
-            throw new \InvalidArgumentException();
+            throw new \InvalidArgumentException('Invalid entity provided');
         }
         $model = new self();
         $model->id = $entity->getId();

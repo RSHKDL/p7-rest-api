@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * Class CreateTablet
  * @author ereshkidal
  */
-class CreateTablet
+final class CreateTablet
 {
     /**
      * @var CreateEntityFactory

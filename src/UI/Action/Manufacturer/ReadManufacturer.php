@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/api/manufacturers/{id}", methods={"GET"}, name=ReadManufacturer::ROUTE_NAME)
+ * @Route("/api/manufacturers/{manufacturerUuid}", methods={"GET"}, name=ReadManufacturer::ROUTE_NAME)
  *
  * Class ReadManufacturer
  * @author ereshkidal
@@ -43,14 +43,14 @@ class ReadManufacturer
 
     /**
      * @param Request $request
-     * @param ManufacturerModel $manufacturerModel
+     * @param ManufacturerModel $model
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function __invoke(Request $request, ManufacturerModel $manufacturerModel)
+    public function __invoke(Request $request, ManufacturerModel $model)
     {
         return $this->responder->respond(
-            $this->factory->build($request->attributes->get('id'), $manufacturerModel),
+            $this->factory->build($request, $model, $model->getEntityShortName()),
             'manufacturer'
         );
     }

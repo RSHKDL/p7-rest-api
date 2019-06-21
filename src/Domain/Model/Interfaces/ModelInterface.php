@@ -28,6 +28,7 @@ interface ModelInterface
     public function getEntityShortName(): string;
 
     /**
+     * @todo rename to getFormType
      * @return null|string
      */
     public function getEntityType(): ?string;

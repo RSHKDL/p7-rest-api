@@ -1,0 +1,12 @@
+App\Domain\Model\ClientModel:
+    attributes:
+        id:
+            groups: ['client', 'client_collection']
+        firstName:
+            groups: ['client', 'client_collection']
+        lastName:
+            groups: ['client', 'client_collection']
+        email:
+            groups: ['client', 'client_collection']
+        phone:
+            groups: ['client']

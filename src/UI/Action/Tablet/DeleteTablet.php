@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * Class DeleteTablet
  * @author ereshkidal
  */
-class DeleteTablet
+final class DeleteTablet
 {
     /**
      * @var DeleteEntityFactory
@@ -36,10 +36,12 @@ class DeleteTablet
      * @param DeleteResponder $responder
      * @param TabletModel $model
      * @return Response
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function __invoke(Request $request, DeleteResponder $responder, TabletModel $model): Response
     {
-        $this->factory->remove($request->attributes->get('id'), $model);
+        $this->factory->remove($request, $model);
 
         return $responder();
     }

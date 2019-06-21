@@ -15,7 +15,7 @@ use Doctrine\ORM\QueryBuilder;
  * Class PhoneRepository
  * @author ereshkidal
  */
-class PhoneRepository extends ServiceEntityRepository implements Queryable, Cacheable, Manageable
+final class PhoneRepository extends ServiceEntityRepository implements Queryable, Cacheable, Manageable
 {
     /**
      * PhoneRepository constructor.
@@ -37,38 +37,33 @@ class PhoneRepository extends ServiceEntityRepository implements Queryable, Cach
 
     /**
      * {@inheritdoc}
-     * @param Phone $entity
      */
-    public function save($entity): void
+    public function findAllByRetailerQueryBuilder(string $retailerUuid): ?QueryBuilder
     {
-        $this->_em->persist($entity);
-        $this->_em->flush();
+        return null;
     }
 
     /**
      * {@inheritdoc}
      * @param Phone $entity
      */
-    public function update($entity): void
+    public function saveOrUpdate($entity, bool $updated = false): void
     {
-        $entity->setUpdatedAt(time());
-        $this->_em->persist($entity);
-        $this->_em->flush();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function remove(string $id): bool
-    {
-        $phone = $this->find($id);
-        if (null === $phone) {
-            return false;
+        if ($updated) {
+            $entity->setUpdatedAt(time());
         }
-        $this->_em->remove($phone);
+        $this->_em->persist($entity);
         $this->_em->flush();
+    }
 
-        return true;
+    /**
+     * {@inheritdoc}
+     * @param Phone $entity
+     */
+    public function remove($entity): void
+    {
+        $this->_em->remove($entity);
+        $this->_em->flush();
     }
 
     /**

@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * Class DeletePhone
  * @author ereshkidal
  */
-class DeletePhone
+final class DeletePhone
 {
     /**
      * @var DeleteEntityFactory
@@ -36,6 +36,8 @@ class DeletePhone
      * @param DeleteResponder $responder
      * @param PhoneModel $model
      * @return Response
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function __invoke(Request $request, DeleteResponder $responder, PhoneModel $model): Response
     {

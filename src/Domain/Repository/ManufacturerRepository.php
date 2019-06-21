@@ -3,6 +3,7 @@
 namespace App\Domain\Repository;
 
 use App\Domain\Entity\Manufacturer;
+use App\Domain\Repository\Interfaces\Manageable;
 use App\Domain\Repository\Interfaces\Queryable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -12,7 +13,7 @@ use Doctrine\ORM\QueryBuilder;
  * Class ManufacturerRepository
  * @author ereshkidal
  */
-class ManufacturerRepository extends ServiceEntityRepository implements Queryable
+final class ManufacturerRepository extends ServiceEntityRepository implements Queryable, Manageable
 {
     /**
      * ManufacturerRepository constructor.
@@ -32,6 +33,14 @@ class ManufacturerRepository extends ServiceEntityRepository implements Queryabl
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function findAllByRetailerQueryBuilder(string $retailerUuid): ?QueryBuilder
+    {
+        return null;
+    }
+
+    /**
      * @param string $name
      * @return mixed
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -46,24 +55,22 @@ class ManufacturerRepository extends ServiceEntityRepository implements Queryabl
     }
 
     /**
-     * @param Manufacturer $manufacturer
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * {@inheritdoc}
+     * @param Manufacturer $entity
      */
-    public function save(Manufacturer $manufacturer): void
+    public function saveOrUpdate($entity, bool $updated = false): void
     {
-        $this->_em->persist($manufacturer);
+        $this->_em->persist($entity);
         $this->_em->flush();
     }
 
     /**
-     * @param string $id
-     * @return bool
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * {@inheritdoc}
+     * @param Manufacturer $entity
      */
-    public function remove(string $id): bool
+    public function remove($entity): void
     {
-        // TODO: Implement remove() method.
+        $this->_em->remove($entity);
+        $this->_em->flush();
     }
 }

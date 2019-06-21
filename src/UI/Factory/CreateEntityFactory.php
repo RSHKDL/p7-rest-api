@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
  * Class CreateEntityFactory
  * @author ereshkidal
  */
-class CreateEntityFactory extends AbstractFactory
+final class CreateEntityFactory extends AbstractFactory
 {
     use ProcessFormTrait;
 
@@ -43,12 +43,13 @@ class CreateEntityFactory extends AbstractFactory
     /**
      * @param Request $request
      * @param ModelInterface $model
+     * @param array|null $options
      * @return ModelInterface
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \Exception
      */
-    public function create(Request $request, ModelInterface $model): ModelInterface
+    public function create(Request $request, ModelInterface $model, ?array $options = []): ModelInterface
     {
         $entityName = $model->getEntityName();
         $entity = new $entityName();
@@ -56,7 +57,11 @@ class CreateEntityFactory extends AbstractFactory
         $this->processForm($request, $form);
         /** @var Manageable $repository */
         $repository = $this->entityManager->getRepository($model->getEntityName());
-        $repository->save($entity);
+        //@todo i don't like this behavior... not really scalable
+        if (method_exists($entity, 'setRetailer')) {
+            $entity->setRetailer($options['retailer']);
+        }
+        $repository->saveOrUpdate($entity);
 
         return $model::createFromEntity($entity);
     }

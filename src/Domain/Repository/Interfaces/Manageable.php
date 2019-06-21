@@ -12,10 +12,11 @@ interface Manageable
      * $entity MUST be a valid Entity
      *
      * @param mixed $entity
+     * @param bool $update
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function save($entity): void;
+    public function saveOrUpdate($entity, bool $update = false): void;
 
     /**
      * $entity MUST be a valid Entity
@@ -24,13 +25,5 @@ interface Manageable
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function update($entity): void;
-
-    /**
-     * @param string $id
-     * @return bool
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function remove(string $id): bool;
+    public function remove($entity): void;
 }

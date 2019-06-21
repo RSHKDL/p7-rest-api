@@ -2,28 +2,26 @@
 
 namespace App\Domain\Repository;
 
-use App\Domain\Entity\Tablet;
-use App\Domain\Repository\Interfaces\Cacheable;
+use App\Domain\Entity\Client;
 use App\Domain\Repository\Interfaces\Manageable;
 use App\Domain\Repository\Interfaces\Queryable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 
 /**
- * Class TabletRepository
+ * Class ClientRepository
  * @author ereshkidal
  */
-final class TabletRepository extends ServiceEntityRepository implements Queryable, Cacheable, Manageable
+final class ClientRepository extends ServiceEntityRepository implements Manageable, Queryable
 {
     /**
-     * TabletRepository constructor.
+     * RetailerRepository constructor.
      * @param ManagerRegistry $registry
      */
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Tablet::class);
+        parent::__construct($registry, Client::class);
     }
 
     /**
@@ -31,7 +29,8 @@ final class TabletRepository extends ServiceEntityRepository implements Queryabl
      */
     public function findAllQueryBuilder(): QueryBuilder
     {
-        return $this->createQueryBuilder('tablet');
+        return $this->createQueryBuilder('c')
+            ->orderBy('c.updatedAt', 'DESC');
     }
 
     /**
@@ -39,12 +38,15 @@ final class TabletRepository extends ServiceEntityRepository implements Queryabl
      */
     public function findAllByRetailerQueryBuilder(string $retailerUuid): ?QueryBuilder
     {
-        return null;
+        return $this->createQueryBuilder('c')
+            ->where('c.retailer = :retailerUuid')
+            ->orderBy('c.updatedAt', 'DESC')
+            ->setParameter('retailerUuid', $retailerUuid);
     }
 
     /**
      * {@inheritdoc}
-     * @param Tablet $entity
+     * @param Client $entity
      */
     public function saveOrUpdate($entity, bool $updated = false): void
     {
@@ -57,35 +59,11 @@ final class TabletRepository extends ServiceEntityRepository implements Queryabl
 
     /**
      * {@inheritdoc}
-     * @param Tablet $entity
+     * @param Client $entity
      */
     public function remove($entity): void
     {
         $this->_em->remove($entity);
         $this->_em->flush();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLatestModifiedTimestamp(string $id): ?int
-    {
-        return $this->createQueryBuilder('t')
-            ->select('t.updatedAt')
-            ->where('t.id LIKE :id')
-            ->setParameter('id', $id)
-            ->getQuery()
-            ->getOneOrNullResult(Query::HYDRATE_SINGLE_SCALAR);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLatestModifiedTimestampAmongAll(): ?int
-    {
-        return $this->createQueryBuilder('t')
-            ->select('MAX(t.updatedAt) as lastUpdate')
-            ->getQuery()
-            ->getSingleScalarResult();
     }
 }

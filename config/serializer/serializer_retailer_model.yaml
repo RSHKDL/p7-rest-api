@@ -1,0 +1,12 @@
+App\Domain\Model\RetailerModel:
+    attributes:
+        id:
+            groups: ['retailer']
+        name:
+            groups: ['retailer']
+        email:
+            groups: ['retailer']
+        bic:
+            groups: ['retailer']
+        numberOfClients:
+            groups: ['retailer']

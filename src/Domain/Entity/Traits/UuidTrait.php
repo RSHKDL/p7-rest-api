@@ -14,13 +14,13 @@ trait UuidTrait
     /**
      * @var UuidInterface
      */
-    private $id;
+    protected $id;
 
     /**
      * Use it in constructor
      * @throws \Exception
      */
-    public function initUuid()
+    public function initUuid(): void
     {
         $this->id = Uuid::uuid4();
     }

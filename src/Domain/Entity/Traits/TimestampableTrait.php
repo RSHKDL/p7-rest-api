@@ -21,7 +21,7 @@ trait TimestampableTrait
     /**
      * Use it in constructor
      */
-    public function initTimestampable()
+    public function initTimestampable(): void
     {
         $this->createdAt = Time();
         $this->updatedAt = Time();

@@ -46,7 +46,7 @@ class ReadTablet
      */
     public function __invoke(Request $request, TabletModel $model): Response
     {
-        $latestModifiedTimestamp = $this->factory->build($request->attributes->get('id'), $model, true);
+        $latestModifiedTimestamp = $this->factory->build($request, $model, true);
         $this->responder->buildCache($latestModifiedTimestamp);
 
         if ($this->responder->isCacheValid($request) && !$this->responder->getResponse()->getContent()) {
@@ -54,7 +54,7 @@ class ReadTablet
         }
 
         return $this->responder->createResponse(
-            $this->factory->build($request->attributes->get('id'), $model),
+            $this->factory->build($request, $model),
             'tablet'
         );
     }
