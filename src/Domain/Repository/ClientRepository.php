@@ -3,8 +3,8 @@
 namespace App\Domain\Repository;
 
 use App\Domain\Entity\Client;
+use App\Domain\Repository\Interfaces\Filterable;
 use App\Domain\Repository\Interfaces\Manageable;
-use App\Domain\Repository\Interfaces\Queryable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
@@ -13,7 +13,7 @@ use Doctrine\ORM\QueryBuilder;
  * Class ClientRepository
  * @author ereshkidal
  */
-final class ClientRepository extends ServiceEntityRepository implements Manageable, Queryable
+final class ClientRepository extends ServiceEntityRepository implements Manageable, Filterable
 {
     /**
      * RetailerRepository constructor.
@@ -27,21 +27,27 @@ final class ClientRepository extends ServiceEntityRepository implements Manageab
     /**
      * {@inheritdoc}
      */
-    public function findAllQueryBuilder(): QueryBuilder
-    {
-        return $this->createQueryBuilder('c')
-            ->orderBy('c.updatedAt', 'DESC');
-    }
+    public function findAllQueryBuilder(
+        ?string $filter = null,
+        string $parentResourceUuid = null
+    ): ?QueryBuilder {
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findAllByRetailerQueryBuilder(string $retailerUuid): ?QueryBuilder
-    {
-        return $this->createQueryBuilder('c')
-            ->where('c.retailer = :retailerUuid')
-            ->orderBy('c.updatedAt', 'DESC')
-            ->setParameter('retailerUuid', $retailerUuid);
+        $qb = $this->createQueryBuilder('c');
+        $qb->andWhere($qb->expr()->eq('c.retailer', ':retailerUuid'));
+        $qb->setParameter('retailerUuid', $parentResourceUuid);
+        $qb->orderBy('c.updatedAt', 'DESC');
+
+        if ($filter) {
+            $qb->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->like('c.firstName', ':filter'),
+                    $qb->expr()->like('c.lastName', ':filter'),
+                    $qb->expr()->like('c.email', ':filter')
+                )
+            )->setParameter('filter', '%'.$filter.'%');
+        }
+
+        return $qb;
     }
 
     /**

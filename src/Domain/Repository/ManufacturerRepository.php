@@ -3,8 +3,8 @@
 namespace App\Domain\Repository;
 
 use App\Domain\Entity\Manufacturer;
+use App\Domain\Repository\Interfaces\Filterable;
 use App\Domain\Repository\Interfaces\Manageable;
-use App\Domain\Repository\Interfaces\Queryable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
@@ -13,7 +13,7 @@ use Doctrine\ORM\QueryBuilder;
  * Class ManufacturerRepository
  * @author ereshkidal
  */
-final class ManufacturerRepository extends ServiceEntityRepository implements Queryable, Manageable
+final class ManufacturerRepository extends ServiceEntityRepository implements Filterable, Manageable
 {
     /**
      * ManufacturerRepository constructor.
@@ -27,17 +27,9 @@ final class ManufacturerRepository extends ServiceEntityRepository implements Qu
     /**
      * {@inheritdoc}
      */
-    public function findAllQueryBuilder(): QueryBuilder
+    public function findAllQueryBuilder(?string $filter = null, ?string $parentResourceUuid = null): ?QueryBuilder
     {
-        return $this->createQueryBuilder('manufacturer');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findAllByRetailerQueryBuilder(string $retailerUuid): ?QueryBuilder
-    {
-        return null;
+        return $this->createQueryBuilder('m');
     }
 
     /**
