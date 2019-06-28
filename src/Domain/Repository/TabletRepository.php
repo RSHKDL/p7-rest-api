@@ -4,8 +4,8 @@ namespace App\Domain\Repository;
 
 use App\Domain\Entity\Tablet;
 use App\Domain\Repository\Interfaces\Cacheable;
+use App\Domain\Repository\Interfaces\Filterable;
 use App\Domain\Repository\Interfaces\Manageable;
-use App\Domain\Repository\Interfaces\Queryable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
@@ -15,7 +15,7 @@ use Doctrine\ORM\QueryBuilder;
  * Class TabletRepository
  * @author ereshkidal
  */
-final class TabletRepository extends ServiceEntityRepository implements Queryable, Cacheable, Manageable
+final class TabletRepository extends ServiceEntityRepository implements Filterable, Cacheable, Manageable
 {
     /**
      * TabletRepository constructor.
@@ -24,22 +24,6 @@ final class TabletRepository extends ServiceEntityRepository implements Queryabl
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Tablet::class);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findAllQueryBuilder(): QueryBuilder
-    {
-        return $this->createQueryBuilder('tablet');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findAllByRetailerQueryBuilder(string $retailerUuid): ?QueryBuilder
-    {
-        return null;
     }
 
     /**
@@ -87,5 +71,28 @@ final class TabletRepository extends ServiceEntityRepository implements Queryabl
             ->select('MAX(t.updatedAt) as lastUpdate')
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAllQueryBuilder(?string $filter = null, ?string $parentResourceUuid = null): ?QueryBuilder
+    {
+        $qb = $this
+            ->createQueryBuilder('t')
+            ->orderBy('t.updatedAt', 'DESC')
+            ->leftJoin('t.manufacturer', 'm')
+        ;
+
+        if ($filter) {
+            $qb
+                ->where('t.model LIKE :filter')
+                ->orWhere('t.price LIKE :filter')
+                ->orWhere('m.name LIKE :filter')
+                ->setParameter('filter', '%'.$filter.'%')
+            ;
+        }
+
+        return $qb;
     }
 }

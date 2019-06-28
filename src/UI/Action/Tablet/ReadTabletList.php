@@ -60,7 +60,8 @@ final class ReadTabletList
 
         $routeParams = new RouteParams(
             self::ROUTE_NAME,
-            $request->attributes->get('_route_params')
+            $request->attributes->get('_route_params'),
+            $request->query->get('filter')
         );
 
         return $this->responder->createResponse(

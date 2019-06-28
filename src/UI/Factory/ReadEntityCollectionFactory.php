@@ -6,7 +6,7 @@ use App\Application\Pagination\PaginationFactory;
 use App\Application\Router\RouteParams;
 use App\Domain\Model\Interfaces\PaginatedModelInterface;
 use App\Domain\Repository\Interfaces\Cacheable;
-use App\Domain\Repository\Interfaces\Queryable;
+use App\Domain\Repository\Interfaces\Filterable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
@@ -58,8 +58,8 @@ final class ReadEntityCollectionFactory
     ) {
         $repository = $this->entityManager->getRepository($paginatedModel->getEntityName());
 
-        if (!$repository instanceof Queryable) {
-            throw new \DomainException('Invalid repository : The repository must implement Queryable.');
+        if (!$repository instanceof Filterable) {
+            throw new \DomainException('Invalid repository : The repository must implement Filterable.');
         }
 
         if ($checkCache && $repository instanceof Cacheable) {
@@ -74,24 +74,24 @@ final class ReadEntityCollectionFactory
             $this->getQueryBuilder($repository, $routeParams),
             $request,
             $routeParams->getName(),
-            $routeParams->getParameters()->toArray()
+            $routeParams
         );
 
         return $paginatedModel::createFromPaginatedCollection($paginatedCollection);
     }
 
     /**
-     * @param Queryable $repository
+     * @param Filterable $repository
      * @param RouteParams $routeParams
      * @return QueryBuilder
      */
-    private function getQueryBuilder(Queryable $repository, RouteParams $routeParams): QueryBuilder
+    private function getQueryBuilder(Filterable $repository, RouteParams $routeParams): QueryBuilder
     {
         $retailerUuid = $routeParams->getParameters()->get('retailerUuid');
         if ($retailerUuid) {
-            return $repository->findAllByRetailerQueryBuilder($retailerUuid);
+            return $repository->findAllQueryBuilder($routeParams->getFilter(), $retailerUuid);
         }
 
-        return $repository->findAllQueryBuilder();
+        return $repository->findAllQueryBuilder($routeParams->getFilter());
     }
 }

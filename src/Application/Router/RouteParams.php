@@ -22,14 +22,21 @@ final class RouteParams
     private $parameters;
 
     /**
+     * @var string|null
+     */
+    private $filter;
+
+    /**
      * RouteParams constructor.
      * @param string $routeName The Route name
      * @param array $parameters The Route parameters
+     * @param string|null $filter The Route filter
      */
-    public function __construct(string $routeName, array $parameters)
+    public function __construct(string $routeName, array $parameters, ?string $filter = null)
     {
         $this->name = $routeName;
         $this->parameters = new ArrayCollection($parameters);
+        $this->filter = $filter;
     }
 
     /**
@@ -46,5 +53,13 @@ final class RouteParams
     public function getParameters(): Collection
     {
         return $this->parameters;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getFilter(): ?string
+    {
+        return $this->filter;
     }
 }
