@@ -4,6 +4,7 @@ namespace App\Domain\Entity;
 
 use App\Domain\Entity\Interfaces\EntityInterface;
 use App\Domain\Entity\Traits\TimestampableTrait;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Client
@@ -24,11 +25,13 @@ class Client extends AbstractUser implements EntityInterface
 
     /**
      * @var string
+     * @Assert\Length(min="3")
      */
     private $firstName;
 
     /**
      * @var string
+     * @Assert\Length(min="3")
      */
     private $lastName;
 

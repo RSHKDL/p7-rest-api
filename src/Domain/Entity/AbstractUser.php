@@ -4,6 +4,7 @@ namespace App\Domain\Entity;
 
 use App\Domain\Entity\Traits\UuidTrait;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class User
@@ -15,6 +16,7 @@ abstract class AbstractUser implements UserInterface
 
     /**
      * @var string
+     * @Assert\Email()
      */
     protected $email;
 
