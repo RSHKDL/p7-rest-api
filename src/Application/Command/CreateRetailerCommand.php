@@ -68,7 +68,6 @@ class CreateRetailerCommand extends Command
     }
 
     /**
-     * @todo improve validation
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int|null|void
