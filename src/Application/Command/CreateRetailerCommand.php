@@ -9,6 +9,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class CreateRetailerCommand
@@ -32,18 +33,26 @@ class CreateRetailerCommand extends Command
     private $repository;
 
     /**
+     * @var ValidatorInterface
+     */
+    private $validator;
+
+    /**
      * CreateRetailerCommand constructor.
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param RetailerRepository $repository
+     * @param ValidatorInterface $validator
      * @param null|string $name
      */
     public function __construct(
         UserPasswordEncoderInterface $passwordEncoder,
         RetailerRepository $repository,
+        ValidatorInterface $validator,
         ?string $name = null
     ) {
         $this->passwordEncoder = $passwordEncoder;
         $this->repository = $repository;
+        $this->validator = $validator;
         parent::__construct($name);
     }
 
@@ -59,7 +68,7 @@ class CreateRetailerCommand extends Command
     }
 
     /**
-     * @todo improve validation on email and password
+     * @todo improve validation
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int|null|void
@@ -77,6 +86,7 @@ class CreateRetailerCommand extends Command
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 throw new \RuntimeException('✘ Invalid email');
             }
+
             return $email;
         });
         $plainPassword = $io->askHidden('Enter the password');
@@ -84,6 +94,7 @@ class CreateRetailerCommand extends Command
 
         if ($plainPassword !== $confirmPassword) {
             $io->error('✘ The passwords don\'t match');
+
             return;
         }
 
@@ -103,6 +114,13 @@ class CreateRetailerCommand extends Command
         $retailer->setPassword($this->passwordEncoder->encodePassword($retailer, $plainPassword));
         $retailer->setRoles([$role]);
 
+        $errors = $this->validateRetailer($retailer);
+        if ($errors) {
+            $io->error($errors);
+
+            return;
+        }
+
         $io->text('The user credentials will be:');
         $io->listing([
             'email:' => $email,
@@ -114,10 +132,26 @@ class CreateRetailerCommand extends Command
 
         if (!$io->confirm('Confirm?', false)) {
             $io->warning('✘ Retailer creation aborted');
+
             return;
         }
 
-        $this->repository->save($retailer);
+        $this->repository->saveOrUpdate($retailer);
         $io->success('✔ Retailer successfully created');
+    }
+
+    /**
+     * @param Retailer $retailer
+     * @return string|null
+     */
+    private function validateRetailer(Retailer $retailer): ?string
+    {
+        $errors = $this->validator->validate($retailer, null, ['createRetailer']);
+
+        if (count($errors) > 0) {
+            return (string) $errors;
+        }
+
+        return null;
     }
 }

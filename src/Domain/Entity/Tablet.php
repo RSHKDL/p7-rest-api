@@ -5,10 +5,15 @@ namespace App\Domain\Entity;
 use App\Domain\Entity\Interfaces\EntityInterface;
 use App\Domain\Entity\Traits\TimestampableTrait;
 use App\Domain\Entity\Traits\UuidTrait;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Tablet
  * @author ereshkidal
+ * @ORM\Entity()
+ * @UniqueEntity("model")
  */
 class Tablet extends AbstractProduct implements EntityInterface
 {
@@ -17,11 +22,13 @@ class Tablet extends AbstractProduct implements EntityInterface
 
     /**
      * @var Manufacturer
+     * @Assert\Valid()
      */
     private $manufacturer;
 
     /**
      * @var string
+     * @Assert\NotBlank()
      */
     private $model;
 

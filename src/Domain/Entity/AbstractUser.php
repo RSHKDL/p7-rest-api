@@ -17,7 +17,7 @@ abstract class AbstractUser implements UserInterface
 
     /**
      * @var string
-     * @Assert\Email()
+     * @Assert\Email(groups={"createRetailer"})
      * @CustomAssert\NoDuplicateClientEmail()
      */
     protected $email;
