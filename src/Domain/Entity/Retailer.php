@@ -5,20 +5,28 @@ namespace App\Domain\Entity;
 use App\Domain\Entity\Interfaces\EntityInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Retailer
  * @author ereshkidal
+ * @ORM\Entity()
+ * @UniqueEntity(fields={"email"}, groups={"createRetailer"})
+ * @UniqueEntity(fields={"retailerName"}, groups={"createRetailer"})
  */
 class Retailer extends AbstractUser implements EntityInterface
 {
     /**
      * @var string
+     * @Assert\NotBlank(groups={"createRetailer"})
      */
     private $retailerName;
 
     /**
      * @var string
+     * @Assert\NotBlank(groups={"createRetailer"})
      */
     private $businessIdentifierCode;
 

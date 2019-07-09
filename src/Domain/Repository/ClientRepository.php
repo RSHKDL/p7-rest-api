@@ -51,6 +51,25 @@ final class ClientRepository extends ServiceEntityRepository implements Manageab
     }
 
     /**
+     * @param string $email
+     * @param string $retailerUuid
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findOneByEmailAndRetailerUuid(string $email, string $retailerUuid)
+    {
+        $qb = $this->createQueryBuilder('c');
+        $qb->andWhere(
+                $qb->expr()->eq('c.retailer', ':retailerUuid'),
+                $qb->expr()->eq('c.email', ':email')
+            )
+            ->setParameter('email', $email)
+            ->setParameter('retailerUuid', $retailerUuid);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    /**
      * {@inheritdoc}
      * @param Client $entity
      */

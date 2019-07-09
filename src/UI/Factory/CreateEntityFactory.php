@@ -2,6 +2,7 @@
 
 namespace App\UI\Factory;
 
+use App\Application\Validation\FormValidator;
 use App\Domain\Model\Interfaces\ModelInterface;
 use App\Domain\Repository\Interfaces\Manageable;
 use App\UI\Factory\Traits\ProcessFormTrait;
@@ -13,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
  * Class CreateEntityFactory
  * @author ereshkidal
  */
-final class CreateEntityFactory extends AbstractFactory
+final class CreateEntityFactory
 {
     use ProcessFormTrait;
 
@@ -28,16 +29,24 @@ final class CreateEntityFactory extends AbstractFactory
     private $formFactory;
 
     /**
+     * @var FormValidator
+     */
+    private $formValidator;
+
+    /**
      * CreateEntityFactory constructor.
      * @param EntityManagerInterface $entityManager
      * @param FormFactoryInterface $formFactory
+     * @param FormValidator $formValidator
      */
     public function __construct(
         EntityManagerInterface $entityManager,
-        FormFactoryInterface $formFactory
+        FormFactoryInterface $formFactory,
+        FormValidator $formValidator
     ) {
         $this->entityManager = $entityManager;
         $this->formFactory = $formFactory;
+        $this->formValidator = $formValidator;
     }
 
     /**
@@ -55,6 +64,11 @@ final class CreateEntityFactory extends AbstractFactory
         $entity = new $entityName();
         $form = $this->formFactory->create($model->getEntityType(), $entity);
         $this->processForm($request, $form);
+
+        if ($form->isSubmitted() && !$form->isValid()) {
+            $this->formValidator->throwValidationErrorException($form);
+        }
+
         /** @var Manageable $repository */
         $repository = $this->entityManager->getRepository($model->getEntityName());
         //@todo i don't like this behavior... not really scalable
