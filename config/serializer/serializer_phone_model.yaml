@@ -14,3 +14,5 @@ App\Domain\Model\PhoneModel:
             groups: ['phone', 'product_collection']
         stock:
             groups: ['phone', 'manufacturer','product_collection']
+        _links:
+            groups: ['phone', 'product_collection']

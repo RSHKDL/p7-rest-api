@@ -2,8 +2,10 @@
 
 namespace App\UI\Factory;
 
+use App\Application\Helper\LinksHelper;
 use App\Application\Pagination\PaginationFactory;
 use App\Application\Router\RouteParams;
+use App\Domain\Model\Interfaces\ModelInterface;
 use App\Domain\Model\Interfaces\PaginatedModelInterface;
 use App\Domain\Repository\Interfaces\Cacheable;
 use App\Domain\Repository\Interfaces\Filterable;
@@ -26,18 +28,25 @@ final class ReadEntityCollectionFactory
      * @var PaginationFactory
      */
     private $paginationFactory;
+    /**
+     * @var LinksHelper
+     */
+    private $linksHelper;
 
     /**
      * ReadEntityCollectionFactory constructor.
      * @param EntityManagerInterface $entityManager
      * @param PaginationFactory $paginationFactory
+     * @param LinksHelper $linksHelper
      */
     public function __construct(
         EntityManagerInterface $entityManager,
-        PaginationFactory $paginationFactory
+        PaginationFactory $paginationFactory,
+        LinksHelper $linksHelper
     ) {
         $this->entityManager = $entityManager;
         $this->paginationFactory = $paginationFactory;
+        $this->linksHelper = $linksHelper;
     }
 
     /**
@@ -77,7 +86,10 @@ final class ReadEntityCollectionFactory
             $routeParams
         );
 
-        return $paginatedModel::createFromPaginatedCollection($paginatedCollection);
+        $paginatedModel = $paginatedModel::createFromPaginatedCollection($paginatedCollection);
+        $this->linksHelper->addLinks($paginatedModel);
+
+        return $paginatedModel;
     }
 
     /**

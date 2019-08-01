@@ -5,13 +5,16 @@ namespace App\Domain\Model;
 use App\Application\Pagination\PaginatedCollection;
 use App\Domain\Entity\Manufacturer;
 use App\Domain\Model\Interfaces\PaginatedModelInterface;
+use App\Domain\Model\Traits\CreateModelsFromEntitiesTrait;
 
 /**
  * Class ManufacturerPaginatedModel
  * @author ereshkidal
  */
-class ManufacturerPaginatedModel implements PaginatedModelInterface
+final class ManufacturerPaginatedModel implements PaginatedModelInterface
 {
+    use CreateModelsFromEntitiesTrait;
+
     private const ENTITY_NAME = Manufacturer::class;
 
     /**
@@ -40,7 +43,7 @@ class ManufacturerPaginatedModel implements PaginatedModelInterface
     public static function createFromPaginatedCollection(PaginatedCollection $paginatedCollection): PaginatedModelInterface
     {
         $model = new self();
-        $model->manufacturers = $model->createModelsFromEntities($paginatedCollection->getItems());
+        $model->manufacturers = $model->createModelsFromEntities($paginatedCollection->getItems(), new ManufacturerModel());
         $model->manufacturersTotal = $paginatedCollection->getItemsTotal();
         $model->manufacturersPerPage = $paginatedCollection->getItemsPerPage();
         $model->_links = $paginatedCollection->getLinks();
@@ -57,15 +60,10 @@ class ManufacturerPaginatedModel implements PaginatedModelInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return ManufacturerModel[]
      */
-    public function createModelsFromEntities(array $entities): array
+    public function getModels(): array
     {
-        $models = [];
-        foreach ($entities as $manufacturer) {
-            $models[] = ManufacturerModel::createFromEntity($manufacturer);
-        }
-
-        return $models;
+        return $this->manufacturers;
     }
 }

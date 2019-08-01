@@ -10,3 +10,5 @@ App\Domain\Model\ClientModel:
             groups: ['client', 'client_collection']
         phone:
             groups: ['client']
+        _links:
+            groups: ['client', 'client_collection']

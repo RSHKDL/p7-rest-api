@@ -2,6 +2,7 @@
 
 namespace App\UI\Factory;
 
+use App\Application\Helper\LinksHelper;
 use App\Domain\Entity\Interfaces\EntityInterface;
 use App\Domain\Model\Interfaces\ModelInterface;
 use App\Domain\Repository\Interfaces\Cacheable;
@@ -24,12 +25,21 @@ final class ReadEntityFactory
     private $entityManager;
 
     /**
+     * @var LinksHelper
+     */
+    private $linksHelper;
+
+    /**
      * ReadEntityFactory constructor.
      * @param EntityManagerInterface $entityManager
+     * @param LinksHelper $linksHelper
      */
-    public function __construct(EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        LinksHelper $linksHelper
+    ) {
         $this->entityManager = $entityManager;
+        $this->linksHelper = $linksHelper;
     }
 
     /**
@@ -59,7 +69,9 @@ final class ReadEntityFactory
 
         /** @var EntityInterface $entity */
         $entity = $this->getEntity($request, $repository, $model->getEntityShortName());
+        $model = $model::createFromEntity($entity);
+        $this->linksHelper->addLink($model);
 
-        return $model::createFromEntity($entity);
+        return $model;
     }
 }

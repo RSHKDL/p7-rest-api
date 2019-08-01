@@ -6,7 +6,7 @@ namespace App\Application\Pagination;
  * Class PaginatedCollection
  * @author ereshkidal
  */
-class PaginatedCollection
+final class PaginatedCollection
 {
     /**
      * @var array
@@ -76,7 +76,7 @@ class PaginatedCollection
      * @param string $ref
      * @param string $url
      */
-    public function addLink(string $ref, string $url)
+    public function addLink(string $ref, string $url): void
     {
         $this->_links[$ref] = $url;
     }

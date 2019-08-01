@@ -18,15 +18,19 @@ interface PaginatedModelInterface
     public static function createFromPaginatedCollection(PaginatedCollection $paginatedCollection): PaginatedModelInterface;
 
     /**
+     * @param array $entities
+     * @param ModelInterface $model
+     * @return array
+     */
+    public function createModelsFromEntities(array $entities, ModelInterface $model): array;
+
+    /**
      * @return string
      */
     public function getEntityName(): string;
 
     /**
-     * @todo adapt all PaginatedModel
-     * @param array $entities
-     * @param null|ModelInterface $model
      * @return array
      */
-    //public function createModelsFromEntities(array $entities, ?ModelInterface $model): array;
+    public function getModels(): array;
 }

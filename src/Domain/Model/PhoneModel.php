@@ -12,7 +12,7 @@ use App\UI\Form\CreatePhoneType;
  * Class PhoneModel
  * @author ereshkidal
  */
-class PhoneModel implements ModelInterface
+final class PhoneModel implements ModelInterface
 {
     public const ENTITY_NAME = Phone::class;
     public const ENTITY_SHORT_NAME = 'phone';
@@ -52,6 +52,11 @@ class PhoneModel implements ModelInterface
      * @var string
      */
     public $lastModified;
+
+    /**
+     * @var array
+     */
+    public $_links;
 
     /**
      * {@inheritdoc}
@@ -103,6 +108,14 @@ class PhoneModel implements ModelInterface
     public function getId(): string
     {
         return $this->id;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addLink(string $ref, string $url): void
+    {
+        $this->_links[$ref] = $url;
     }
 
     /**
