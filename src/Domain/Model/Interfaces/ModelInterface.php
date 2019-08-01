@@ -37,4 +37,10 @@ interface ModelInterface
      * @return string
      */
     public function getId(): string;
+
+    /**
+     * @param string $ref
+     * @param string $url
+     */
+    public function addLink(string $ref, string $url): void;
 }

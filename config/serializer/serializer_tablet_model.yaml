@@ -12,3 +12,5 @@ App\Domain\Model\TabletModel:
             groups: ['tablet', 'product_collection']
         stock:
             groups: ['tablet', 'manufacturer','product_collection']
+        _links:
+            groups: ['tablet', 'product_collection']

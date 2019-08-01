@@ -33,7 +33,7 @@ final class FormValidator
      */
     private function getErrorsFromForm(FormInterface $form): array
     {
-        $errors = array();
+        $errors = [];
         foreach ($form->getErrors() as $error) {
             $errors[] = $error->getMessage();
         }

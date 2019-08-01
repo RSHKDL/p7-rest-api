@@ -92,4 +92,12 @@ final class RetailerModel implements ModelInterface
     {
         return $this->id;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addLink(string $ref, string $url): void
+    {
+
+    }
 }
