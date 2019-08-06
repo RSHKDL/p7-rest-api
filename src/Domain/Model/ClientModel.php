@@ -53,6 +53,11 @@ final class ClientModel implements ModelInterface
     public $phone;
 
     /**
+     * @var array
+     */
+    public $_links;
+
+    /**
      * {@inheritdoc}
      */
     public static function createFromEntity(EntityInterface $entity): ModelInterface
@@ -110,5 +115,13 @@ final class ClientModel implements ModelInterface
     public function getParentId(): ?string
     {
         return $this->retailerId;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addLink(string $ref, string $url): void
+    {
+        $this->_links[$ref] = $url;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\UI\Factory;
 
+use App\Application\Helper\LinksHelper;
 use App\Application\Validation\FormValidator;
 use App\Domain\Entity\Interfaces\EntityInterface;
 use App\Domain\Model\Interfaces\ModelInterface;
@@ -38,19 +39,27 @@ final class UpdateEntityFactory
     private $formValidator;
 
     /**
+     * @var LinksHelper
+     */
+    private $linksHelper;
+
+    /**
      * UpdateEntityFactory constructor.
      * @param EntityManagerInterface $entityManager
      * @param FormFactoryInterface $formFactory
      * @param FormValidator $formValidator
+     * @param LinksHelper $linksHelper
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         FormFactoryInterface $formFactory,
-        FormValidator $formValidator
+        FormValidator $formValidator,
+        LinksHelper $linksHelper
     ) {
         $this->entityManager = $entityManager;
         $this->formFactory = $formFactory;
         $this->formValidator = $formValidator;
+        $this->linksHelper = $linksHelper;
     }
 
     /**
@@ -73,7 +82,9 @@ final class UpdateEntityFactory
         }
 
         $repository->saveOrUpdate($entity, true);
+        $model = $model::createFromEntity($entity);
+        $this->linksHelper->addLink($model);
 
-        return $model::createFromEntity($entity);
+        return $model;
     }
 }

@@ -5,13 +5,16 @@ namespace App\Domain\Model;
 use App\Application\Pagination\PaginatedCollection;
 use App\Domain\Entity\Phone;
 use App\Domain\Model\Interfaces\PaginatedModelInterface;
+use App\Domain\Model\Traits\CreateModelsFromEntitiesTrait;
 
 /**
  * Class PhonePaginatedModel
  * @author ereshkidal
  */
-class PhonePaginatedModel implements PaginatedModelInterface
+final class PhonePaginatedModel implements PaginatedModelInterface
 {
+    use CreateModelsFromEntitiesTrait;
+
     private const ENTITY_NAME = Phone::class;
 
     /**
@@ -40,7 +43,7 @@ class PhonePaginatedModel implements PaginatedModelInterface
     public static function createFromPaginatedCollection(PaginatedCollection $paginatedCollection): PaginatedModelInterface
     {
         $model = new self();
-        $model->phones = $model->createModelsFromEntities($paginatedCollection->getItems());
+        $model->phones = $model->createModelsFromEntities($paginatedCollection->getItems(), new PhoneModel());
         $model->phonesTotal = $paginatedCollection->getItemsTotal();
         $model->phonesPerPage = $paginatedCollection->getItemsPerPage();
         $model->_links = $paginatedCollection->getLinks();
@@ -57,15 +60,10 @@ class PhonePaginatedModel implements PaginatedModelInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return PhoneModel[]
      */
-    public function createModelsFromEntities(array $entities): array
+    public function getModels(): array
     {
-        $models = [];
-        foreach ($entities as $phone) {
-            $models[] = PhoneModel::createFromEntity($phone);
-        }
-
-        return $models;
+        return $this->phones;
     }
 }

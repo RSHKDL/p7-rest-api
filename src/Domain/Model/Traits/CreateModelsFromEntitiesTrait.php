@@ -5,10 +5,10 @@ namespace App\Domain\Model\Traits;
 use App\Domain\Model\Interfaces\ModelInterface;
 
 /**
- * Trait CreateFromEntityTrait
+ * Trait CreateModelsFromEntitiesTrait
  * @author ereshkidal
  */
-trait CreateFromEntityTrait
+trait CreateModelsFromEntitiesTrait
 {
     /**
      * @param array $entities

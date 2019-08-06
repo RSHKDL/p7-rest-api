@@ -14,7 +14,7 @@ use Doctrine\Common\Collections\Collection;
  * Class ManufacturerModel
  * @author ereshkidal
  */
-class ManufacturerModel implements ModelInterface
+final class ManufacturerModel implements ModelInterface
 {
     public const ENTITY_NAME = Manufacturer::class;
     public const ENTITY_SHORT_NAME = 'manufacturer';
@@ -55,7 +55,7 @@ class ManufacturerModel implements ModelInterface
     public static function createFromEntity(EntityInterface $entity): ModelInterface
     {
         if (!$entity instanceof Manufacturer) {
-            throw new \InvalidArgumentException();
+            throw new \InvalidArgumentException('Invalid entity provided');
         }
 
         $model = new self();
@@ -99,6 +99,14 @@ class ManufacturerModel implements ModelInterface
     public function getId(): string
     {
         return $this->id;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addLink(string $ref, string $url): void
+    {
+
     }
 
     /**

@@ -67,7 +67,7 @@ class ReadCacheResponder
     {
         $json = $this->serializer->serialize($model, 'json', ['groups' => [$serializationGroup]]);
         $this->response->setStatusCode(Response::HTTP_OK);
-        $this->response->headers->set('Content-Type', 'application/hal+json');
+        $this->response->headers->set('Content-Type', 'application/custom+hal+json');
 
         return $this->response->setContent($json);
     }

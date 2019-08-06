@@ -12,7 +12,7 @@ use App\UI\Form\CreateTabletType;
  * Class TabletModel
  * @author ereshkidal
  */
-class TabletModel implements ModelInterface
+final class TabletModel implements ModelInterface
 {
     public const ENTITY_NAME = Tablet::class;
     public const ENTITY_SHORT_NAME = 'tablet';
@@ -47,6 +47,11 @@ class TabletModel implements ModelInterface
      * @var int
      */
     public $stock;
+
+    /**
+     * @var array
+     */
+    public $_links;
 
     /**
      * {@inheritdoc}
@@ -97,5 +102,13 @@ class TabletModel implements ModelInterface
     public function getId(): string
     {
         return $this->id;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addLink(string $ref, string $url): void
+    {
+        $this->_links[$ref] = $url;
     }
 }

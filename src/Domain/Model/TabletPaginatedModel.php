@@ -5,13 +5,16 @@ namespace App\Domain\Model;
 use App\Application\Pagination\PaginatedCollection;
 use App\Domain\Entity\Tablet;
 use App\Domain\Model\Interfaces\PaginatedModelInterface;
+use App\Domain\Model\Traits\CreateModelsFromEntitiesTrait;
 
 /**
  * Class TabletPaginatedModel
  * @author ereshkidal
  */
-class TabletPaginatedModel implements PaginatedModelInterface
+final class TabletPaginatedModel implements PaginatedModelInterface
 {
+    use CreateModelsFromEntitiesTrait;
+
     private const ENTITY_NAME = Tablet::class;
 
     /**
@@ -37,10 +40,10 @@ class TabletPaginatedModel implements PaginatedModelInterface
     /**
      * {@inheritdoc}
      */
-    static function createFromPaginatedCollection(PaginatedCollection $paginatedCollection): PaginatedModelInterface
+    public static function createFromPaginatedCollection(PaginatedCollection $paginatedCollection): PaginatedModelInterface
     {
         $model = new self();
-        $model->tablets = $model->createModelsFromEntities($paginatedCollection->getItems());
+        $model->tablets = $model->createModelsFromEntities($paginatedCollection->getItems(), new TabletModel());
         $model->tabletsTotal = $paginatedCollection->getItemsTotal();
         $model->tabletsPerPage = $paginatedCollection->getItemsPerPage();
         $model->_links = $paginatedCollection->getLinks();
@@ -51,21 +54,16 @@ class TabletPaginatedModel implements PaginatedModelInterface
     /**
      * {@inheritdoc}
      */
-    function getEntityName(): string
+    public function getEntityName(): string
     {
         return self::ENTITY_NAME;
     }
 
     /**
-     * {@inheritdoc}
+     * @return TabletModel[]
      */
-    function createModelsFromEntities(array $entities): array
+    public function getModels(): array
     {
-        $models = [];
-        foreach ($entities as $entity) {
-            $models[] = TabletModel::createFromEntity($entity);
-        }
-
-        return $models;
+        return $this->tablets;
     }
 }
