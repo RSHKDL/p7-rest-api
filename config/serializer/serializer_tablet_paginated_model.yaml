@@ -1,0 +1,10 @@
+App\Domain\Model\TabletPaginatedModel:
+    attributes:
+        tablets:
+            groups: ['product_collection']
+        tabletsTotal:
+            groups: ['product_collection']
+        tabletsPerPage:
+            groups: ['product_collection']
+        _links:
+            groups: ['product_collection']

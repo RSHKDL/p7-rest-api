@@ -5,21 +5,26 @@ namespace App\UI\Form;
 use App\Domain\Entity\Phone;
 use App\UI\Form\DataTransformer\ManufacturerTransformer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Class CreatePhoneType
+ * @author ereshkidal
+ */
 class CreatePhoneType extends AbstractType
 {
     /**
      * @var ManufacturerTransformer
      */
-    private $transformer;
+    private $manufacturerTransformer;
 
-    public function __construct(ManufacturerTransformer $transformer)
+    public function __construct(ManufacturerTransformer $manufacturerTransformer)
     {
-        $this->transformer = $transformer;
+        $this->manufacturerTransformer = $manufacturerTransformer;
     }
 
     /**
@@ -29,14 +34,14 @@ class CreatePhoneType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('model')
+            ->add('model', TextType::class)
             ->add('description', TextareaType::class)
             ->add('manufacturer', TextType::class)
-            ->add('price')
-            ->add('stock')
+            ->add('price', IntegerType::class)
+            ->add('stock', IntegerType::class)
         ;
 
-        $builder->get('manufacturer')->addModelTransformer($this->transformer);
+        $builder->get('manufacturer')->addModelTransformer($this->manufacturerTransformer);
     }
 
     /**

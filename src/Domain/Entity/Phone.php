@@ -2,54 +2,35 @@
 
 namespace App\Domain\Entity;
 
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use App\Domain\Entity\Interfaces\EntityInterface;
+use App\Domain\Entity\Traits\TimestampableTrait;
+use App\Domain\Entity\Traits\UuidTrait;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Phone
  * @author ereshkidal
+ * @ORM\Entity()
+ * @UniqueEntity("model")
  */
-class Phone
+class Phone extends AbstractProduct implements EntityInterface
 {
-    /**
-     * @var UuidInterface
-     */
-    private $id;
-
-    /**
-     * @var int
-     */
-    private $createdAt;
-
-    /**
-     * @var int
-     */
-    private $updatedAt;
+    use UuidTrait;
+    use TimestampableTrait;
 
     /**
      * @var Manufacturer
+     * @Assert\Valid()
      */
     private $manufacturer;
 
     /**
      * @var string
+     * @Assert\NotBlank()
      */
     private $model;
-
-    /**
-     * @var string
-     */
-    private $description;
-
-    /**
-     * @var int
-     */
-    private $price;
-
-    /**
-     * @var int
-     */
-    private $stock;
 
     /**
      * Phone constructor.
@@ -57,81 +38,8 @@ class Phone
      */
     public function __construct()
     {
-        $this->id = Uuid::uuid4();
-        $this->createdAt = time();
-        $this->updatedAt = time();
-    }
-
-    /**
-     * @return UuidInterface
-     */
-    public function getId(): UuidInterface
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getModel(): ?string
-    {
-        return $this->model;
-    }
-
-    /**
-     * @param string $model
-     */
-    public function setModel(string $model): void
-    {
-        $this->model = $model;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param string $description
-     */
-    public function setDescription(string $description): void
-    {
-        $this->description = $description;
-    }
-
-    /**
-     * @return null|int
-     */
-    public function getPrice(): ?int
-    {
-        return $this->price;
-    }
-
-    /**
-     * @param int $price
-     */
-    public function setPrice(int $price): void
-    {
-        $this->price = $price;
-    }
-
-    /**
-     * @return null|int
-     */
-    public function getStock(): ?int
-    {
-        return $this->stock;
-    }
-
-    /**
-     * @param int $stock
-     */
-    public function setStock(int $stock): void
-    {
-        $this->stock = $stock;
+        $this->initUuid();
+        $this->initTimestampable();
     }
 
     /**
@@ -148,5 +56,21 @@ class Phone
     public function setManufacturer(Manufacturer $manufacturer): void
     {
         $this->manufacturer = $manufacturer;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getModel(): ?string
+    {
+        return $this->model;
+    }
+
+    /**
+     * @param string $model
+     */
+    public function setModel(string $model): void
+    {
+        $this->model = $model;
     }
 }

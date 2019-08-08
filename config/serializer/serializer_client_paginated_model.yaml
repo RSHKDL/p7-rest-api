@@ -1,0 +1,10 @@
+App\Domain\Model\ClientPaginatedModel:
+    attributes:
+        clients:
+            groups: ['client_collection']
+        clientsTotal:
+            groups: ['client_collection']
+        clientsPerPage:
+            groups: ['client_collection']
+        _links:
+            groups: ['client_collection']

@@ -1,0 +1,16 @@
+App\Domain\Model\TabletModel:
+    attributes:
+        id:
+            groups: ['tablet', 'product_collection']
+        manufacturer:
+            groups: ['tablet', 'product_collection']
+        model:
+            groups: ['tablet', 'manufacturer', 'product_collection']
+        description:
+            groups: ['tablet']
+        price:
+            groups: ['tablet', 'product_collection']
+        stock:
+            groups: ['tablet', 'manufacturer','product_collection']
+        _links:
+            groups: ['tablet', 'product_collection']

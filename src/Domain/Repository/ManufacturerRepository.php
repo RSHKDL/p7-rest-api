@@ -3,10 +3,17 @@
 namespace App\Domain\Repository;
 
 use App\Domain\Entity\Manufacturer;
+use App\Domain\Repository\Interfaces\Filterable;
+use App\Domain\Repository\Interfaces\Manageable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
 
-class ManufacturerRepository extends ServiceEntityRepository
+/**
+ * Class ManufacturerRepository
+ * @author ereshkidal
+ */
+final class ManufacturerRepository extends ServiceEntityRepository implements Filterable, Manageable
 {
     /**
      * ManufacturerRepository constructor.
@@ -15,6 +22,14 @@ class ManufacturerRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Manufacturer::class);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAllQueryBuilder(?string $filter = null, ?string $parentResourceUuid = null): ?QueryBuilder
+    {
+        return $this->createQueryBuilder('m');
     }
 
     /**
@@ -32,11 +47,22 @@ class ManufacturerRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Manufacturer $manufacturer
+     * {@inheritdoc}
+     * @param Manufacturer $entity
      */
-    public function save(Manufacturer $manufacturer)
+    public function saveOrUpdate($entity, bool $updated = false): void
     {
-        $this->_em->persist($manufacturer);
+        $this->_em->persist($entity);
+        $this->_em->flush();
+    }
+
+    /**
+     * {@inheritdoc}
+     * @param Manufacturer $entity
+     */
+    public function remove($entity): void
+    {
+        $this->_em->remove($entity);
         $this->_em->flush();
     }
 }

@@ -1,0 +1,18 @@
+App\Domain\Model\PhoneModel:
+    attributes:
+        id:
+            groups: ['phone', 'product_collection']
+        manufacturer:
+            groups: ['phone', 'product_collection']
+        model:
+            groups: ['phone', 'manufacturer', 'product_collection']
+        lastModified:
+            groups: ['phone']
+        description:
+            groups: ['phone']
+        price:
+            groups: ['phone', 'product_collection']
+        stock:
+            groups: ['phone', 'manufacturer','product_collection']
+        _links:
+            groups: ['phone', 'product_collection']

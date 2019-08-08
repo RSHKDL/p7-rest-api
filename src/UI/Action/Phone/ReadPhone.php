@@ -2,14 +2,17 @@
 
 namespace App\UI\Action\Phone;
 
-use App\UI\Factory\ReadPhoneFactory;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Swagger\Annotations as SWG;
+use App\Domain\Model\PhoneModel;
+use App\UI\Factory\ReadEntityFactory;
+use App\UI\Responder\ReadCacheResponder;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/api/phones/{id}", methods={"GET"}, name="phone_read")
+ * @Route("/api/products/phones/{id}", methods={"GET"}, name="phone_read")
  *
  * Class ReadPhone
  * @author ereshkidal
@@ -17,24 +20,28 @@ use Symfony\Component\Routing\Annotation\Route;
 class ReadPhone
 {
     /**
-     * @var ReadPhoneFactory
+     * @var ReadEntityFactory
      */
     private $factory;
 
     /**
-     * ReadPhone constructor.
-     * @param ReadPhoneFactory $factory
+     * @var ReadCacheResponder
      */
-    public function __construct(ReadPhoneFactory $factory)
+    private $responder;
+
+    /**
+     * ReadPhone constructor.
+     * @param ReadEntityFactory $factory
+     * @param ReadCacheResponder $responder
+     */
+    public function __construct(ReadEntityFactory $factory, ReadCacheResponder $responder)
     {
         $this->factory = $factory;
+        $this->responder = $responder;
     }
 
     /**
      * Return a phone
-     *
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
      *
      * @SWG\Parameter(
      *     name="id",
@@ -45,7 +52,7 @@ class ReadPhone
      * @SWG\Response(
      *      response=200,
      *      description="Phone successfully returned",
-     *      @Model(type=App\Domain\Entity\Phone::class, groups={"phone"})
+     *      @Model(type=PhoneModel::class, groups={"phone"})
      * )
      * @SWG\Response(
      *      response=400,
@@ -56,9 +63,24 @@ class ReadPhone
      *      description="Phone not found"
      * )
      * @SWG\Tag(name="Phones")
+     *
+     * @param Request $request
+     * @param PhoneModel $model
+     * @return Response
+     * @throws \Exception
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request, PhoneModel $model): Response
     {
-        return $this->factory->read($request->attributes->get('id'));
+        $latestModifiedTimestamp = $this->factory->build($request, $model, true);
+        $this->responder->buildCache($latestModifiedTimestamp);
+
+        if ($this->responder->isCacheValid($request) && !$this->responder->getResponse()->getContent()) {
+            return $this->responder->getResponse();
+        }
+
+        return $this->responder->createResponse(
+            $this->factory->build($request, $model),
+            'phone'
+        );
     }
 }

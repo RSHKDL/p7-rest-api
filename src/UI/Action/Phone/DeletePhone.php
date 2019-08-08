@@ -2,29 +2,31 @@
 
 namespace App\UI\Action\Phone;
 
-use App\UI\Factory\DeletePhoneFactory;
+use App\Domain\Model\PhoneModel;
+use App\UI\Factory\DeleteEntityFactory;
 use App\UI\Responder\DeleteResponder;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/api/phones/{id}", methods={"DELETE"}, name="phone_delete")
+ * @Route("/api/products/phones/{id}", methods={"DELETE"}, name="phone_delete")
  *
  * Class DeletePhone
  * @author ereshkidal
  */
-class DeletePhone
+final class DeletePhone
 {
     /**
-     * @var DeletePhoneFactory
+     * @var DeleteEntityFactory
      */
     private $factory;
 
     /**
      * DeletePhone constructor.
-     * @param DeletePhoneFactory $factory
+     * @param DeleteEntityFactory $factory
      */
-    public function __construct(DeletePhoneFactory $factory)
+    public function __construct(DeleteEntityFactory $factory)
     {
         $this->factory = $factory;
     }
@@ -32,11 +34,14 @@ class DeletePhone
     /**
      * @param Request $request
      * @param DeleteResponder $responder
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param PhoneModel $model
+     * @return Response
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function __invoke(Request $request, DeleteResponder $responder)
+    public function __invoke(Request $request, DeleteResponder $responder, PhoneModel $model): Response
     {
-        $this->factory->remove($request->attributes->get('id'));
+        $this->factory->remove($request->attributes->get('id'), $model);
 
         return $responder();
     }

@@ -2,29 +2,30 @@
 
 namespace App\UI\Action\Phone;
 
-use App\UI\Factory\UpdatePhoneFactory;
+use App\Domain\Model\PhoneModel;
+use App\UI\Factory\UpdateEntityFactory;
 use App\UI\Responder\UpdateResponder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/api/phones/{id}", methods={"PUT", "PATCH"}, name="phone_update")
+ * @Route("/api/products/phones/{id}", methods={"PUT", "PATCH"}, name="phone_update")
  *
  * Class UpdatePhone
  * @author ereshkidal
  */
-class UpdatePhone
+final class UpdatePhone
 {
     /**
-     * @var UpdatePhoneFactory
+     * @var UpdateEntityFactory
      */
     private $factory;
 
     /**
      * UpdatePhone constructor.
-     * @param UpdatePhoneFactory $factory
+     * @param UpdateEntityFactory $factory
      */
-    public function __construct(UpdatePhoneFactory $factory)
+    public function __construct(UpdateEntityFactory $factory)
     {
         $this->factory = $factory;
     }
@@ -32,12 +33,14 @@ class UpdatePhone
     /**
      * @param Request $request
      * @param UpdateResponder $responder
+     * @param PhoneModel $model
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
-    public function __invoke(Request $request, UpdateResponder $responder)
+    public function __invoke(Request $request, UpdateResponder $responder, PhoneModel $model)
     {
-        $phone = $this->factory->update($request, $request->attributes->get('id'));
+        $updatedModel = $this->factory->update($request, $model);
 
-        return $responder($phone, 'phone', 'phone_read');
+        return $responder($updatedModel, 'phone', 'phone_read');
     }
 }

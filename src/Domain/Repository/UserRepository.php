@@ -6,6 +6,10 @@ use App\Domain\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
+/**
+ * Class UserRepository
+ * @author ereshkidal
+ */
 class UserRepository extends ServiceEntityRepository
 {
     /**
@@ -33,6 +37,8 @@ class UserRepository extends ServiceEntityRepository
 
     /**
      * @param User $user
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function save(User $user)
     {
