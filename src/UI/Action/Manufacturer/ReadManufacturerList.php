@@ -6,6 +6,8 @@ use App\Application\Router\RouteParams;
 use App\Domain\Model\ManufacturerPaginatedModel;
 use App\UI\Factory\ReadEntityCollectionFactory;
 use App\UI\Responder\ReadResponder;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -44,6 +46,15 @@ final class ReadManufacturerList
     }
 
     /**
+     * Return a collection of manufacturers
+     *
+     * @SWG\Response(
+     *      response=200,
+     *      description="Collection successfully returned",
+     *      @Model(type=ManufacturerPaginatedModel::class, groups={"manufacturer_collection"})
+     * )
+     * @SWG\Tag(name="Manufacturers")
+     *
      * @param Request $request
      * @param ManufacturerPaginatedModel $manufacturerPaginatedModel
      * @return Response

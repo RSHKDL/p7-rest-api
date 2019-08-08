@@ -7,6 +7,8 @@ use App\Domain\Entity\Manufacturer;
 use App\Domain\Entity\Phone;
 use App\Domain\Entity\Tablet;
 use App\Domain\Model\Interfaces\ModelInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -31,11 +33,13 @@ final class ManufacturerModel implements ModelInterface
 
     /**
      * @var Collection
+     * @SWG\Property(ref=@Model(type=PhoneModel::class))
      */
     public $phones;
 
     /**
      * @var Collection
+     * @SWG\Property(ref=@Model(type=TabletModel::class))
      */
     public $tablets;
 

@@ -33,7 +33,7 @@ final class ManufacturerPaginatedModel implements PaginatedModelInterface
     public $manufacturersPerPage;
 
     /**
-     * @var array
+     * @var string[]
      */
     public $_links;
 
