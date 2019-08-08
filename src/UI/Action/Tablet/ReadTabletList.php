@@ -6,6 +6,8 @@ use App\Application\Router\RouteParams;
 use App\Domain\Model\TabletPaginatedModel;
 use App\UI\Factory\ReadEntityCollectionFactory;
 use App\UI\Responder\ReadCacheResponder;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -44,6 +46,15 @@ final class ReadTabletList
     }
 
     /**
+     * Return a collection of tablets
+     *
+     * @SWG\Response(
+     *      response=200,
+     *      description="Collection successfully returned",
+     *      @Model(type=TabletPaginatedModel::class, groups={"product_collection"})
+     * )
+     * @SWG\Tag(name="Tablets")
+     *
      * @param Request $request
      * @param TabletPaginatedModel $paginatedModel
      * @return Response

@@ -33,7 +33,7 @@ final class TabletPaginatedModel implements PaginatedModelInterface
     public $tabletsPerPage;
 
     /**
-     * @var array
+     * @var string[]
      */
     public $_links;
 

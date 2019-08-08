@@ -56,11 +56,13 @@ final class ReadPhone
      * )
      * @SWG\Response(
      *      response=400,
-     *      description="Invalid Uuid provided"
+     *      description="Invalid Uuid provided",
+     *      @Model(type=App\UI\Errors\ApiProblem::class)
      * )
      * @SWG\Response(
      *      response=404,
-     *      description="Phone not found"
+     *      description="Phone not found",
+     *      @Model(type=App\UI\Errors\ApiProblem::class)
      * )
      * @SWG\Tag(name="Phones")
      *

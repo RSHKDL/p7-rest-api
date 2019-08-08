@@ -49,7 +49,7 @@ final class TabletModel implements ModelInterface
     public $stock;
 
     /**
-     * @var array
+     * @var string[]
      */
     public $_links;
 

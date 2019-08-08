@@ -5,6 +5,8 @@ namespace App\UI\Action\Tablet;
 use App\Domain\Model\TabletModel;
 use App\UI\Factory\CreateEntityFactory;
 use App\UI\Responder\CreateResponder;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,6 +34,20 @@ final class CreateTablet
     }
 
     /**
+     * Create a tablet
+     *
+     * @SWG\Response(
+     *      response=201,
+     *      description="Tablet successfully created",
+     *      @Model(type=TabletModel::class, groups={"tablet"})
+     * )
+     * @SWG\Response(
+     *      response=400,
+     *      description="There was a validation error",
+     *      @Model(type=App\UI\Errors\ApiProblem::class)
+     * )
+     * @SWG\Tag(name="Tablets")
+     *
      * @param Request $request
      * @param CreateResponder $responder
      * @param TabletModel $tabletModel
