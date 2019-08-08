@@ -33,7 +33,7 @@ final class PhonePaginatedModel implements PaginatedModelInterface
     public $phonesPerPage;
 
     /**
-     * @var array
+     * @var string[]
      */
     public $_links;
 

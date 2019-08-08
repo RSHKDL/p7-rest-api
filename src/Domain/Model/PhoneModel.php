@@ -7,6 +7,7 @@ use App\Domain\Entity\Manufacturer;
 use App\Domain\Entity\Phone;
 use App\Domain\Model\Interfaces\ModelInterface;
 use App\UI\Form\CreatePhoneType;
+use Swagger\Annotations as SWG;
 
 /**
  * Class PhoneModel
@@ -54,7 +55,7 @@ final class PhoneModel implements ModelInterface
     public $lastModified;
 
     /**
-     * @var array
+     * @var string[]
      */
     public $_links;
 

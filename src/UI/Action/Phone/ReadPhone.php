@@ -2,11 +2,11 @@
 
 namespace App\UI\Action\Phone;
 
-use Nelmio\ApiDocBundle\Annotation\Model;
-use Swagger\Annotations as SWG;
 use App\Domain\Model\PhoneModel;
 use App\UI\Factory\ReadEntityFactory;
 use App\UI\Responder\ReadCacheResponder;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * Class ReadPhone
  * @author ereshkidal
  */
-class ReadPhone
+final class ReadPhone
 {
     /**
      * @var ReadEntityFactory
