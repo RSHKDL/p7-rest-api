@@ -6,6 +6,7 @@ use App\Domain\Model\ClientModel;
 use App\Domain\Repository\RetailerRepository;
 use App\UI\Factory\CreateEntityFactory;
 use App\UI\Responder\CreateResponder;
+use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -52,6 +53,20 @@ final class CreateRetailerClient
     }
 
     /**
+     * Create a client
+     *
+     * @SWG\Response(
+     *      response=201,
+     *      description="Client successfully created",
+     *      @SWG\Schema(ref="#/definitions/ClientModel")
+     * )
+     * @SWG\Response(
+     *      response=400,
+     *      description="There was a validation error",
+     *      @SWG\Schema(ref="#/definitions/ApiProblem")
+     * )
+     * @SWG\Tag(name="Clients")
+     *
      * @param Request $request
      * @param CreateResponder $responder
      * @param ClientModel $model

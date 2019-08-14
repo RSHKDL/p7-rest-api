@@ -5,7 +5,6 @@ namespace App\UI\Action\Phone;
 use App\Domain\Model\PhoneModel;
 use App\UI\Factory\ReadEntityFactory;
 use App\UI\Responder\ReadCacheResponder;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,17 +51,17 @@ final class ReadPhone
      * @SWG\Response(
      *      response=200,
      *      description="Phone successfully returned",
-     *      @Model(type=PhoneModel::class, groups={"phone"})
+     *      @SWG\Schema(ref="#/definitions/PhoneModel")
      * )
      * @SWG\Response(
      *      response=400,
      *      description="Invalid Uuid provided",
-     *      @Model(type=App\UI\Errors\ApiProblem::class)
+     *      @SWG\Schema(ref="#/definitions/ApiProblem")
      * )
      * @SWG\Response(
      *      response=404,
      *      description="Phone not found",
-     *      @Model(type=App\UI\Errors\ApiProblem::class)
+     *      @SWG\Schema(ref="#/definitions/ApiProblem")
      * )
      * @SWG\Tag(name="Phones")
      *

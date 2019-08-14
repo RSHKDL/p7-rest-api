@@ -13,3 +13,20 @@ nelmio_api_doc:
                 description: 'Value: Bearer {jwt}'
                 name: Authorization
                 in: header
+    models:
+        names:
+            - { alias: PhoneModel, type: App\Domain\Model\PhoneModel, groups: [phone] }
+            - { alias: PhoneModel_light, type: App\Domain\Model\PhoneModel, groups: [product_collection] }
+            - { alias: PhonePaginatedModel, type: App\Domain\Model\PhonePaginatedModel, groups: [product_collection] }
+            - { alias: TabletModel, type: App\Domain\Model\TabletModel, groups: [tablet] }
+            - { alias: TabletModel_light, type: App\Domain\Model\TabletModel, groups: [product_collection] }
+            - { alias: TabletPaginatedModel, type: App\Domain\Model\TabletPaginatedModel, groups: [product_collection] }
+            - { alias: ManufacturerModel_mini, type: App\Domain\Model\ManufacturerModel, groups: [phone, tablet] }
+            - { alias: ManufacturerModel_light, type: App\Domain\Model\ManufacturerModel, groups: [manufacturer_collection] }
+            - { alias: ManufacturerModel_full, type: App\Domain\Model\ManufacturerModel, groups: [manufacturer] }
+            - { alias: ManufacturerPaginatedModel, type: App\Domain\Model\ManufacturerPaginatedModel, groups: [manufacturer_collection] }
+            - { alias: RetailerModel, type: App\Domain\Model\RetailerModel, groups: [retailer] }
+            - { alias: ClientModel, type: App\Domain\Model\ClientModel, groups: [client] }
+            - { alias: ClientModel_light, type: App\Domain\Model\ClientModel, groups: [client_collection] }
+            - { alias: ClientPaginatedModel, type: App\Domain\Model\ClientPaginatedModel, groups: [client_collection] }
+            - { alias: ApiProblem, type: App\UI\Errors\ApiProblem }

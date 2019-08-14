@@ -6,6 +6,7 @@ use App\Application\Pagination\PaginatedCollection;
 use App\Domain\Entity\Manufacturer;
 use App\Domain\Model\Interfaces\PaginatedModelInterface;
 use App\Domain\Model\Traits\CreateModelsFromEntitiesTrait;
+use Swagger\Annotations as SWG;
 
 /**
  * Class ManufacturerPaginatedModel
@@ -19,6 +20,10 @@ final class ManufacturerPaginatedModel implements PaginatedModelInterface
 
     /**
      * @var ManufacturerModel[]
+     * @SWG\Schema(
+     *     type="array",
+     *     @SWG\Items(ref="#/definitions/ManufacturerModel_collection")
+     * )
      */
     public $manufacturers;
 

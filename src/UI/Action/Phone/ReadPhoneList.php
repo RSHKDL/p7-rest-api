@@ -6,7 +6,6 @@ use App\Application\Router\RouteParams;
 use App\Domain\Model\PhonePaginatedModel;
 use App\UI\Factory\ReadEntityCollectionFactory;
 use App\UI\Responder\ReadCacheResponder;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,7 +50,7 @@ final class ReadPhoneList
      * @SWG\Response(
      *      response=200,
      *      description="Collection successfully returned",
-     *      @Model(type=PhonePaginatedModel::class, groups={"product_collection"})
+     *      @SWG\Schema(ref="#/definitions/PhonePaginatedModel")
      * )
      * @SWG\Tag(name="Phones")
      *

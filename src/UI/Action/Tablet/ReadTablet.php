@@ -5,7 +5,6 @@ namespace App\UI\Action\Tablet;
 use App\Domain\Model\TabletModel;
 use App\UI\Factory\ReadEntityFactory;
 use App\UI\Responder\ReadCacheResponder;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,17 +51,17 @@ final class ReadTablet
      * @SWG\Response(
      *      response=200,
      *      description="Tablet successfully returned",
-     *      @Model(type=TabletModel::class, groups={"tablet"})
+     *      @SWG\Schema(ref="#/definitions/TabletModel")
      * )
      * @SWG\Response(
      *      response=400,
      *      description="Invalid Uuid provided",
-     *      @Model(type=App\UI\Errors\ApiProblem::class)
+     *      @SWG\Schema(ref="#/definitions/ApiProblem")
      * )
      * @SWG\Response(
      *      response=404,
      *      description="Tablet not found",
-     *      @Model(type=App\UI\Errors\ApiProblem::class)
+     *      @SWG\Schema(ref="#/definitions/ApiProblem")
      * )
      * @SWG\Tag(name="Tablets")
      *

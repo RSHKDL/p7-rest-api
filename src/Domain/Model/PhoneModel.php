@@ -3,7 +3,6 @@
 namespace App\Domain\Model;
 
 use App\Domain\Entity\Interfaces\EntityInterface;
-use App\Domain\Entity\Manufacturer;
 use App\Domain\Entity\Phone;
 use App\Domain\Model\Interfaces\ModelInterface;
 use App\UI\Form\CreatePhoneType;
@@ -35,7 +34,8 @@ final class PhoneModel implements ModelInterface
     public $description;
 
     /**
-     * @var Manufacturer|null
+     * @var ManufacturerModel
+     * @SWG\Property(ref="#/definitions/ManufacturerModel_mini")
      */
     public $manufacturer;
 
@@ -71,7 +71,7 @@ final class PhoneModel implements ModelInterface
         $model->id = $entity->getId();
         $model->model = $entity->getModel();
         $model->description = $entity->getDescription();
-        $model->manufacturer = $entity->getManufacturer();
+        $model->manufacturer = ManufacturerModel::createFromEntity($entity->getManufacturer());
         $model->price = $entity->getPrice();
         $model->stock = $entity->getStock();
         $model->lastModified = self::formatDateFromTimestamp($entity->getUpdatedAt());

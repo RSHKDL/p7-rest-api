@@ -5,9 +5,9 @@ namespace App\UI\Action\Tablet;
 use App\Domain\Model\TabletModel;
 use App\UI\Factory\UpdateEntityFactory;
 use App\UI\Responder\UpdateResponder;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -44,24 +44,24 @@ final class UpdateTablet
      * @SWG\Response(
      *      response=200,
      *      description="Tablet successfully updated",
-     *      @Model(type=TabletModel::class, groups={"tablet"})
+     *      @SWG\Schema(ref="#/definitions/TabletModel")
      * )
      * @SWG\Response(
      *      response=400,
      *      description="There was a validation error",
-     *      @Model(type=App\UI\Errors\ApiProblem::class)
+     *      @SWG\Schema(ref="#/definitions/ApiProblem")
      * )
      * @SWG\Response(
      *      response=404,
      *      description="Tablet not found",
-     *      @Model(type=App\UI\Errors\ApiProblem::class)
+     *      @SWG\Schema(ref="#/definitions/ApiProblem")
      * )
      * @SWG\Tag(name="Tablets")
      *
      * @param Request $request
      * @param UpdateResponder $responder
      * @param TabletModel $model
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @throws \Exception
      */
     public function __invoke(Request $request, UpdateResponder $responder, TabletModel $model)

@@ -5,7 +5,6 @@ namespace App\UI\Action\Phone;
 use App\Domain\Model\PhoneModel;
 use App\UI\Factory\CreateEntityFactory;
 use App\UI\Responder\CreateResponder;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,12 +38,12 @@ final class CreatePhone
      * @SWG\Response(
      *      response=201,
      *      description="Phone successfully created",
-     *      @Model(type=PhoneModel::class, groups={"phone"})
+     *      @SWG\Schema(ref="#/definitions/PhoneModel")
      * )
      * @SWG\Response(
      *      response=400,
      *      description="There was a validation error",
-     *      @Model(type=App\UI\Errors\ApiProblem::class)
+     *      @SWG\Schema(ref="#/definitions/ApiProblem")
      * )
      * @SWG\Tag(name="Phones")
      *

@@ -5,7 +5,6 @@ namespace App\UI\Action\Phone;
 use App\Domain\Model\PhoneModel;
 use App\UI\Factory\UpdateEntityFactory;
 use App\UI\Responder\UpdateResponder;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -44,17 +43,17 @@ final class UpdatePhone
      * @SWG\Response(
      *      response=200,
      *      description="Phone successfully updated",
-     *      @Model(type=PhoneModel::class, groups={"phone"})
+     *      @SWG\Schema(ref="#/definitions/PhoneModel")
      * )
      * @SWG\Response(
      *      response=400,
      *      description="There was a validation error",
-     *      @Model(type=App\UI\Errors\ApiProblem::class)
+     *      @SWG\Schema(ref="#/definitions/ApiProblem")
      * )
      * @SWG\Response(
      *      response=404,
      *      description="Phone not found",
-     *      @Model(type=App\UI\Errors\ApiProblem::class)
+     *      @SWG\Schema(ref="#/definitions/ApiProblem")
      * )
      * @SWG\Tag(name="Phones")
      *
