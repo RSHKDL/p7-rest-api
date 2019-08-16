@@ -59,6 +59,11 @@ final class ManufacturerModel implements ModelInterface
     public $numberOfTablets;
 
     /**
+     * @var string[]
+     */
+    public $_links;
+
+    /**
      * {@inheritdoc}
      */
     public static function createFromEntity(EntityInterface $entity): ModelInterface
@@ -115,7 +120,7 @@ final class ManufacturerModel implements ModelInterface
      */
     public function addLink(string $ref, string $url): void
     {
-
+        $this->_links[$ref] = $url;
     }
 
     /**

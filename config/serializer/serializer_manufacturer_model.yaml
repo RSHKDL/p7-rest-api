@@ -12,3 +12,5 @@ App\Domain\Model\ManufacturerModel:
             groups: ['manufacturer_collection']
         numberOfTablets:
             groups: ['manufacturer_collection']
+        _links:
+            groups: ['manufacturer', 'manufacturer_collection']

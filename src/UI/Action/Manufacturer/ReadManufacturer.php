@@ -77,7 +77,7 @@ final class ReadManufacturer
     public function __invoke(Request $request, ManufacturerModel $model)
     {
         return $this->responder->respond(
-            $this->factory->build($request, $model, $model->getEntityShortName()),
+            $this->factory->build($request, $model),
             'manufacturer'
         );
     }
