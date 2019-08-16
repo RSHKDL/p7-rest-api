@@ -6,7 +6,6 @@ use App\Domain\Entity\Interfaces\EntityInterface;
 use App\Domain\Entity\Phone;
 use App\Domain\Model\Interfaces\ModelInterface;
 use App\UI\Form\CreatePhoneType;
-use Swagger\Annotations as SWG;
 
 /**
  * Class PhoneModel
@@ -34,8 +33,7 @@ final class PhoneModel implements ModelInterface
     public $description;
 
     /**
-     * @var ManufacturerModel
-     * @SWG\Property(ref="#/definitions/ManufacturerModel_mini")
+     * @var string
      */
     public $manufacturer;
 
@@ -71,7 +69,9 @@ final class PhoneModel implements ModelInterface
         $model->id = $entity->getId();
         $model->model = $entity->getModel();
         $model->description = $entity->getDescription();
-        $model->manufacturer = ManufacturerModel::createFromEntity($entity->getManufacturer());
+        if (null !== $entity->getManufacturer()) {
+            $model->manufacturer = $entity->getManufacturer()->getName();
+        }
         $model->price = $entity->getPrice();
         $model->stock = $entity->getStock();
         $model->lastModified = self::formatDateFromTimestamp($entity->getUpdatedAt());

@@ -6,7 +6,6 @@ use App\Domain\Entity\Interfaces\EntityInterface;
 use App\Domain\Entity\Tablet;
 use App\Domain\Model\Interfaces\ModelInterface;
 use App\UI\Form\CreateTabletType;
-use Swagger\Annotations as SWG;
 
 /**
  * Class TabletModel
@@ -34,8 +33,7 @@ final class TabletModel implements ModelInterface
     public $description;
 
     /**
-     * @var ManufacturerModel
-     * @SWG\Property(ref="#/definitions/ManufacturerModel_mini")
+     * @var string
      */
     public $manufacturer;
 
@@ -66,7 +64,9 @@ final class TabletModel implements ModelInterface
         $model->id = $entity->getId();
         $model->model = $entity->getModel();
         $model->description = $entity->getDescription();
-        $model->manufacturer = ManufacturerModel::createFromEntity($entity->getManufacturer());
+        if (null !== $entity->getManufacturer()) {
+            $model->manufacturer = $entity->getManufacturer()->getName();
+        }
         $model->price = $entity->getPrice();
         $model->stock = $entity->getStock();
 

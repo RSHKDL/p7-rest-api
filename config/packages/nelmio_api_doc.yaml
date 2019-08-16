@@ -3,16 +3,19 @@ nelmio_api_doc:
         path_patterns:
             - ^/api(?!/doc$) # Accepts routes under /api except /api/doc
     documentation:
+        schemes: [http, https]
         info:
             title: BileMo
             description: This documentation is a complete work in progress...
             version: 1.0.0
         securityDefinitions:
-            Bearer:
+            bearerAuth:
                 type: apiKey
                 description: 'Value: Bearer {jwt}'
                 name: Authorization
                 in: header
+        security:
+            - bearerAuth: []
     models:
         names:
             - { alias: PhoneModel, type: App\Domain\Model\PhoneModel, groups: [phone] }
@@ -21,7 +24,6 @@ nelmio_api_doc:
             - { alias: TabletModel, type: App\Domain\Model\TabletModel, groups: [tablet] }
             - { alias: TabletModel_light, type: App\Domain\Model\TabletModel, groups: [product_collection] }
             - { alias: TabletPaginatedModel, type: App\Domain\Model\TabletPaginatedModel, groups: [product_collection] }
-            - { alias: ManufacturerModel_mini, type: App\Domain\Model\ManufacturerModel, groups: [phone, tablet] }
             - { alias: ManufacturerModel_light, type: App\Domain\Model\ManufacturerModel, groups: [manufacturer_collection] }
             - { alias: ManufacturerModel_full, type: App\Domain\Model\ManufacturerModel, groups: [manufacturer] }
             - { alias: ManufacturerPaginatedModel, type: App\Domain\Model\ManufacturerPaginatedModel, groups: [manufacturer_collection] }
