@@ -56,7 +56,7 @@ final class DeletePhone
      */
     public function __invoke(Request $request, DeleteResponder $responder, PhoneModel $model): Response
     {
-        $this->factory->remove($request->attributes->get('id'), $model);
+        $this->factory->remove($request, $model);
 
         return $responder();
     }
