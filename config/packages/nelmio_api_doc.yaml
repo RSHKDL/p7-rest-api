@@ -5,8 +5,8 @@ nelmio_api_doc:
     documentation:
         schemes: [http, https]
         info:
-            title: BileMo
-            description: This documentation is a complete work in progress...
+            title: BileMo API documentation
+            description: This API provides a catalog of products (Phones and Tablets) accessible by the Retailers and their Clients.
             version: 1.0.0
         securityDefinitions:
             bearerAuth:
