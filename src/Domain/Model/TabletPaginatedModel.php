@@ -6,6 +6,7 @@ use App\Application\Pagination\PaginatedCollection;
 use App\Domain\Entity\Tablet;
 use App\Domain\Model\Interfaces\PaginatedModelInterface;
 use App\Domain\Model\Traits\CreateModelsFromEntitiesTrait;
+use Swagger\Annotations as SWG;
 
 /**
  * Class TabletPaginatedModel
@@ -19,6 +20,10 @@ final class TabletPaginatedModel implements PaginatedModelInterface
 
     /**
      * @var TabletModel[]
+     * @SWG\Schema(
+     *     type="array",
+     *     @SWG\Items(ref="#/definitions/TabletModel_light")
+     * )
      */
     public $tablets;
 
@@ -33,7 +38,7 @@ final class TabletPaginatedModel implements PaginatedModelInterface
     public $tabletsPerPage;
 
     /**
-     * @var array
+     * @var string[]
      */
     public $_links;
 

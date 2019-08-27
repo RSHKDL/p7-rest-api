@@ -5,6 +5,7 @@ namespace App\UI\Action\Retailer;
 use App\Domain\Model\ClientModel;
 use App\UI\Factory\UpdateEntityFactory;
 use App\UI\Responder\UpdateResponder;
+use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -43,6 +44,31 @@ final class UpdateRetailerClient
     }
 
     /**
+     * Update a client
+     *
+     * @SWG\Response(
+     *      response=200,
+     *      description="Client successfully updated",
+     *      @SWG\Schema(ref="#/definitions/ClientModel")
+     * )
+     * @SWG\Response(
+     *      response=400,
+     *      description="There was a validation error",
+     *      @SWG\Schema(ref="#/definitions/ApiProblem")
+     * )
+     * @SWG\Response(
+     *      response=401,
+     *      description="Access denied",
+     *      @SWG\Schema(ref="#/definitions/ApiProblem")
+     * )
+     * @SWG\Response(
+     *      response=404,
+     *      description="Client not found",
+     *      @SWG\Schema(ref="#/definitions/ApiProblem")
+     * )
+     *
+     * @SWG\Tag(name="Clients")
+     *
      * @param Request $request
      * @param UpdateResponder $responder
      * @param ClientModel $model

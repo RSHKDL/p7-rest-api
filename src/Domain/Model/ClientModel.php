@@ -53,7 +53,7 @@ final class ClientModel implements ModelInterface
     public $phone;
 
     /**
-     * @var array
+     * @var string[]
      */
     public $_links;
 

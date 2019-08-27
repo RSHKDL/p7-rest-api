@@ -3,7 +3,6 @@
 namespace App\Domain\Model;
 
 use App\Domain\Entity\Interfaces\EntityInterface;
-use App\Domain\Entity\Manufacturer;
 use App\Domain\Entity\Tablet;
 use App\Domain\Model\Interfaces\ModelInterface;
 use App\UI\Form\CreateTabletType;
@@ -34,7 +33,7 @@ final class TabletModel implements ModelInterface
     public $description;
 
     /**
-     * @var Manufacturer
+     * @var string
      */
     public $manufacturer;
 
@@ -49,7 +48,7 @@ final class TabletModel implements ModelInterface
     public $stock;
 
     /**
-     * @var array
+     * @var string[]
      */
     public $_links;
 
@@ -65,7 +64,9 @@ final class TabletModel implements ModelInterface
         $model->id = $entity->getId();
         $model->model = $entity->getModel();
         $model->description = $entity->getDescription();
-        $model->manufacturer = $entity->getManufacturer();
+        if (null !== $entity->getManufacturer()) {
+            $model->manufacturer = $entity->getManufacturer()->getName();
+        }
         $model->price = $entity->getPrice();
         $model->stock = $entity->getStock();
 

@@ -6,6 +6,7 @@ use App\Application\Router\RouteParams;
 use App\Domain\Model\ClientPaginatedModel;
 use App\UI\Factory\ReadEntityCollectionFactory;
 use App\UI\Responder\ReadResponder;
+use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -54,6 +55,31 @@ final class ReadRetailerClientList
     }
 
     /**
+     * Return a collection of clients belonging to a retailer
+     *
+     * @SWG\Parameter(
+     *     name="retailerUuid",
+     *     in="path",
+     *     type="string",
+     *     description="Must be a valid version 4 Uuid"
+     * )
+     * @SWG\Response(
+     *      response=200,
+     *      description="Collection successfully returned",
+     *      @SWG\Schema(ref="#/definitions/ClientPaginatedModel")
+     * )
+     * @SWG\Response(
+     *      response=400,
+     *      description="Invalid Uuid provided",
+     *      @SWG\Schema(ref="#/definitions/ApiProblem")
+     * )
+     * @SWG\Response(
+     *      response=401,
+     *      description="Access denied",
+     *      @SWG\Schema(ref="#/definitions/ApiProblem")
+     * )
+     * @SWG\Tag(name="Clients")
+     *
      * @param Request $request
      * @param ClientPaginatedModel $paginatedModel
      * @return Response

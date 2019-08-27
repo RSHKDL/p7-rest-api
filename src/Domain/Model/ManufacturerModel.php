@@ -7,6 +7,7 @@ use App\Domain\Entity\Manufacturer;
 use App\Domain\Entity\Phone;
 use App\Domain\Entity\Tablet;
 use App\Domain\Model\Interfaces\ModelInterface;
+use Swagger\Annotations as SWG;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -31,11 +32,19 @@ final class ManufacturerModel implements ModelInterface
 
     /**
      * @var Collection
+     * @SWG\Property(
+     *     type="array",
+     *     @SWG\Items(ref="#/definitions/PhoneModel_light")
+     * )
      */
     public $phones;
 
     /**
      * @var Collection
+     * @SWG\Property(
+     *     type="array",
+     *     @SWG\Items(ref="#/definitions/TabletModel_light")
+     * )
      */
     public $tablets;
 
@@ -48,6 +57,11 @@ final class ManufacturerModel implements ModelInterface
      * @var int
      */
     public $numberOfTablets;
+
+    /**
+     * @var string[]
+     */
+    public $_links;
 
     /**
      * {@inheritdoc}
@@ -106,7 +120,7 @@ final class ManufacturerModel implements ModelInterface
      */
     public function addLink(string $ref, string $url): void
     {
-
+        $this->_links[$ref] = $url;
     }
 
     /**

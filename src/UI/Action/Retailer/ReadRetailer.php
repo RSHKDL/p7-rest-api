@@ -5,7 +5,9 @@ namespace App\UI\Action\Retailer;
 use App\Domain\Model\RetailerModel;
 use App\UI\Factory\ReadEntityFactory;
 use App\UI\Responder\ReadResponder;
+use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -50,9 +52,34 @@ final class ReadRetailer
     }
 
     /**
+     * Return a retailer
+     *
+     * @SWG\Parameter(
+     *     name="retailerUuid",
+     *     in="path",
+     *     type="string",
+     *     description="Must be a valid version 4 Uuid"
+     * )
+     * @SWG\Response(
+     *      response=200,
+     *      description="Retailer successfully returned",
+     *      @SWG\Schema(ref="#/definitions/RetailerModel")
+     * )
+     * @SWG\Response(
+     *      response=400,
+     *      description="Invalid Uuid provided",
+     *      @SWG\Schema(ref="#/definitions/ApiProblem")
+     * )
+     * @SWG\Response(
+     *      response=404,
+     *      description="Retailer not found",
+     *      @SWG\Schema(ref="#/definitions/ApiProblem")
+     * )
+     * @SWG\Tag(name="Retailers")
+     *
      * @param Request $request
      * @param RetailerModel $model
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @throws \Exception
      */
     public function __invoke(Request $request, RetailerModel $model)
