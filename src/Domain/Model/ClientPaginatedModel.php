@@ -6,6 +6,7 @@ use App\Application\Pagination\PaginatedCollection;
 use App\Domain\Entity\Client;
 use App\Domain\Model\Interfaces\PaginatedModelInterface;
 use App\Domain\Model\Traits\CreateModelsFromEntitiesTrait;
+use Swagger\Annotations as SWG;
 
 /**
  * Class ClientPaginatedModel
@@ -19,6 +20,10 @@ final class ClientPaginatedModel implements PaginatedModelInterface
 
     /**
      * @var ClientModel[]
+     * @SWG\Schema(
+     *     type="array",
+     *     @SWG\Items(ref="#/definitions/ClientModel")
+     * )
      */
     public $clients;
 
@@ -33,7 +38,7 @@ final class ClientPaginatedModel implements PaginatedModelInterface
     public $clientsPerPage;
 
     /**
-     * @var array
+     * @var string[]
      */
     public $_links;
 

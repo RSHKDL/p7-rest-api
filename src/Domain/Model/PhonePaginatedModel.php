@@ -6,6 +6,7 @@ use App\Application\Pagination\PaginatedCollection;
 use App\Domain\Entity\Phone;
 use App\Domain\Model\Interfaces\PaginatedModelInterface;
 use App\Domain\Model\Traits\CreateModelsFromEntitiesTrait;
+use Swagger\Annotations as SWG;
 
 /**
  * Class PhonePaginatedModel
@@ -19,6 +20,10 @@ final class PhonePaginatedModel implements PaginatedModelInterface
 
     /**
      * @var PhoneModel[]
+     * @SWG\Schema(
+     *     type="array",
+     *     @SWG\Items(ref="#/definitions/PhoneModel_light")
+     * )
      */
     public $phones;
 
@@ -33,7 +38,7 @@ final class PhonePaginatedModel implements PaginatedModelInterface
     public $phonesPerPage;
 
     /**
-     * @var array
+     * @var string[]
      */
     public $_links;
 

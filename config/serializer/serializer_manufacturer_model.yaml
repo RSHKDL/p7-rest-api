@@ -3,7 +3,7 @@ App\Domain\Model\ManufacturerModel:
         id:
             groups: ['manufacturer']
         name:
-            groups: ['manufacturer', 'phone', 'manufacturer_collection']
+            groups: ['manufacturer', 'manufacturer_collection', 'product_collection']
         phones:
             groups: ['manufacturer']
         tablets:
@@ -12,3 +12,5 @@ App\Domain\Model\ManufacturerModel:
             groups: ['manufacturer_collection']
         numberOfTablets:
             groups: ['manufacturer_collection']
+        _links:
+            groups: ['manufacturer', 'manufacturer_collection']

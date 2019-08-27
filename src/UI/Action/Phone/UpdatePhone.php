@@ -5,6 +5,7 @@ namespace App\UI\Action\Phone;
 use App\Domain\Model\PhoneModel;
 use App\UI\Factory\UpdateEntityFactory;
 use App\UI\Responder\UpdateResponder;
+use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -31,6 +32,31 @@ final class UpdatePhone
     }
 
     /**
+     * Update a phone
+     *
+     * @SWG\Parameter(
+     *     name="id",
+     *     in="path",
+     *     type="string",
+     *     description="Must be a valid version 4 Uuid"
+     * )
+     * @SWG\Response(
+     *      response=200,
+     *      description="Phone successfully updated",
+     *      @SWG\Schema(ref="#/definitions/PhoneModel")
+     * )
+     * @SWG\Response(
+     *      response=400,
+     *      description="There was a validation error",
+     *      @SWG\Schema(ref="#/definitions/ApiProblem")
+     * )
+     * @SWG\Response(
+     *      response=404,
+     *      description="Phone not found",
+     *      @SWG\Schema(ref="#/definitions/ApiProblem")
+     * )
+     * @SWG\Tag(name="Phones")
+     *
      * @param Request $request
      * @param UpdateResponder $responder
      * @param PhoneModel $model

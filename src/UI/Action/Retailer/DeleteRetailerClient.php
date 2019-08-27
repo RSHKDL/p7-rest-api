@@ -5,6 +5,7 @@ namespace App\UI\Action\Retailer;
 use App\Domain\Model\ClientModel;
 use App\UI\Factory\DeleteEntityFactory;
 use App\UI\Responder\DeleteResponder;
+use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -43,6 +44,14 @@ final class DeleteRetailerClient
     }
 
     /**
+     * Delete a client
+     *
+     * @SWG\Response(
+     *      response=204,
+     *      description="Client successfully deleted / Client not found"
+     * )
+     * @SWG\Tag(name="Clients")
+     *
      * @param Request $request
      * @param DeleteResponder $responder
      * @param ClientModel $model

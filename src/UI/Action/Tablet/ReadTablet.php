@@ -5,6 +5,7 @@ namespace App\UI\Action\Tablet;
 use App\Domain\Model\TabletModel;
 use App\UI\Factory\ReadEntityFactory;
 use App\UI\Responder\ReadCacheResponder;
+use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * Class ReadTablet
  * @author ereshkidal
  */
-class ReadTablet
+final class ReadTablet
 {
     /**
      * @var ReadEntityFactory
@@ -39,6 +40,31 @@ class ReadTablet
     }
 
     /**
+     * Return a tablet
+     *
+     * @SWG\Parameter(
+     *     name="id",
+     *     in="path",
+     *     type="string",
+     *     description="Must be a valid version 4 Uuid"
+     * )
+     * @SWG\Response(
+     *      response=200,
+     *      description="Tablet successfully returned",
+     *      @SWG\Schema(ref="#/definitions/TabletModel")
+     * )
+     * @SWG\Response(
+     *      response=400,
+     *      description="Invalid Uuid provided",
+     *      @SWG\Schema(ref="#/definitions/ApiProblem")
+     * )
+     * @SWG\Response(
+     *      response=404,
+     *      description="Tablet not found",
+     *      @SWG\Schema(ref="#/definitions/ApiProblem")
+     * )
+     * @SWG\Tag(name="Tablets")
+     *
      * @param Request $request
      * @param TabletModel $model
      * @return Response

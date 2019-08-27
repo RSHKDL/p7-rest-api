@@ -1,0 +1,34 @@
+nelmio_api_doc:
+    areas:
+        path_patterns:
+            - ^/api(?!/doc$) # Accepts routes under /api except /api/doc
+    documentation:
+        schemes: [http, https]
+        info:
+            title: BileMo API documentation
+            description: This API provides a catalog of products (Phones and Tablets) accessible by the Retailers and their Clients.
+            version: 1.0.0
+        securityDefinitions:
+            bearerAuth:
+                type: apiKey
+                description: 'Value: Bearer {jwt}'
+                name: Authorization
+                in: header
+        security:
+            - bearerAuth: []
+    models:
+        names:
+            - { alias: PhoneModel, type: App\Domain\Model\PhoneModel, groups: [phone] }
+            - { alias: PhoneModel_light, type: App\Domain\Model\PhoneModel, groups: [product_collection] }
+            - { alias: PhonePaginatedModel, type: App\Domain\Model\PhonePaginatedModel, groups: [product_collection] }
+            - { alias: TabletModel, type: App\Domain\Model\TabletModel, groups: [tablet] }
+            - { alias: TabletModel_light, type: App\Domain\Model\TabletModel, groups: [product_collection] }
+            - { alias: TabletPaginatedModel, type: App\Domain\Model\TabletPaginatedModel, groups: [product_collection] }
+            - { alias: ManufacturerModel_light, type: App\Domain\Model\ManufacturerModel, groups: [manufacturer_collection] }
+            - { alias: ManufacturerModel_full, type: App\Domain\Model\ManufacturerModel, groups: [manufacturer] }
+            - { alias: ManufacturerPaginatedModel, type: App\Domain\Model\ManufacturerPaginatedModel, groups: [manufacturer_collection] }
+            - { alias: RetailerModel, type: App\Domain\Model\RetailerModel, groups: [retailer] }
+            - { alias: ClientModel, type: App\Domain\Model\ClientModel, groups: [client] }
+            - { alias: ClientModel_light, type: App\Domain\Model\ClientModel, groups: [client_collection] }
+            - { alias: ClientPaginatedModel, type: App\Domain\Model\ClientPaginatedModel, groups: [client_collection] }
+            - { alias: ApiProblem, type: App\UI\Errors\ApiProblem }

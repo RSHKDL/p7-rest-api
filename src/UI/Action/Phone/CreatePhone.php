@@ -5,6 +5,7 @@ namespace App\UI\Action\Phone;
 use App\Domain\Model\PhoneModel;
 use App\UI\Factory\CreateEntityFactory;
 use App\UI\Responder\CreateResponder;
+use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,6 +33,20 @@ final class CreatePhone
     }
 
     /**
+     * Create a phone
+     *
+     * @SWG\Response(
+     *      response=201,
+     *      description="Phone successfully created",
+     *      @SWG\Schema(ref="#/definitions/PhoneModel")
+     * )
+     * @SWG\Response(
+     *      response=400,
+     *      description="There was a validation error",
+     *      @SWG\Schema(ref="#/definitions/ApiProblem")
+     * )
+     * @SWG\Tag(name="Phones")
+     *
      * @param Request $request
      * @param CreateResponder $responder
      * @param PhoneModel $phoneModel

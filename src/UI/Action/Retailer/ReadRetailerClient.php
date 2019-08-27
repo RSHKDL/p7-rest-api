@@ -5,6 +5,7 @@ namespace App\UI\Action\Retailer;
 use App\Domain\Model\ClientModel;
 use App\UI\Factory\ReadEntityFactory;
 use App\UI\Responder\ReadResponder;
+use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -52,6 +53,37 @@ final class ReadRetailerClient
     }
 
     /**
+     * Return a client belonging to a retailer
+     *
+     * @SWG\Parameter(
+     *     name="retailerUuid",
+     *     in="path",
+     *     type="string",
+     *     description="Must be a valid version 4 Uuid"
+     * )
+     * @SWG\Parameter(
+     *     name="clientUuid",
+     *     in="path",
+     *     type="string",
+     *     description="Must be a valid version 4 Uuid"
+     * )
+     * @SWG\Response(
+     *      response=200,
+     *      description="Client successfully returned",
+     *      @SWG\Schema(ref="#/definitions/ClientModel")
+     * )
+     * @SWG\Response(
+     *      response=400,
+     *      description="Invalid Uuid provided",
+     *      @SWG\Schema(ref="#/definitions/ApiProblem")
+     * )
+     * @SWG\Response(
+     *      response=401,
+     *      description="Access denied",
+     *      @SWG\Schema(ref="#/definitions/ApiProblem")
+     * )
+     * @SWG\Tag(name="Clients")
+     *
      * @param Request $request
      * @param ClientModel $model
      * @return Response

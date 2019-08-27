@@ -10,8 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ApiProblem
 {
-    const TYPE_VALIDATION_ERROR = 'validation_error';
-    const TYPE_INVALID_REQUEST_BODY_FORMAT = 'invalid_request_body_format';
+    public const TYPE_VALIDATION_ERROR = 'validation_error';
+    public const TYPE_INVALID_REQUEST_BODY_FORMAT = 'invalid_request_body_format';
 
     /**
      * @var array
@@ -37,7 +37,7 @@ class ApiProblem
     private $title;
 
     /**
-     * @var array
+     * @var string[]
      */
     private $extraData = [];
 
@@ -52,9 +52,7 @@ class ApiProblem
 
         if ($type === null) {
             $type = 'about:blank';
-            $title = isset(Response::$statusTexts[$statusCode])
-                ? Response::$statusTexts[$statusCode]
-                : 'Unknown status code';
+            $title = Response::$statusTexts[$statusCode] ?? 'Unknown status code';
         } else {
             if (!isset(self::$titles[$type])) {
                 throw new \InvalidArgumentException('No title for type '.$type);
@@ -85,7 +83,7 @@ class ApiProblem
      * @param string $name
      * @param mixed $value
      */
-    public function setExtraData(string $name, $value)
+    public function setExtraData(string $name, $value): void
     {
         $this->extraData[$name] = $value;
     }
@@ -93,7 +91,7 @@ class ApiProblem
     /**
      * @return int
      */
-    public function getStatusCode()
+    public function getStatusCode(): int
     {
         return $this->statusCode;
     }

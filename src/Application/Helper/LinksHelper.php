@@ -5,6 +5,7 @@ namespace App\Application\Helper;
 use App\Domain\Model\ClientModel;
 use App\Domain\Model\Interfaces\ModelInterface;
 use App\Domain\Model\Interfaces\PaginatedModelInterface;
+use App\Domain\Model\ManufacturerModel;
 use App\Domain\Model\RetailerModel;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -38,6 +39,9 @@ final class LinksHelper
         foreach ($paginatedModel->getModels() as $model) {
             $routeName = $model->getEntityShortName() . '_read';
             $params = ['id' => $model->getId()];
+            if ($model instanceof ManufacturerModel) {
+                $params = ['manufacturerUuid' => $model->getId()];
+            }
             if ($model instanceof ClientModel) {
                 $params = [
                     'retailerUuid' => $model->getParentId(),
