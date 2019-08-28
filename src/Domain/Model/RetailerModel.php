@@ -41,6 +41,11 @@ final class RetailerModel implements ModelInterface
     public $numberOfClients;
 
     /**
+     * @var string[]
+     */
+    public $_links;
+
+    /**
      * @param EntityInterface $entity
      * @return ModelInterface
      * @throws \Exception
@@ -98,6 +103,6 @@ final class RetailerModel implements ModelInterface
      */
     public function addLink(string $ref, string $url): void
     {
-
+        $this->_links[$ref] = $url;
     }
 }
