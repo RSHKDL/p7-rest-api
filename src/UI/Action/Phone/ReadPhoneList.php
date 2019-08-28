@@ -9,6 +9,7 @@ use App\UI\Responder\ReadCacheResponder;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -62,6 +63,9 @@ final class ReadPhoneList
     public function __invoke(Request $request, PhonePaginatedModel $paginatedModel): Response
     {
         $timestamp = $this->factory->build($request, $paginatedModel, null, true);
+        if (null === $timestamp) {
+            throw new NotFoundHttpException('No phones found');
+        }
         $this->responder->buildCache($timestamp);
 
         if ($this->responder->isCacheValid($request) && !$this->responder->getResponse()->getContent()) {
