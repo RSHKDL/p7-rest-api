@@ -7,6 +7,7 @@ use App\Domain\Model\Interfaces\ModelInterface;
 use App\Domain\Model\Interfaces\PaginatedModelInterface;
 use App\Domain\Model\ManufacturerModel;
 use App\Domain\Model\RetailerModel;
+use App\UI\Action\Retailer\ReadRetailerClientList;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -58,6 +59,10 @@ final class LinksHelper
     public function addLink(ModelInterface $model): void
     {
         if ($model instanceof RetailerModel) {
+            $params = ['retailerUuid' => $model->getId()];
+            $model->addLink('add_client', $this->urlGenerator->generate('client_create', $params));
+            $model->addLink('show_clients', $this->urlGenerator->generate(ReadRetailerClientList::ROUTE_NAME, $params));
+
             return;
         }
         $routeName = $model->getEntityShortName() . '_read_collection';
