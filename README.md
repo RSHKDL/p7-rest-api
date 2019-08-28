@@ -32,19 +32,20 @@ This API provides a catalog of Phones and Tablets accessible by the Retailers an
     ```
 
 ## Test the application
-1. Create your (or yours) **Retailers** by running this command:
+1. Make sure you have load the fixtures.
+2. Create your (or yours) **Retailers** by running this command:
     ```
     $ bin/console app:retailer:create
     ```
-2. Once you have a Retailer, go to this URI: `/api/login_check`, submit this payload:
+3. Once you have a Retailer, go to this URI: `/api/login_check`, submit this payload:
     ```
     {
         "username": "your-retailer-email",
         "password": "your-retailer-password"
     }
     ```
-3. Grab your token and use it as Bearer for your other request to the API.
-* To test caching in an environment other than production,
+4. Grab your token and use it as Bearer for your other request to the API.
+5. To test caching in an environment other than production,
   you need to edit `public/index.php` and replace **prod** by **dev**.
 
 
