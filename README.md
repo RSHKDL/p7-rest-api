@@ -21,7 +21,7 @@ This API provides a catalog of Phones and Tablets accessible by the Retailers an
 3. Install the database and inject the fixtures:
     ```
     $ bin/console doctrine:database:create
-    $ bin/console doctrine:schema:update --force
+    $ bin/console doctrine:schema:create
     $ bin/console doctrine:fixtures:load
     ```
  4. Generate the JWTAuthentication SSH keys:
