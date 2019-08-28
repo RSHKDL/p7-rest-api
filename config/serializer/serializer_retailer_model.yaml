@@ -10,3 +10,5 @@ App\Domain\Model\RetailerModel:
             groups: ['retailer']
         numberOfClients:
             groups: ['retailer']
+        _links:
+            groups: ['retailer']
