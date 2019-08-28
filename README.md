@@ -32,6 +32,10 @@ This API provides a catalog of Phones and Tablets accessible by the Retailers an
     ```
 
 ## Test the application
+* Create your (or yours) **Retailers** by running this command:
+    ```
+    $ bin/console app:retailer:create
+    ```
 * Todo ...
 * To test caching in an environment other than production,
   you need to edit `public/index.php` and replace **prod** by **dev**.

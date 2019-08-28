@@ -12,6 +12,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
+ * @todo Various improvement needed (e.g. secure password, more roles, etc.)
  * Class CreateRetailerCommand
  * @author ereshkidal
  */
@@ -97,12 +98,12 @@ class CreateRetailerCommand extends Command
             return;
         }
 
-        $retailerName = $io->ask('Enter your company name');
-        $businessIdentifierCode = $io->ask('Enter your business identifier code');
+        $retailerName = $io->ask('Enter your company name', 'My Mobile Company');
+        $businessIdentifierCode = $io->ask('Enter your business identifier code', '123456789');
 
         $role = $io->choice(
             'Select the role',
-            ['ROLE_USER', 'ROLE_ADMIN'],
+            ['ROLE_USER'],
             'ROLE_USER'
         );
 
@@ -120,14 +121,13 @@ class CreateRetailerCommand extends Command
             return;
         }
 
-        $io->text('The user credentials will be:');
-        $io->listing([
-            'email:' => $email,
-            'password:' => '****',
-            'role:' => $role,
-            'company name' => $retailerName,
-            'bic' => $businessIdentifierCode
-        ]);
+        $io->text(sprintf('The user credentials for %s will be:', $retailerName));
+        $io->table(
+            ['bic', 'email', 'password'],
+            [
+                [$businessIdentifierCode, $email, '****']
+            ]
+        );
 
         if (!$io->confirm('Confirm?', false)) {
             $io->warning('✘ Retailer creation aborted');
