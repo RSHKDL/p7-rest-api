@@ -88,7 +88,7 @@ final class PhoneRepository extends ServiceEntityRepository implements Filterabl
     /**
      * {@inheritdoc}
      */
-    public function getLatestModifiedTimestampAmongAll(): int
+    public function getLatestModifiedTimestampAmongAll(): ?int
     {
         return $this->createQueryBuilder('p')
             ->select('MAX(p.updatedAt) as lastUpdate')

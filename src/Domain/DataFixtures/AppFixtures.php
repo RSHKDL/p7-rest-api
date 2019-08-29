@@ -4,10 +4,9 @@ namespace App\Domain\DataFixtures;
 
 use App\Domain\Entity\Manufacturer;
 use App\Domain\Entity\Phone;
-use App\Domain\Entity\User;
+use App\Domain\Entity\Tablet;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -15,40 +14,16 @@ use Symfony\Component\Yaml\Yaml;
  *
  * @author ereshkidal
  */
-class AppFixtures extends Fixture
+final class AppFixtures extends Fixture
 {
-    /**
-     * @var UserPasswordEncoderInterface
-     */
-    private $passwordEncoder;
-
-    /**
-     * AppFixtures constructor.
-     * @param UserPasswordEncoderInterface $passwordEncoder
-     */
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
-    {
-        $this->passwordEncoder = $passwordEncoder;
-    }
-
     /**
      * Load data fixtures with the passed EntityManager
      *
      * @param ObjectManager $manager
+     * @throws \Exception
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager):void
     {
-        $users = $this->loadDataFixtures('users');
-        foreach ($users as $username => $user) {
-            $userEntity = new User();
-            $userEntity->setUsername($user['username']);
-            $userEntity->setEmail($user['email']);
-            $userEntity->setPassword($this->passwordEncoder->encodePassword($userEntity, '1234'));
-            $userEntity->setRoles($user['roles']);
-            $manager->persist($userEntity);
-            $this->addReference($username, $userEntity);
-        }
-
         $manufacturers = $this->loadDataFixtures('manufacturers');
         foreach ($manufacturers as $name => $manufacturer) {
             $manufacturerEntity = new Manufacturer(
@@ -72,8 +47,22 @@ class AppFixtures extends Fixture
             $phoneEntity->setModel($phone['model']);
             $phoneEntity->setDescription('This is a fake description from a fixture.');
             $phoneEntity->setPrice($prices[$randPriceKey]);
-            $phoneEntity->setStock(rand(1, 20));
+            $phoneEntity->setStock(random_int(1, 20));
             $manager->persist($phoneEntity);
+        }
+        $tablets = $this->loadDataFixtures('tablets');
+        foreach ($tablets as $model => $tablet) {
+            $randManufacturerKey = array_rand($manufacturers, 1);
+            $randPriceKey = array_rand($prices, 1);
+            /** @var Manufacturer $manufacturer */
+            $manufacturer = $this->getReference($manufacturers[$randManufacturerKey]);
+            $tabletEntity = new Tablet();
+            $tabletEntity->setManufacturer($manufacturer);
+            $tabletEntity->setModel($tablet['model']);
+            $tabletEntity->setDescription('This is a fake description from a fixture.');
+            $tabletEntity->setPrice($prices[$randPriceKey]);
+            $tabletEntity->setStock(random_int(1, 20));
+            $manager->persist($tabletEntity);
         }
         $manager->flush();
     }
