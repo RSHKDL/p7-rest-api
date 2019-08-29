@@ -5,7 +5,6 @@ namespace App\UI\Factory;
 use App\Application\Helper\LinksHelper;
 use App\Application\Pagination\PaginationFactory;
 use App\Application\Router\RouteParams;
-use App\Domain\Model\Interfaces\ModelInterface;
 use App\Domain\Model\Interfaces\PaginatedModelInterface;
 use App\Domain\Repository\Interfaces\Cacheable;
 use App\Domain\Repository\Interfaces\Filterable;
@@ -28,6 +27,7 @@ final class ReadEntityCollectionFactory
      * @var PaginationFactory
      */
     private $paginationFactory;
+
     /**
      * @var LinksHelper
      */
@@ -50,7 +50,8 @@ final class ReadEntityCollectionFactory
     }
 
     /**
-     * @todo handle the exception with apiProblem ?
+     * @todo Handle the exception with ApiProblem and try/catch them in controller
+     * @todo Distinct return value (here int|object) is not good practice :(
      * @param Request $request
      * @param PaginatedModelInterface $paginatedModel
      * @param RouteParams|null $routeParams
