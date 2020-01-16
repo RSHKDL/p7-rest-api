@@ -1,0 +1,10 @@
+App\Domain\Model\PhonePaginatedModel:
+    attributes:
+        phones:
+            groups: ['product_collection']
+        phonesTotal:
+            groups: ['product_collection']
+        phonesPerPage:
+            groups: ['product_collection']
+        _links:
+            groups: ['product_collection']

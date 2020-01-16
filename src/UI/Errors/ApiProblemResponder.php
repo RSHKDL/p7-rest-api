@@ -18,10 +18,12 @@ class ApiProblemResponder
     {
         $data = $apiProblem->toArray();
         // making type a URL, to a temporarily fake page
-        if ($data['type'] != 'about:blank') {
+        //@todo use symfony router
+        if ($data['type'] !== 'about:blank') {
             $data['type'] = 'http://localhost:8000/docs/errors#'.$data['type'];
         }
 
+        //@todo use signature of JsonResponse to set headers
         $response = new JsonResponse(
             $data,
             $apiProblem->getStatusCode()

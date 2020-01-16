@@ -3,13 +3,20 @@
 namespace App\Domain\Repository;
 
 use App\Domain\Entity\Phone;
+use App\Domain\Repository\Interfaces\Cacheable;
+use App\Domain\Repository\Interfaces\Filterable;
+use App\Domain\Repository\Interfaces\Manageable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 
-class PhoneRepository extends ServiceEntityRepository
+/**
+ * Class PhoneRepository
+ * @author ereshkidal
+ */
+final class PhoneRepository extends ServiceEntityRepository implements Filterable, Cacheable, Manageable
 {
-
     /**
      * PhoneRepository constructor.
      * @param ManagerRegistry $registry
@@ -20,35 +27,72 @@ class PhoneRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return QueryBuilder
+     * {@inheritdoc}
      */
-    public function findAllQueryBuilder(): QueryBuilder
+    public function findAllQueryBuilder(?string $filter = null, ?string $parentResourceUuid = null): ?QueryBuilder
     {
-        return $this->createQueryBuilder('phone');
-    }
+        $qb = $this
+            ->createQueryBuilder('p')
+            ->orderBy('p.updatedAt', 'DESC')
+            ->leftJoin('p.manufacturer', 'm')
+        ;
 
-    /**
-     * @param Phone $phone
-     */
-    public function save(Phone $phone)
-    {
-        $this->_em->persist($phone);
-        $this->_em->flush();
-    }
-
-    /**
-     * @param string $id
-     * @return bool
-     */
-    public function remove(string $id)
-    {
-        $phone = $this->find($id);
-        if (null === $phone) {
-            return false;
+        if ($filter) {
+            $qb
+                ->where('p.model LIKE :filter')
+                ->orWhere('p.price LIKE :filter')
+                ->orWhere('m.name LIKE :filter')
+                ->setParameter('filter', '%'.$filter.'%')
+            ;
         }
-        $this->_em->remove($phone);
-        $this->_em->flush();
 
-        return true;
+        return $qb;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @param Phone $entity
+     */
+    public function saveOrUpdate($entity, bool $updated = false): void
+    {
+        if ($updated) {
+            $entity->setUpdatedAt(time());
+        }
+        $this->_em->persist($entity);
+        $this->_em->flush();
+    }
+
+    /**
+     * {@inheritdoc}
+     * @param Phone $entity
+     */
+    public function remove($entity): void
+    {
+        $this->_em->remove($entity);
+        $this->_em->flush();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLatestModifiedTimestamp(string $id): ?int
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p.updatedAt')
+            ->where('p.id LIKE :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult(Query::HYDRATE_SINGLE_SCALAR);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLatestModifiedTimestampAmongAll(): ?int
+    {
+        return $this->createQueryBuilder('p')
+            ->select('MAX(p.updatedAt) as lastUpdate')
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 }

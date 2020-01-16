@@ -1,4 +1,0 @@
-App\Domain\Entity\Manufacturer:
-    attributes:
-        name:
-            groups: ['phone']

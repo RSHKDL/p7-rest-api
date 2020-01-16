@@ -2,38 +2,85 @@
 
 namespace App\UI\Action\Phone;
 
-use App\UI\Factory\ReadPhoneListFactory;
+use App\Application\Router\RouteParams;
+use App\Domain\Model\PhonePaginatedModel;
+use App\UI\Factory\ReadEntityCollectionFactory;
+use App\UI\Responder\ReadCacheResponder;
+use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/api/phones", methods={"GET"}, name="phone_read_collection")
+ * @Route("/api/products/phones", methods={"GET"}, name=ReadPhoneList::ROUTE_NAME)
  *
  * Class ReadPhoneList
- * @package App\UI\Action\Phone
+ * @author ereshkidal
  */
-class ReadPhoneList
+final class ReadPhoneList
 {
+    public const ROUTE_NAME = 'phone_read_collection';
+
     /**
-     * @var ReadPhoneListFactory
+     * @var ReadEntityCollectionFactory
      */
     private $factory;
 
     /**
-     * ReadPhoneList constructor.
-     * @param ReadPhoneListFactory $factory
+     * @var ReadCacheResponder
      */
-    public function __construct(ReadPhoneListFactory $factory)
-    {
+    private $responder;
+
+    /**
+     * ReadPhoneList constructor.
+     * @param ReadEntityCollectionFactory $factory
+     * @param ReadCacheResponder $responder
+     */
+    public function __construct(
+        ReadEntityCollectionFactory $factory,
+        ReadCacheResponder $responder
+    ) {
         $this->factory = $factory;
+        $this->responder = $responder;
     }
 
     /**
+     * Return a collection of phones
+     *
+     * @SWG\Response(
+     *      response=200,
+     *      description="Collection successfully returned",
+     *      @SWG\Schema(ref="#/definitions/PhonePaginatedModel")
+     * )
+     * @SWG\Tag(name="Phones")
+     *
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param PhonePaginatedModel $paginatedModel
+     * @return Response
+     * @throws \Exception
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request, PhonePaginatedModel $paginatedModel): Response
     {
-        return $this->factory->read($request);
+        $timestamp = $this->factory->build($request, $paginatedModel, null, true);
+        if (null === $timestamp) {
+            throw new NotFoundHttpException('No phones found');
+        }
+        $this->responder->buildCache($timestamp);
+
+        if ($this->responder->isCacheValid($request) && !$this->responder->getResponse()->getContent()) {
+            return $this->responder->getResponse();
+        }
+
+        $routeParams = new RouteParams(
+            self::ROUTE_NAME,
+            $request->attributes->get('_route_params'),
+            $request->query->get('filter')
+        );
+
+        return $this->responder->createResponse(
+            $this->factory->build($request, $paginatedModel, $routeParams),
+            'product_collection'
+        );
     }
 }

@@ -1,0 +1,16 @@
+App\Domain\Model\ManufacturerModel:
+    attributes:
+        id:
+            groups: ['manufacturer']
+        name:
+            groups: ['manufacturer', 'manufacturer_collection', 'product_collection']
+        phones:
+            groups: ['manufacturer']
+        tablets:
+            groups: ['manufacturer']
+        numberOfPhones:
+            groups: ['manufacturer_collection']
+        numberOfTablets:
+            groups: ['manufacturer_collection']
+        _links:
+            groups: ['manufacturer', 'manufacturer_collection']
