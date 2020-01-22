@@ -51,6 +51,9 @@ final class LinksHelper
                     'clientUuid' => $model->getId()
                 ];
             }
+            if ($model instanceof RetailerModel) {
+                $params = ['retailerUuid' => $model->getId()];
+            }
             $model->addLink('self', $this->urlGenerator->generate($routeName, $params));
         }
     }

@@ -1,9 +1,9 @@
 App\Domain\Model\RetailerModel:
     attributes:
         id:
-            groups: ['retailer']
+            groups: ['retailer', 'retailer_collection']
         name:
-            groups: ['retailer']
+            groups: ['retailer', 'retailer_collection']
         email:
             groups: ['retailer']
         bic:
@@ -11,4 +11,4 @@ App\Domain\Model\RetailerModel:
         numberOfClients:
             groups: ['retailer']
         _links:
-            groups: ['retailer']
+            groups: ['retailer', 'retailer_collection']
