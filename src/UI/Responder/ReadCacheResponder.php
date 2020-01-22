@@ -65,7 +65,10 @@ class ReadCacheResponder
      */
     public function createResponse($model, string $serializationGroup = 'default'): Response
     {
-        $json = $this->serializer->serialize($model, 'json', ['groups' => [$serializationGroup]]);
+        $json = $this->serializer->serialize($model, 'json', [
+            'groups' => [$serializationGroup],
+            'json_encode_options' => JSON_UNESCAPED_SLASHES
+        ]);
         $this->response->setStatusCode(Response::HTTP_OK);
         $this->response->headers->set('Content-Type', 'application/custom+hal+json');
 

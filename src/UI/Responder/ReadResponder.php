@@ -33,7 +33,10 @@ class ReadResponder
      */
     public function respond($object, string $serializationGroup = 'default'): Response
     {
-        $json = $this->serializer->serialize($object, 'json', ['groups' => [$serializationGroup]]);
+        $json = $this->serializer->serialize($object, 'json', [
+            'groups' => [$serializationGroup],
+            'json_encode_options' => JSON_UNESCAPED_SLASHES
+        ]);
 
         return new Response($json, Response::HTTP_OK, ['Content-Type' => 'application/hal+json']);
     }
