@@ -2,7 +2,9 @@
 
 namespace App\Application\Command;
 
+use App\Domain\Entity\Manager;
 use App\Domain\Entity\Retailer;
+use App\Domain\Repository\ManagerRepository;
 use App\Domain\Repository\RetailerRepository;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,15 +15,15 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @todo Various improvement needed (e.g. secure password, more roles, etc.)
- * Class CreateRetailerCommand
+ * Class CreateUserCommand
  * @author ereshkidal
  */
-class CreateRetailerCommand extends Command
+class CreateUserCommand extends Command
 {
     /**
      * @var string
      */
-    protected static $defaultName = 'app:retailer:create';
+    protected static $defaultName = 'app:user:create';
 
     /**
      * @var UserPasswordEncoderInterface
@@ -31,7 +33,12 @@ class CreateRetailerCommand extends Command
     /**
      * @var RetailerRepository
      */
-    private $repository;
+    private $retailerRepository;
+
+    /**
+     * @var ManagerRepository
+     */
+    private $managerRepository;
 
     /**
      * @var ValidatorInterface
@@ -39,20 +46,23 @@ class CreateRetailerCommand extends Command
     private $validator;
 
     /**
-     * CreateRetailerCommand constructor.
+     * CreateUserCommand constructor.
      * @param UserPasswordEncoderInterface $passwordEncoder
-     * @param RetailerRepository $repository
+     * @param RetailerRepository $retailerRepository
+     * @param ManagerRepository $managerRepository
      * @param ValidatorInterface $validator
      * @param null|string $name
      */
     public function __construct(
         UserPasswordEncoderInterface $passwordEncoder,
-        RetailerRepository $repository,
+        RetailerRepository $retailerRepository,
+        ManagerRepository $managerRepository,
         ValidatorInterface $validator,
         ?string $name = null
     ) {
         $this->passwordEncoder = $passwordEncoder;
-        $this->repository = $repository;
+        $this->retailerRepository = $retailerRepository;
+        $this->managerRepository = $managerRepository;
         $this->validator = $validator;
         parent::__construct($name);
     }
@@ -63,8 +73,8 @@ class CreateRetailerCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Creates a new retailer.')
-            ->setHelp('This command allows you to create a retailer (user).')
+            ->setDescription('Creates a new user.')
+            ->setHelp('This command allows you to create a user (retailer or manager).')
         ;
     }
 
@@ -79,8 +89,26 @@ class CreateRetailerCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
-        $io->title('Bilemo retailer creator');
-        $io->text('You are about to create a new retailer.');
+        $io->title('Bilemo user creator');
+        $io->text('You are about to create a new user.');
+
+        $type = $io->choice(
+            'Create a retailer or a manager',
+            ['retailer', 'manager'],
+            'retailer'
+        );
+
+        if ($type === 'manager') {
+            $manager = new Manager();
+            $manager->setEmail('admin@bilemo.fr');
+            $manager->setPassword($this->passwordEncoder->encodePassword($manager, '1234'));
+            $manager->setRoles(['ROLE_ADMIN']);
+
+            $this->managerRepository->saveOrUpdate($manager);
+            $io->success('✔ Manager successfully created');
+
+            return;
+        }
 
         $email = $io->ask('Enter the email', null, static function ($email) {
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -135,7 +163,7 @@ class CreateRetailerCommand extends Command
             return;
         }
 
-        $this->repository->saveOrUpdate($retailer);
+        $this->retailerRepository->saveOrUpdate($retailer);
         $io->success('✔ Retailer successfully created');
     }
 
