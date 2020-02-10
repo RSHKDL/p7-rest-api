@@ -8,7 +8,7 @@ This API provides a catalog of Phones and Tablets accessible by the Retailers an
 ## About
 ### Back-end
 
-* Symfony 4.2
+* Symfony 4.4.4 LTS
 * Doctrine
 * JWTAuthentication
 ### Friendly with
