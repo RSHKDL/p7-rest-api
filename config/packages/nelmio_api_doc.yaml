@@ -28,6 +28,7 @@ nelmio_api_doc:
             - { alias: ManufacturerModel_full, type: App\Domain\Model\ManufacturerModel, groups: [manufacturer] }
             - { alias: ManufacturerPaginatedModel, type: App\Domain\Model\ManufacturerPaginatedModel, groups: [manufacturer_collection] }
             - { alias: RetailerModel, type: App\Domain\Model\RetailerModel, groups: [retailer] }
+            - { alias: RetailerPaginatedModel, type: App\Domain\Model\RetailerPaginatedModel, groups: [retailer_collection] }
             - { alias: ClientModel, type: App\Domain\Model\ClientModel, groups: [client] }
             - { alias: ClientModel_light, type: App\Domain\Model\ClientModel, groups: [client_collection] }
             - { alias: ClientPaginatedModel, type: App\Domain\Model\ClientPaginatedModel, groups: [client_collection] }
