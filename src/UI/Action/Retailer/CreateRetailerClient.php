@@ -55,6 +55,19 @@ final class CreateRetailerClient
     /**
      * Create a client
      *
+     * @SWG\Parameter(
+     *     name="body",
+     *     in="body",
+     *     description="You must provide this data to create a client",
+     *     required=true,
+     *     @SWG\Schema(
+     *         @SWG\Property(property="firstName", type="string", example="John"),
+     *         @SWG\Property(property="lastName", type="string", example="Doe"),
+     *         @SWG\Property(property="gender", type="integer", example="0 = other, 1 = female, 2 = male"),
+     *         @SWG\Property(property="email", type="string", example="john.doe@gmail.com"),
+     *     )
+     * )
+     *
      * @SWG\Response(
      *      response=201,
      *      description="Client successfully created",

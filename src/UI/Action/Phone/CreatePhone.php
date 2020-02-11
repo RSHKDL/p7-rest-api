@@ -36,6 +36,20 @@ final class CreatePhone
     /**
      * Create a phone
      *
+     * @SWG\Parameter(
+     *     name="body",
+     *     in="body",
+     *     description="You must provide this data to create a phone",
+     *     required=true,
+     *     @SWG\Schema(
+     *         @SWG\Property(property="model", type="string", example="A new phone"),
+     *         @SWG\Property(property="description", type="string", example="A description for the phone"),
+     *         @SWG\Property(property="manufacturer", type="string", example="Sony"),
+     *         @SWG\Property(property="price", type="float", example="199,99"),
+     *         @SWG\Property(property="quantity", type="integer", example="2000"),
+     *     )
+     * )
+     *
      * @SWG\Response(
      *      response=201,
      *      description="Phone successfully created",

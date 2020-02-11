@@ -36,6 +36,20 @@ final class CreateTablet
     /**
      * Create a tablet
      *
+     * @SWG\Parameter(
+     *     name="body",
+     *     in="body",
+     *     description="You must provide this data to create a tablet",
+     *     required=true,
+     *     @SWG\Schema(
+     *         @SWG\Property(property="model", type="string", example="A new tablet"),
+     *         @SWG\Property(property="description", type="string", example="A description for the tablet"),
+     *         @SWG\Property(property="manufacturer", type="string", example="Sony"),
+     *         @SWG\Property(property="price", type="float", example="199,99"),
+     *         @SWG\Property(property="quantity", type="integer", example="2000"),
+     *     )
+     * )
+     *
      * @SWG\Response(
      *      response=201,
      *      description="Tablet successfully created",
