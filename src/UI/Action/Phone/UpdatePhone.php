@@ -5,6 +5,7 @@ namespace App\UI\Action\Phone;
 use App\Domain\Model\PhoneModel;
 use App\UI\Factory\UpdateEntityFactory;
 use App\UI\Responder\UpdateResponder;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -62,6 +63,8 @@ final class UpdatePhone
      * @param PhoneModel $model
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
+     *
+     * @IsGranted("ROLE_ADMIN", message="Access denied. Credentials too low.")
      */
     public function __invoke(Request $request, UpdateResponder $responder, PhoneModel $model)
     {
