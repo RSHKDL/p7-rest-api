@@ -3,6 +3,7 @@
 namespace App\UI\Errors;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Class ApiProblemResponder
@@ -10,6 +11,20 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class ApiProblemResponder
 {
+    /**
+     * @var SerializerInterface
+     */
+    private $serializer;
+
+    /**
+     * ApiProblemResponder constructor.
+     * @param SerializerInterface $serializer
+     */
+    public function __construct(SerializerInterface $serializer)
+    {
+        $this->serializer = $serializer;
+    }
+
     /**
      * @param ApiProblem $apiProblem
      * @return JsonResponse
@@ -25,8 +40,12 @@ class ApiProblemResponder
 
         //@todo use signature of JsonResponse to set headers
         $response = new JsonResponse(
-            $data,
-            $apiProblem->getStatusCode()
+            $this->serializer->serialize($data, 'json', [
+                'json_encode_options' => JSON_UNESCAPED_SLASHES
+            ]),
+            $apiProblem->getStatusCode(),
+            [],
+            true
         );
         $response->headers->set('Content-Type', 'application/problem+json');
 
