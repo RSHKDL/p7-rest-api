@@ -1,12 +1,19 @@
 security:
     encoders:
-        App\Domain\Entity\Retailer:
+        App\Domain\Entity\AbstractUser:
             algorithm: bcrypt
             cost: 12
     providers:
-        api_entity_provider:
+        api_chain_provider:
+            chain:
+                providers: [api_retailer_provider, api_manager_provider]
+        api_retailer_provider:
             entity:
                 class: App\Domain\Entity\Retailer
+                property: email
+        api_manager_provider:
+            entity:
+                class: App\Domain\Entity\Manager
                 property: email
     firewalls:
         dev:
@@ -16,6 +23,7 @@ security:
             pattern:  ^/api/login
             stateless: true
             anonymous: true
+            provider: api_chain_provider
             json_login:
                 check_path: /api/login_check
                 success_handler: lexik_jwt_authentication.handler.authentication_success
@@ -24,7 +32,7 @@ security:
             pattern: ^/api
             stateless: true
             anonymous: true
-            provider: api_entity_provider
+            provider: api_chain_provider
             guard:
                 authenticators:
                     - App\Application\Security\TokenAuthenticator

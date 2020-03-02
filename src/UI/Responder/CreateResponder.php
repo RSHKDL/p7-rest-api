@@ -45,7 +45,10 @@ class CreateResponder
      */
     public function __invoke(ModelInterface $model, string $serializationGroup, string $routeName): Response
     {
-        $json = $this->serializer->serialize($model, 'json', ['groups' => [$serializationGroup] ]);
+        $json = $this->serializer->serialize($model, 'json', [
+            'groups' => [$serializationGroup],
+            'json_encode_options' => JSON_UNESCAPED_SLASHES
+        ]);
 
         return new Response($json, Response::HTTP_CREATED, [
             'location' => $this->urlGenerator->generate($routeName, $this->generateParamsFromModel($model))

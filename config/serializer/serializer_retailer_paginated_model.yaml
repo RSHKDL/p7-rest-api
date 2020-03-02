@@ -1,0 +1,10 @@
+App\Domain\Model\RetailerPaginatedModel:
+    attributes:
+        retailers:
+            groups: ['retailer_collection']
+        retailersTotal:
+            groups: ['retailer_collection']
+        retailersPerPage:
+            groups: ['retailer_collection']
+        _links:
+            groups: ['retailer_collection']

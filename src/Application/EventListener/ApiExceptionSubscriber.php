@@ -6,7 +6,7 @@ use App\UI\Errors\ApiProblem;
 use App\UI\Errors\ApiProblemException;
 use App\UI\Errors\ApiProblemResponder;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -29,6 +29,7 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
     /**
      * ApiExceptionSubscriber constructor.
      * @param bool $debug
+     * @param ApiProblemResponder $responder
      */
     public function __construct(bool $debug, ApiProblemResponder $responder)
     {
@@ -47,15 +48,15 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param GetResponseForExceptionEvent $event
+     * @param ExceptionEvent $event
      */
-    public function onKernelException(GetResponseForExceptionEvent $event)
+    public function onKernelException(ExceptionEvent $event): void
     {
         if (strpos($event->getRequest()->getPathInfo(), '/api') !== 0) {
             return;
         }
 
-        $e = $event->getException();
+        $e = $event->getThrowable();
 
         $statusCode = $e instanceof HttpExceptionInterface ? $e->getStatusCode() : 500;
 
