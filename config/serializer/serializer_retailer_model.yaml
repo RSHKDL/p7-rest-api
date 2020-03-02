@@ -5,7 +5,7 @@ App\Domain\Model\RetailerModel:
         name:
             groups: ['retailer', 'retailer_collection']
         email:
-            groups: ['retailer']
+            groups: ['retailer', 'retailer_collection']
         bic:
             groups: ['retailer']
         numberOfClients:

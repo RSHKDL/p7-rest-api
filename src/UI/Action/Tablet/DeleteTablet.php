@@ -5,6 +5,7 @@ namespace App\UI\Action\Tablet;
 use App\Domain\Model\TabletModel;
 use App\UI\Factory\DeleteEntityFactory;
 use App\UI\Responder\DeleteResponder;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,6 +54,8 @@ final class DeleteTablet
      * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @IsGranted("ROLE_ADMIN", message="Access denied. Credentials too low.")
      */
     public function __invoke(Request $request, DeleteResponder $responder, TabletModel $model): Response
     {

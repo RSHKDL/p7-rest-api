@@ -6,11 +6,13 @@ This API provides a catalog of Phones and Tablets accessible by the Retailers an
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/5788f5542f9d46c1a6d8fb9852a9e6d9)](https://www.codacy.com/app/RSHKDL/p7-rest-api?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=RSHKDL/p7-rest-api&amp;utm_campaign=Badge_Grade)
 
 ## About
+
 ### Back-end
 
 * Symfony 4.4.4 LTS
 * Doctrine
 * JWTAuthentication
+
 ### Friendly with
 
 * PSR-1, PSR-4, PSR-12
@@ -41,7 +43,7 @@ This API provides a catalog of Phones and Tablets accessible by the Retailers an
     $ bin/console app:retailer:create
     ```
 3. Once you have a Retailer, go to this URI: `/api/login_check`, submit this payload:
-    ```
+    ```json
     {
         "username": "your-retailer-email",
         "password": "your-retailer-password"
@@ -50,7 +52,7 @@ This API provides a catalog of Phones and Tablets accessible by the Retailers an
 4. Grab your token and use it as Bearer for your other request to the API.
 5. To test caching in an environment other than production, you need to edit `public/index.php` and replace **prod** by **dev**.
 
-
 ## Documentation
+
 This simple API project is as documented as possible:
 You can find a full documentation of API methods by adding `/api/doc` at the end of your API URI.

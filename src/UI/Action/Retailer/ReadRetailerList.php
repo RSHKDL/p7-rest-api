@@ -6,6 +6,7 @@ use App\Application\Router\RouteParams;
 use App\Domain\Model\RetailerPaginatedModel;
 use App\UI\Factory\ReadEntityCollectionFactory;
 use App\UI\Responder\ReadResponder;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -58,6 +59,8 @@ final class ReadRetailerList
      * @param RetailerPaginatedModel $retailerPaginatedModel
      * @return Response
      * @throws \Exception
+     *
+     * @IsGranted("ROLE_ADMIN", message="Access denied. Credentials too low.")
      */
     public function __invoke(Request $request, RetailerPaginatedModel $retailerPaginatedModel): Response
     {

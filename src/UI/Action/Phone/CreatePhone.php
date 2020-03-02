@@ -5,6 +5,7 @@ namespace App\UI\Action\Phone;
 use App\Domain\Model\PhoneModel;
 use App\UI\Factory\CreateEntityFactory;
 use App\UI\Responder\CreateResponder;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,6 +36,20 @@ final class CreatePhone
     /**
      * Create a phone
      *
+     * @SWG\Parameter(
+     *     name="body",
+     *     in="body",
+     *     description="You must provide this data to create a phone",
+     *     required=true,
+     *     @SWG\Schema(
+     *         @SWG\Property(property="model", type="string", example="A new phone"),
+     *         @SWG\Property(property="description", type="string", example="A description for the phone"),
+     *         @SWG\Property(property="manufacturer", type="string", example="Sony"),
+     *         @SWG\Property(property="price", type="float", example="199,99"),
+     *         @SWG\Property(property="quantity", type="integer", example="2000"),
+     *     )
+     * )
+     *
      * @SWG\Response(
      *      response=201,
      *      description="Phone successfully created",
@@ -53,6 +68,8 @@ final class CreatePhone
      * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @IsGranted("ROLE_ADMIN", message="Access denied. Credentials too low.")
      */
     public function __invoke(Request $request, CreateResponder $responder, PhoneModel $phoneModel): Response
     {
